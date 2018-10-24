@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Kaichao Sun">
+<meta name="description" content="dasheng&#39;s blog">
+<meta name="generator" content="Hugo 0.27.1" />
+<title>Understand Monad in Functional Programming</title>
+<link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
+<link rel="stylesheet" href="https://dashengsun.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://dashengsun.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
+
+
+<meta property="og:title" content="Understand Monad in Functional Programming" />
+<meta property="og:description" content="[TOC]
+Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+If there is one rule in software development, i think that must be no silver bullet." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dashengsun.github.io/post/understand-monad/" />
+
+
+
+<meta property="article:published_time" content="2018-10-13T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-10-13T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Understand Monad in Functional Programming">
+<meta itemprop="description" content="[TOC]
+Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+If there is one rule in software development, i think that must be no silver bullet.">
+
+
+<meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1681">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Understand Monad in Functional Programming"/>
+<meta name="twitter:description" content="[TOC]
+Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+If there is one rule in software development, i think that must be no silver bullet."/>
+<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://dashengsun.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+		<a class="cta" href="https://dashengsun.github.io/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Understand Monad in Functional Programming</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        October 13, 2018
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>[TOC]</p>
+
+<h2 id="why-functional-programming">Why Functional Programming?</h2>
+
+<p>The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have <strong>Procedure-oriented programming</strong>. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with <strong>OOP</strong> with the <strong>SOLID</strong> principles to guide the daily dev work.</p>
+
+<p>If there is one rule in software development, i think that must be <code>no silver bullet</code>. The OOP has ruled the system development for more that 20 years (The number comes from JAVA becomes popularity). More and more devs find object-oriented programming sucks:</p>
+
+<ul>
+<li>Mutable state of class instances</li>
+<li>Hard to conform with SOLID when business logic becomes messy</li>
+<li>Hard to test caused by improper DI</li>
+<li>So many lines of code</li>
+<li>Boring &hellip;</li>
+</ul>
+
+<p>Now people are thinking how to solve them:</p>
+
+<ul>
+<li>There is no mutable variables</li>
+<li>The functionality should be encapsulated</li>
+<li>I don&rsquo;t want exception, the compute unit (AKA function) should be pure</li>
+<li>The code should be clean</li>
+<li>Easy to test</li>
+<li>Parallelism</li>
+<li>Make me happy &hellip;</li>
+</ul>
+
+<p>That&rsquo;s what the FP try to implemented. What&rsquo;s the design principle for FP? Category theory. It&rsquo;s simple as its name. As the saying goes, there is no silver bullet.</p>
+
+<p>What sucks in FP?</p>
+
+<ul>
+<li>Learning curve</li>
+<li>Too young</li>
+<li>The world is not perfect</li>
+<li><em>Please add more</em> &hellip;</li>
+</ul>
+
+<h2 id="pure-function">Pure Function</h2>
+
+<p>A function can be pure or impure. Usually we use pure function in FP as much as we can. There are a few conditions for pure function:</p>
+
+<ol>
+<li>Give the same input argument to the function, it should always return same output.</li>
+<li>The function should only depends on the return value to change the whole &ldquo;world&rdquo;, which means no side effects. The side effects can be an exception, mutate an object, IO operation, etc.</li>
+</ol>
+
+<p>A short summary is:</p>
+
+<ul>
+<li><p>Output depends only on input.</p></li>
+
+<li><p>No side effects</p></li>
+</ul>
+
+<p>What can be done if we don&rsquo;t read any inputs and write any outputs?</p>
+
+<p>Usually, we can refactor impure function to be pure by adding a proper <strong>context</strong> like <strong>Option</strong>, <strong>cats.effect.IO</strong> or <strong>monix.eval.Task</strong> to the function return type. Some cases are:</p>
+
+<ul>
+<li>Use <strong>Option</strong> to represent exception</li>
+<li>Use <strong>IO</strong> or <strong>Task</strong> to delay the I/O operation</li>
+</ul>
+
+<h2 id="function-composition">Function Composition</h2>
+
+<p>Basicly, FP is about fucntion composition. That means:</p>
+
+<pre><code>// a, b, c are types
+f: a -&gt; b, 
+g: b -&gt; c, 
+g compose f: a -&gt; c
+</code></pre>
+
+<p>But how should we deal with the values with context like Option or IO? There could be lots of scheleton code if we still use simple function composition in this case. Then, there comes <strong>Monad</strong>, it opens the context and keeps the context same in the following computation.</p>
+
+<h2 id="monad">Monad</h2>
+
+<h3 id="define-a-monad">Define a Monad</h3>
+
+<p>In this section, we will implement an &lsquo;ugly&rsquo; Either monad, without considering any variance in type marameter:</p>
+
+<pre><code class="language-scala">sealed trait Either[A, B] {
+  def flatMap(f: B =&gt; Either[A, B]): Either[A, B] =
+    this match {
+      case Right(v) =&gt;
+        f(v)
+      case _ =&gt;
+        this
+    }
+
+  def map[C](f: B =&gt; C): Either[A, C] =
+    this match {
+      case Right(v) =&gt; Right(f(v))
+      case _ =&gt; this.asInstanceOf[Either[A, C]]
+    }
+}
+
+case class Left[A, B](e: A) extends Either[A, B]
+case class Right[A, B](v: B) extends Either[A, B]
+</code></pre>
+
+<p>The usage of this either monad:</p>
+
+<pre><code class="language-scala">val finalEither = for {
+    a &lt;- Right[String, Int](1)
+    b &lt;- Right[String, Int](2)
+  } yield (a + b)
+</code></pre>
+
+<h3 id="monad-laws">Monad Laws</h3>
+
+<p>When defining monad, it should follow a few laws, these laws maintain the basics of a category.</p>
+
+<blockquote>
+<p>Identity law:</p>
+
+<pre><code>&gt; def unit[A](a: A): F[A]
+&gt; def f[A](a: A): F[A]
+&gt; 
+&gt; // With same a, the following equation should be met.
+&gt; f(a).flatMap(unit) == f(a)
+&gt; unit(a).flatMap(f) == f(a)
+&gt; ```
+&gt;
+&gt; Associative law:
+&gt;
+&gt; ```
+&gt; // x is a F[A]
+&gt; x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
+&gt; ```
+
+
+
+## Free Monad
+
+### Why need it
+
+There is developers want to decomose data from the interpreter, which means there can be multiple interpretation for the same piece of computation. It would be helpful if we want to invoke different computation in different place. In this case, we need to wrap such computation in a context which can be composed with the computation in same context. This is a special monad which is called free. Typically ADT is common used to represent the data.
+
+### How to use
+
+In practice, we can view **Free** as a clever way of forming **Monad** with providing **Functor**.
+
+Following steps show the way to use free monad provides by cats library (need to add `cats-free` dependency): 
+
+1. Create custome ADT to represent the operation:
+
+   ````
+   sealed trait KVStoreA[A]
+   
+   case class Put[T](key: String, value: T) extends KVStoreA[Unit]
+   case class Get[T](key: String) extends KVStoreA[Option[T]]
+   case class Delete(key: String) extends KVStoreA[Unit]
+   ````
+
+2. Define free monad with Free for above ADT:
+
+</code></pre>
+
+<p>import cats.free.Free</p>
+</blockquote>
+
+<p>// We haven&rsquo;t define Functor, but use CoYoneda[F, _] is functor for any F.
+   type KVStore[A] = Free[KVStoreA, A]</p>
+
+<pre><code>
+3. Using **liftF** Create DSL related functions which return above free monad:
+
+</code></pre>
+
+<p>import cats.free.Free.liftF</p>
+
+<p>// Put returns nothing (i.e. Unit).
+   def put<a href="key: String, value: T">T</a>: KVStore[Unit] =
+     liftF<a href="Put[T](key, value)">KVStoreA, Unit</a></p>
+
+<p>// Get returns a T value.
+   def get<a href="key: String">T</a>: KVStore[Option[T]] =
+     liftF<a href="Get[T](key)">KVStoreA, Option[T]</a></p>
+
+<p>// Delete returns nothing (i.e. Unit).
+   def delete(key: String): KVStore[Unit] =
+     liftF(Delete(key))</p>
+
+<p>// Update composes get and set, and returns nothing.
+   def update<a href="key: String, f: T =&gt; T">T</a>: KVStore[Unit] =
+     for {
+       vMaybe &lt;- get<a href="key">T</a>
+        _ &lt;- vMaybe.map(v =&gt; put<a href="key, f(v)">T</a>).getOrElse(Free.pure(()))
+     } yield ()</p>
+
+<pre><code>
+4. Build a program with constructed function:
+
+</code></pre>
+
+<p>def program: KVStore[Option[Int]] =
+     for {
+       _ &lt;- put(&ldquo;cats&rdquo;, 2)
+       _ &lt;- update<a href="&quot;cats&quot;, (_ + 12">Int</a>)
+       n &lt;- get[Int](&ldquo;cats&rdquo;)
+       _ &lt;- delete(&ldquo;cats&rdquo;)
+     } yield n</p>
+
+<pre><code>
+5. Implement the interpreter which is a natural transformation to interpret each operation:
+
+</code></pre>
+
+<p>import cats.{Id, ~&gt;}
+   import scala.collection.mutable</p>
+
+<p>def impureCompiler: KVStoreA ~&gt; Id  =
+     new (KVStoreA ~&gt; Id) {</p>
+
+<pre><code>   // a very simple (and imprecise) key-value store
+   val kvs = mutable.Map.empty[String, Any]
+
+   def apply[A](fa: KVStoreA[A]): Id[A] =
+     fa match {
+       case Put(key, value) =&gt;
+         println(s&quot;put($key, $value)&quot;)
+         kvs(key) = value
+         ()
+       case Get(key) =&gt;
+         println(s&quot;get($key)&quot;)
+         kvs.get(key).map(_.asInstanceOf[A])
+       case Delete(key) =&gt;
+         println(s&quot;delete($key)&quot;)
+         kvs.remove(key)
+         ()
+     }
+ }
+</code></pre>
+
+<pre><code>
+6. Run the program with defined interpreter:
+
+</code></pre>
+
+<p>// Free[_] is just a recursive structure, which similar to List.
+   val result: Option[Int] = program.foldMap(impureCompiler)</p>
+
+<pre><code>
+### What's the implementation
+
+The implementation of free monad, details go to this [post](https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html):
+
+</code></pre>
+
+<p>sealed trait Free[F[<em>], A] {
+  def flatMap<a href="f: A =&gt; Free[F, B]">B</a>(implicit functor: Functor[F]): Free[F, B] =
+    this match {
+      case Return(a)  =&gt; f(a)
+      case Suspend(s) =&gt; Suspend(s map (</em> flatMap f))
+    }
+}</p>
+
+<p>final case class Return<a href="a: A">F[_], A</a> extends Free[F, A]
+final case class Suspend<a href="s: F[Free[F, A]]">F[_], A</a> extends Free[F, A]</p>
+
+<p>object Free {
+  def point<a href="a: A">F[_]</a>: Free[F, A] = Return<a href="a">F, A</a>
+}</p>
+
+<pre><code>
+Usually, we will have a lot of ADTs in the code, but unrelated monad do not compose. Cats has given an option to chain the different ADT by using **coproduct** type. We are not going to discuss the detail here, but worth to dig it more [here](https://www.47deg.com/blog/fp-for-the-average-joe-part3-free-monads/) if you are interested.
+
+
+
+## Monad transformer
+
+### Why need it
+
+Imagine there is a piece of code to fetch the address of a user by its id:
+
+</code></pre>
+
+<p>def findUserById(id: Long): Future[User] = ???
+def findAddressByUser(user: User): Future[Address] = ???</p>
+
+<pre><code>
+We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in `flatMap`.
+
+</code></pre>
+
+<p>def findAddressByUserId(id: Long): Future[Address] =
+  for {
+    user    &lt;- findUserById(id)
+    address &lt;- findAddressByUser(user)
+  } yield address</p>
+
+<pre><code>
+There is a situation that we can't find a user if the id is not exist, event the address can be optional for a user.
+
+</code></pre>
+
+<p>def findUserById(id: Long): Future[Option[User]] = ???
+def findAddressByUser(user: User): Future[Option[Address]] = ???</p>
+
+<pre><code>
+Then the workflow need to be changed:
+
+</code></pre>
+
+<p>def findAddressByUserId(id: Long): Future[Option[Address]] =
+  findUserById(id).flatMap {
+    case Some(user) =&gt; findAddressByUser(user)
+    case None       =&gt; Future.successful(None)
+  }</p>
+
+<pre><code>
+It's working but not as beautiful as previous. Now we comes to monad transformers.
+
+### How to use
+
+Use **OptionT** provided by cats in for-comprehension:
+
+</code></pre>
+
+<p>def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
+  for {
+    user &lt;- OptionT(findUserById(id))
+    address &lt;- OptionT(findAddressByUser(user))
+  } yield address</p>
+
+<pre><code>
+### What's the implementation
+
+The brief definition of OptionT:
+
+</code></pre>
+
+<p>case class OptionT<a href="value: F[Option[A]]">F[_], A</a> {
+  def map<a href="f: A =&gt; B">B</a>(implicit F: Functor[F]): OptionT[F, B] =
+    OptionT(value.map(_.map(f)))</p>
+
+<p>def flatMap<a href="f: A =&gt; OptionT[F, B]">B</a>(implicit F: Monad[F]): OptionT[F, B] =
+    OptionT(value.flatMap(
+      <em>.fold(Option.empty[B].pure[F])(
+        f andThen ((fa: OptionT[F, B]) =&gt; fa.value))))
+}
+object OptionT {
+  def pure[F[</em>]: Applicative, A](a: A): OptionT[F, A] =
+    OptionT(a.pure[Option].pure[F])
+}</p>
+
+<pre><code>
+One thing need to mention is that many monad transformers could be stack unsafe, like `StateT` .
+
+
+
+## Extensible Effect
+
+### Why need it
+
+Monad transformers has a limited nest layers, also must keep the order same in different computation. What if we have some super way to rule all the monads? In this case we can walk through the control flow without worring the different monad. Finally it will free us from assembling different manads.
+
+The principle ideas to understand effects are:
+
+&gt; * An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.
+&gt;
+&gt; - An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.
+
+### How to use
+
+</code></pre>
+
+<p>type Stack = Fx.fx2[Option, StringEither]</p>
+
+<p>type HasOption[R] = MemberIn[Option, R]
+type StringEither[A] = Either[String, A]
+type HasEither[R] = MemberIn[StringEither, R]</p>
+
+<p>def program[R: HasOption: HasEither] = for {
+  a &lt;- fromOption(Some(1))
+  b &lt;- fromEither(Right(2))
+} yield a + b</p>
+
+<p>println(program[Stack])
+println(program[Stack].asInstanceOf[ImpureAp[_, _, _]].continuation.functions)</p>
+
+<p>val result = program[Stack].runOption.runEither.run // Right(Some(3))
+```</p>
+
+<h3 id="what-s-the-implementation">What&rsquo;s the implementation</h3>
+
+<p>The core of Eff library is Eff monad and the open union. Defining effects and their interactions is done by the user. There are some common effects provided by the library like ReaderEffect, IOEffect etc for convenience.</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="http://okmij.org/ftp/Computation/free-monad.html">Free and Freer Monads: Putting Monads Back into Closet</a></li>
+<li><a href="https://alvinalexander.com/scala/fp-book/pure-functions-and-io-input-output">Pure Functions and I/O</a></li>
+<li><a href="http://degoes.net/articles/only-one-io">There Can Be Only One&hellip;IO Monad</a></li>
+<li><a href="https://monix.io/blog/2018/03/20/monix-vs-cats-effect.html">Monix’s Task vs cats.effect.IO</a></li>
+<li><a href="https://underscore.io/blog/posts/2015/04/28/monadic-io-laziness-makes-you-free.html">Monadic IO: Laziness Makes You Free</a></li>
+<li><a href="http://degoes.net/articles/only-one-io">There Can Be Only One&hellip;IO Monad</a></li>
+<li><a href="https://english.stackexchange.com/questions/30654/where-does-the-term-monad-come-from">Where does the term “Monad” come from?</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)">Monad (functional programming) in Wikipedia</a></li>
+<li><a href="https://typelevel.org/cats/datatypes/freemonad.html">Free Monad in Cats</a></li>
+<li><a href="https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html">Deriving the Free Monad</a></li>
+<li><a href="http://blog.higher-order.com/blog/2013/11/01/free-and-yoneda/">Free Monads and the Yoneda Lemma</a></li>
+<li><a href="http://blog.higher-order.com/assets/scalaio.pdf">Purely Functional I/O in Scala</a></li>
+<li><a href="http://blog.higher-order.com/assets/trampolines.pdf">Stackless Scala With Free Monads</a></li>
+<li><a href="https://blog.buildo.io/monad-transformers-for-the-working-programmer-aa7e981190e7">Monad Transformers for the working programmer</a></li>
+<li><a href="https://typelevel.org/cats/datatypes/optiont.html">Cats: OptionT</a></li>
+<li><a href="http://degoes.net/articles/effects-without-transformers">No More Transformers: High-Performance Effects in Scalaz 8</a></li>
+<li><a href="http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html">Why free monads matter</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/SunWillsuna">
+    <img class="avatar" src="https://dashengsun.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Kaichao Sun</span>
+        <span>Mark it down</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fdashengsun.github.io%2fpost%2funderstand-monad%2f - Understand%20Monad%20in%20Functional%20Programming by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/post/solidity-basics/">Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/kubernetes-basics/">Kubernetes basics<aside class="dates">Jun 21 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/how-to-setup-iri/">如何部署 IOTA 的 IRI headless 全节点<aside class="dates">Dec 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/go-channel/">理解Golang并发编程<aside class="dates">Jul 29 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/golang-docker-ci/">Golang web 开发<aside class="dates">Jul 5 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/callback-promise/">理解 Javascript 的几种异步模式<aside class="dates">Apr 5 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/hackday/">Hackday是一种怎样的体验？<aside class="dates">Jan 7 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/hexo/">使用 Hexo 搭建个人博客<aside class="dates">Jan 4 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/dashengSun">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/SunWillsuna">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Kaichao Sun
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://dashengsun.github.io/js/main.js"></script>
+<script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>
