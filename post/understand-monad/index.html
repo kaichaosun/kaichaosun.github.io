@@ -52,7 +52,7 @@ If there is one rule in software development, i think that must be no silver bul
 
 
 <meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1681">
+<meta itemprop="wordCount" content="1669">
 
 
 
@@ -212,279 +212,258 @@ case class Right[A, B](v: B) extends Either[A, B]
 
 <p>When defining monad, it should follow a few laws, these laws maintain the basics of a category.</p>
 
-<blockquote>
 <p>Identity law:</p>
 
-<pre><code>&gt; def unit[A](a: A): F[A]
-&gt; def f[A](a: A): F[A]
-&gt; 
-&gt; // With same a, the following equation should be met.
-&gt; f(a).flatMap(unit) == f(a)
-&gt; unit(a).flatMap(f) == f(a)
-&gt; ```
-&gt;
-&gt; Associative law:
-&gt;
-&gt; ```
-&gt; // x is a F[A]
-&gt; x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
-&gt; ```
+<pre><code>def unit[A](a: A): F[A]
+def f[A](a: A): F[A]
 
+// With same a, the following equation should be met.
+f(a).flatMap(unit) == f(a)
+unit(a).flatMap(f) == f(a)
+</code></pre>
 
+<p>Associative law:</p>
 
-## Free Monad
+<pre><code>// x is a F[A]
+x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
+</code></pre>
 
-### Why need it
+<h2 id="free-monad">Free Monad</h2>
 
-There is developers want to decomose data from the interpreter, which means there can be multiple interpretation for the same piece of computation. It would be helpful if we want to invoke different computation in different place. In this case, we need to wrap such computation in a context which can be composed with the computation in same context. This is a special monad which is called free. Typically ADT is common used to represent the data.
+<h3 id="why-need-it">Why need it</h3>
 
-### How to use
+<p>There is developers want to decomose data from the interpreter, which means there can be multiple interpretation for the same piece of computation. It would be helpful if we want to invoke different computation in different place. In this case, we need to wrap such computation in a context which can be composed with the computation in same context. This is a special monad which is called free. Typically ADT is common used to represent the data.</p>
 
-In practice, we can view **Free** as a clever way of forming **Monad** with providing **Functor**.
+<h3 id="how-to-use">How to use</h3>
 
-Following steps show the way to use free monad provides by cats library (need to add `cats-free` dependency): 
+<p>In practice, we can view <strong>Free</strong> as a clever way of forming <strong>Monad</strong> with providing <strong>Functor</strong>.</p>
 
-1. Create custome ADT to represent the operation:
+<p>Following steps show the way to use free monad provides by cats library (need to add <code>cats-free</code> dependency):</p>
 
-   ````
-   sealed trait KVStoreA[A]
+<ol>
+<li>Create custome ADT to represent the operation:</li>
+</ol>
+
+<pre><code>   sealed trait KVStoreA[A]
    
    case class Put[T](key: String, value: T) extends KVStoreA[Unit]
    case class Get[T](key: String) extends KVStoreA[Option[T]]
    case class Delete(key: String) extends KVStoreA[Unit]
-   ````
-
-2. Define free monad with Free for above ADT:
-
 </code></pre>
 
-<p>import cats.free.Free</p>
-</blockquote>
+<ol>
+<li>Define free monad with Free for above ADT:</li>
+</ol>
 
-<p>// We haven&rsquo;t define Functor, but use CoYoneda[F, _] is functor for any F.
-   type KVStore[A] = Free[KVStoreA, A]</p>
-
-<pre><code>
-3. Using **liftF** Create DSL related functions which return above free monad:
-
+<pre><code>   import cats.free.Free
+   
+   // We haven't define Functor, but use CoYoneda[F, _] is functor for any F.
+   type KVStore[A] = Free[KVStoreA, A]
 </code></pre>
 
-<p>import cats.free.Free.liftF</p>
+<ol>
+<li>Using <strong>liftF</strong> Create DSL related functions which return above free monad:</li>
+</ol>
 
-<p>// Put returns nothing (i.e. Unit).
-   def put<a href="key: String, value: T">T</a>: KVStore[Unit] =
-     liftF<a href="Put[T](key, value)">KVStoreA, Unit</a></p>
-
-<p>// Get returns a T value.
-   def get<a href="key: String">T</a>: KVStore[Option[T]] =
-     liftF<a href="Get[T](key)">KVStoreA, Option[T]</a></p>
-
-<p>// Delete returns nothing (i.e. Unit).
+<pre><code>   import cats.free.Free.liftF
+      
+   // Put returns nothing (i.e. Unit).
+   def put[T](key: String, value: T): KVStore[Unit] =
+     liftF[KVStoreA, Unit](Put[T](key, value))
+      
+   // Get returns a T value.
+   def get[T](key: String): KVStore[Option[T]] =
+     liftF[KVStoreA, Option[T]](Get[T](key))
+      
+   // Delete returns nothing (i.e. Unit).
    def delete(key: String): KVStore[Unit] =
-     liftF(Delete(key))</p>
-
-<p>// Update composes get and set, and returns nothing.
-   def update<a href="key: String, f: T =&gt; T">T</a>: KVStore[Unit] =
+     liftF(Delete(key))
+      
+   // Update composes get and set, and returns nothing.
+   def update[T](key: String, f: T =&gt; T): KVStore[Unit] =
      for {
-       vMaybe &lt;- get<a href="key">T</a>
-        _ &lt;- vMaybe.map(v =&gt; put<a href="key, f(v)">T</a>).getOrElse(Free.pure(()))
-     } yield ()</p>
-
-<pre><code>
-4. Build a program with constructed function:
-
+       vMaybe &lt;- get[T](key)
+        _ &lt;- vMaybe.map(v =&gt; put[T](key, f(v))).getOrElse(Free.pure(()))
+     } yield ()
 </code></pre>
 
-<p>def program: KVStore[Option[Int]] =
+<ol>
+<li>Build a program with constructed function:</li>
+</ol>
+
+<pre><code>   def program: KVStore[Option[Int]] =
      for {
-       _ &lt;- put(&ldquo;cats&rdquo;, 2)
-       _ &lt;- update<a href="&quot;cats&quot;, (_ + 12">Int</a>)
-       n &lt;- get[Int](&ldquo;cats&rdquo;)
-       _ &lt;- delete(&ldquo;cats&rdquo;)
-     } yield n</p>
-
-<pre><code>
-5. Implement the interpreter which is a natural transformation to interpret each operation:
-
+       _ &lt;- put(&quot;cats&quot;, 2)
+       _ &lt;- update[Int](&quot;cats&quot;, (_ + 12))
+       n &lt;- get[Int](&quot;cats&quot;)
+       _ &lt;- delete(&quot;cats&quot;)
+     } yield n
 </code></pre>
 
-<p>import cats.{Id, ~&gt;}
-   import scala.collection.mutable</p>
+<ol>
+<li>Implement the interpreter which is a natural transformation to interpret each operation:</li>
+</ol>
 
-<p>def impureCompiler: KVStoreA ~&gt; Id  =
-     new (KVStoreA ~&gt; Id) {</p>
-
-<pre><code>   // a very simple (and imprecise) key-value store
-   val kvs = mutable.Map.empty[String, Any]
-
-   def apply[A](fa: KVStoreA[A]): Id[A] =
-     fa match {
-       case Put(key, value) =&gt;
-         println(s&quot;put($key, $value)&quot;)
-         kvs(key) = value
-         ()
-       case Get(key) =&gt;
-         println(s&quot;get($key)&quot;)
-         kvs.get(key).map(_.asInstanceOf[A])
-       case Delete(key) =&gt;
-         println(s&quot;delete($key)&quot;)
-         kvs.remove(key)
-         ()
+<pre><code>   import cats.{Id, ~&gt;}
+   import scala.collection.mutable
+   
+   def impureCompiler: KVStoreA ~&gt; Id  =
+     new (KVStoreA ~&gt; Id) {
+   
+       // a very simple (and imprecise) key-value store
+       val kvs = mutable.Map.empty[String, Any]
+   
+       def apply[A](fa: KVStoreA[A]): Id[A] =
+         fa match {
+           case Put(key, value) =&gt;
+             println(s&quot;put($key, $value)&quot;)
+             kvs(key) = value
+             ()
+           case Get(key) =&gt;
+             println(s&quot;get($key)&quot;)
+             kvs.get(key).map(_.asInstanceOf[A])
+           case Delete(key) =&gt;
+             println(s&quot;delete($key)&quot;)
+             kvs.remove(key)
+             ()
+         }
      }
- }
 </code></pre>
 
-<pre><code>
-6. Run the program with defined interpreter:
+<ol>
+<li>Run the program with defined interpreter:</li>
+</ol>
 
+<pre><code>   // Free[_] is just a recursive structure, which similar to List.
+   val result: Option[Int] = program.foldMap(impureCompiler)
 </code></pre>
 
-<p>// Free[_] is just a recursive structure, which similar to List.
-   val result: Option[Int] = program.foldMap(impureCompiler)</p>
+<h3 id="what-s-the-implementation">What&rsquo;s the implementation</h3>
 
-<pre><code>
-### What's the implementation
+<p>The implementation of free monad, details go to this <a href="https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html">post</a>:</p>
 
-The implementation of free monad, details go to this [post](https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html):
-
-</code></pre>
-
-<p>sealed trait Free[F[<em>], A] {
-  def flatMap<a href="f: A =&gt; Free[F, B]">B</a>(implicit functor: Functor[F]): Free[F, B] =
+<pre><code>sealed trait Free[F[_], A] {
+  def flatMap[B](f: A =&gt; Free[F, B])(implicit functor: Functor[F]): Free[F, B] =
     this match {
       case Return(a)  =&gt; f(a)
-      case Suspend(s) =&gt; Suspend(s map (</em> flatMap f))
+      case Suspend(s) =&gt; Suspend(s map (_ flatMap f))
     }
-}</p>
+}
 
-<p>final case class Return<a href="a: A">F[_], A</a> extends Free[F, A]
-final case class Suspend<a href="s: F[Free[F, A]]">F[_], A</a> extends Free[F, A]</p>
+final case class Return[F[_], A](a: A) extends Free[F, A]
+final case class Suspend[F[_], A](s: F[Free[F, A]]) extends Free[F, A]
 
-<p>object Free {
-  def point<a href="a: A">F[_]</a>: Free[F, A] = Return<a href="a">F, A</a>
-}</p>
-
-<pre><code>
-Usually, we will have a lot of ADTs in the code, but unrelated monad do not compose. Cats has given an option to chain the different ADT by using **coproduct** type. We are not going to discuss the detail here, but worth to dig it more [here](https://www.47deg.com/blog/fp-for-the-average-joe-part3-free-monads/) if you are interested.
-
-
-
-## Monad transformer
-
-### Why need it
-
-Imagine there is a piece of code to fetch the address of a user by its id:
-
+object Free {
+  def point[F[_]](a: A): Free[F, A] = Return[F, A](a)
+}
 </code></pre>
 
-<p>def findUserById(id: Long): Future[User] = ???
-def findAddressByUser(user: User): Future[Address] = ???</p>
+<p>Usually, we will have a lot of ADTs in the code, but unrelated monad do not compose. Cats has given an option to chain the different ADT by using <strong>coproduct</strong> type. We are not going to discuss the detail here, but worth to dig it more <a href="https://www.47deg.com/blog/fp-for-the-average-joe-part3-free-monads/">here</a> if you are interested.</p>
 
-<pre><code>
-We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in `flatMap`.
+<h2 id="monad-transformer">Monad transformer</h2>
 
+<h3 id="why-need-it-1">Why need it</h3>
+
+<p>Imagine there is a piece of code to fetch the address of a user by its id:</p>
+
+<pre><code>def findUserById(id: Long): Future[User] = ???
+def findAddressByUser(user: User): Future[Address] = ???
 </code></pre>
 
-<p>def findAddressByUserId(id: Long): Future[Address] =
+<p>We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in <code>flatMap</code>.</p>
+
+<pre><code>def findAddressByUserId(id: Long): Future[Address] =
   for {
     user    &lt;- findUserById(id)
     address &lt;- findAddressByUser(user)
-  } yield address</p>
-
-<pre><code>
-There is a situation that we can't find a user if the id is not exist, event the address can be optional for a user.
-
+  } yield address
 </code></pre>
 
-<p>def findUserById(id: Long): Future[Option[User]] = ???
-def findAddressByUser(user: User): Future[Option[Address]] = ???</p>
+<p>There is a situation that we can&rsquo;t find a user if the id is not exist, event the address can be optional for a user.</p>
 
-<pre><code>
-Then the workflow need to be changed:
-
+<pre><code>def findUserById(id: Long): Future[Option[User]] = ???
+def findAddressByUser(user: User): Future[Option[Address]] = ???
 </code></pre>
 
-<p>def findAddressByUserId(id: Long): Future[Option[Address]] =
+<p>Then the workflow need to be changed:</p>
+
+<pre><code>def findAddressByUserId(id: Long): Future[Option[Address]] =
   findUserById(id).flatMap {
     case Some(user) =&gt; findAddressByUser(user)
     case None       =&gt; Future.successful(None)
-  }</p>
-
-<pre><code>
-It's working but not as beautiful as previous. Now we comes to monad transformers.
-
-### How to use
-
-Use **OptionT** provided by cats in for-comprehension:
-
+  }
 </code></pre>
 
-<p>def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
+<p>It&rsquo;s working but not as beautiful as previous. Now we comes to monad transformers.</p>
+
+<h3 id="how-to-use-1">How to use</h3>
+
+<p>Use <strong>OptionT</strong> provided by cats in for-comprehension:</p>
+
+<pre><code>def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
   for {
     user &lt;- OptionT(findUserById(id))
     address &lt;- OptionT(findAddressByUser(user))
-  } yield address</p>
-
-<pre><code>
-### What's the implementation
-
-The brief definition of OptionT:
-
+  } yield address
 </code></pre>
 
-<p>case class OptionT<a href="value: F[Option[A]]">F[_], A</a> {
-  def map<a href="f: A =&gt; B">B</a>(implicit F: Functor[F]): OptionT[F, B] =
-    OptionT(value.map(_.map(f)))</p>
+<h3 id="what-s-the-implementation-1">What&rsquo;s the implementation</h3>
 
-<p>def flatMap<a href="f: A =&gt; OptionT[F, B]">B</a>(implicit F: Monad[F]): OptionT[F, B] =
+<p>The brief definition of OptionT:</p>
+
+<pre><code>case class OptionT[F[_], A](value: F[Option[A]]) {
+  def map[B](f: A =&gt; B)(implicit F: Functor[F]): OptionT[F, B] =
+    OptionT(value.map(_.map(f)))
+
+  def flatMap[B](f: A =&gt; OptionT[F, B])(implicit F: Monad[F]): OptionT[F, B] =
     OptionT(value.flatMap(
-      <em>.fold(Option.empty[B].pure[F])(
+      _.fold(Option.empty[B].pure[F])(
         f andThen ((fa: OptionT[F, B]) =&gt; fa.value))))
 }
 object OptionT {
-  def pure[F[</em>]: Applicative, A](a: A): OptionT[F, A] =
+  def pure[F[_]: Applicative, A](a: A): OptionT[F, A] =
     OptionT(a.pure[Option].pure[F])
-}</p>
-
-<pre><code>
-One thing need to mention is that many monad transformers could be stack unsafe, like `StateT` .
-
-
-
-## Extensible Effect
-
-### Why need it
-
-Monad transformers has a limited nest layers, also must keep the order same in different computation. What if we have some super way to rule all the monads? In this case we can walk through the control flow without worring the different monad. Finally it will free us from assembling different manads.
-
-The principle ideas to understand effects are:
-
-&gt; * An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.
-&gt;
-&gt; - An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.
-
-### How to use
-
+}
 </code></pre>
 
-<p>type Stack = Fx.fx2[Option, StringEither]</p>
+<p>One thing need to mention is that many monad transformers could be stack unsafe, like <code>StateT</code> .</p>
 
-<p>type HasOption[R] = MemberIn[Option, R]
+<h2 id="extensible-effect">Extensible Effect</h2>
+
+<h3 id="why-need-it-2">Why need it</h3>
+
+<p>Monad transformers has a limited nest layers, also must keep the order same in different computation. What if we have some super way to rule all the monads? In this case we can walk through the control flow without worring the different monad. Finally it will free us from assembling different manads.</p>
+
+<p>The principle ideas to understand effects are:</p>
+
+<blockquote>
+<ul>
+<li><p>An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.</p></li>
+
+<li><p>An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.</p></li>
+</ul>
+</blockquote>
+
+<h3 id="how-to-use-2">How to use</h3>
+
+<pre><code>type Stack = Fx.fx2[Option, StringEither]
+
+type HasOption[R] = MemberIn[Option, R]
 type StringEither[A] = Either[String, A]
-type HasEither[R] = MemberIn[StringEither, R]</p>
+type HasEither[R] = MemberIn[StringEither, R]
 
-<p>def program[R: HasOption: HasEither] = for {
+def program[R: HasOption: HasEither] = for {
   a &lt;- fromOption(Some(1))
   b &lt;- fromEither(Right(2))
-} yield a + b</p>
+} yield a + b
 
-<p>println(program[Stack])
-println(program[Stack].asInstanceOf[ImpureAp[_, _, _]].continuation.functions)</p>
+println(program[Stack])
+println(program[Stack].asInstanceOf[ImpureAp[_, _, _]].continuation.functions)
 
-<p>val result = program[Stack].runOption.runEither.run // Right(Some(3))
-```</p>
+val result = program[Stack].runOption.runEither.run // Right(Some(3))
+</code></pre>
 
-<h3 id="what-s-the-implementation">What&rsquo;s the implementation</h3>
+<h3 id="what-s-the-implementation-2">What&rsquo;s the implementation</h3>
 
 <p>The core of Eff library is Eff monad and the open union. Defining effects and their interactions is done by the user. There are some common effects provided by the library like ReaderEffect, IOEffect etc for convenience.</p>
 
