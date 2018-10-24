@@ -166,7 +166,7 @@ If there is one rule in software development, i think that must be no silver bul
 
 <p>Basicly, FP is about fucntion composition. That means:</p>
 
-<pre><code>// a, b, c are types
+<pre><code class="language-scala">// a, b, c are types
 f: a -&gt; b, 
 g: b -&gt; c, 
 g compose f: a -&gt; c
@@ -214,7 +214,7 @@ case class Right[A, B](v: B) extends Either[A, B]
 
 <p>Identity law:</p>
 
-<pre><code>def unit[A](a: A): F[A]
+<pre><code class="language-scala">def unit[A](a: A): F[A]
 def f[A](a: A): F[A]
 
 // With same a, the following equation should be met.
@@ -224,7 +224,7 @@ unit(a).flatMap(f) == f(a)
 
 <p>Associative law:</p>
 
-<pre><code>// x is a F[A]
+<pre><code class="language-scala">// x is a F[A]
 x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 </code></pre>
 
@@ -244,7 +244,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Create custome ADT to represent the operation:</li>
 </ol>
 
-<pre><code>   sealed trait KVStoreA[A]
+<pre><code class="language-scala">   sealed trait KVStoreA[A]
    
    case class Put[T](key: String, value: T) extends KVStoreA[Unit]
    case class Get[T](key: String) extends KVStoreA[Option[T]]
@@ -255,7 +255,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Define free monad with Free for above ADT:</li>
 </ol>
 
-<pre><code>   import cats.free.Free
+<pre><code class="language-scala">   import cats.free.Free
    
    // We haven't define Functor, but use CoYoneda[F, _] is functor for any F.
    type KVStore[A] = Free[KVStoreA, A]
@@ -265,7 +265,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Using <strong>liftF</strong> Create DSL related functions which return above free monad:</li>
 </ol>
 
-<pre><code>   import cats.free.Free.liftF
+<pre><code class="language-scala">   import cats.free.Free.liftF
       
    // Put returns nothing (i.e. Unit).
    def put[T](key: String, value: T): KVStore[Unit] =
@@ -291,7 +291,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Build a program with constructed function:</li>
 </ol>
 
-<pre><code>   def program: KVStore[Option[Int]] =
+<pre><code class="language-scala">   def program: KVStore[Option[Int]] =
      for {
        _ &lt;- put(&quot;cats&quot;, 2)
        _ &lt;- update[Int](&quot;cats&quot;, (_ + 12))
@@ -304,7 +304,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Implement the interpreter which is a natural transformation to interpret each operation:</li>
 </ol>
 
-<pre><code>   import cats.{Id, ~&gt;}
+<pre><code class="language-scala">   import cats.{Id, ~&gt;}
    import scala.collection.mutable
    
    def impureCompiler: KVStoreA ~&gt; Id  =
@@ -334,7 +334,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 <li>Run the program with defined interpreter:</li>
 </ol>
 
-<pre><code>   // Free[_] is just a recursive structure, which similar to List.
+<pre><code class="language-scala">   // Free[_] is just a recursive structure, which similar to List.
    val result: Option[Int] = program.foldMap(impureCompiler)
 </code></pre>
 
@@ -342,7 +342,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 
 <p>The implementation of free monad, details go to this <a href="https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html">post</a>:</p>
 
-<pre><code>sealed trait Free[F[_], A] {
+<pre><code class="language-scala">sealed trait Free[F[_], A] {
   def flatMap[B](f: A =&gt; Free[F, B])(implicit functor: Functor[F]): Free[F, B] =
     this match {
       case Return(a)  =&gt; f(a)
@@ -366,13 +366,13 @@ object Free {
 
 <p>Imagine there is a piece of code to fetch the address of a user by its id:</p>
 
-<pre><code>def findUserById(id: Long): Future[User] = ???
+<pre><code class="language-scala">def findUserById(id: Long): Future[User] = ???
 def findAddressByUser(user: User): Future[Address] = ???
 </code></pre>
 
 <p>We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in <code>flatMap</code>.</p>
 
-<pre><code>def findAddressByUserId(id: Long): Future[Address] =
+<pre><code class="language-scala">def findAddressByUserId(id: Long): Future[Address] =
   for {
     user    &lt;- findUserById(id)
     address &lt;- findAddressByUser(user)
@@ -381,13 +381,13 @@ def findAddressByUser(user: User): Future[Address] = ???
 
 <p>There is a situation that we can&rsquo;t find a user if the id is not exist, event the address can be optional for a user.</p>
 
-<pre><code>def findUserById(id: Long): Future[Option[User]] = ???
+<pre><code class="language-scala">def findUserById(id: Long): Future[Option[User]] = ???
 def findAddressByUser(user: User): Future[Option[Address]] = ???
 </code></pre>
 
 <p>Then the workflow need to be changed:</p>
 
-<pre><code>def findAddressByUserId(id: Long): Future[Option[Address]] =
+<pre><code class="language-scala">def findAddressByUserId(id: Long): Future[Option[Address]] =
   findUserById(id).flatMap {
     case Some(user) =&gt; findAddressByUser(user)
     case None       =&gt; Future.successful(None)
@@ -400,7 +400,7 @@ def findAddressByUser(user: User): Future[Option[Address]] = ???
 
 <p>Use <strong>OptionT</strong> provided by cats in for-comprehension:</p>
 
-<pre><code>def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
+<pre><code class="language-scala">def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
   for {
     user &lt;- OptionT(findUserById(id))
     address &lt;- OptionT(findAddressByUser(user))
@@ -411,7 +411,7 @@ def findAddressByUser(user: User): Future[Option[Address]] = ???
 
 <p>The brief definition of OptionT:</p>
 
-<pre><code>case class OptionT[F[_], A](value: F[Option[A]]) {
+<pre><code class="language-scala">case class OptionT[F[_], A](value: F[Option[A]]) {
   def map[B](f: A =&gt; B)(implicit F: Functor[F]): OptionT[F, B] =
     OptionT(value.map(_.map(f)))
 
@@ -446,7 +446,7 @@ object OptionT {
 
 <h3 id="how-to-use-2">How to use</h3>
 
-<pre><code>type Stack = Fx.fx2[Option, StringEither]
+<pre><code class="language-scala">type Stack = Fx.fx2[Option, StringEither]
 
 type HasOption[R] = MemberIn[Option, R]
 type StringEither[A] = Either[String, A]
