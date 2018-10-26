@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
-<meta name="generator" content="Hugo 0.27.1" />
+<meta name="generator" content="Hugo 0.49.2" />
 <title>Kubernetes basics</title>
 <link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
 <link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
@@ -25,22 +25,8 @@
 <meta property="og:description" content="Background &amp; why kubernetes Micro services Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:
  Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dashengsun.github.io/post/kubernetes-basics/" />
-
-
-
-<meta property="article:published_time" content="2018-06-21T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://dashengsun.github.io/post/kubernetes-basics/" /><meta property="article:published_time" content="2018-06-21T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2018-06-21T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -49,6 +35,7 @@
  Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services.">
 
 
+<meta itemprop="datePublished" content="2018-06-21T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-06-21T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1038">
 
@@ -56,7 +43,8 @@
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Kubernetes basics"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Kubernetes basics"/>
 <meta name="twitter:description" content="Background &amp; why kubernetes Micro services Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:
  Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
@@ -81,6 +69,7 @@
     <section id="wrapper">
         
         
+
 <article class="post">
     <header>
         <h1>Kubernetes basics</h1>
@@ -91,6 +80,46 @@
         
         </h2>
     </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#background-why-kubernetes">Background &amp; why kubernetes</a>
+<ul>
+<li><a href="#micro-services">Micro services</a></li>
+<li><a href="#container">Container</a></li>
+<li><a href="#cluster">Cluster</a></li>
+</ul></li>
+<li><a href="#architecture-in-kubernetes">Architecture in kubernetes</a>
+<ul>
+<li><a href="#master-node">Master node</a></li>
+<li><a href="#worker-node">Worker node</a></li>
+</ul></li>
+<li><a href="#useful-services">Useful services</a>
+<ul>
+<li><a href="#pods">Pods</a></li>
+<li><a href="#controllers">Controllers</a></li>
+<li><a href="#services">Services</a></li>
+</ul></li>
+<li><a href="#practice">Practice</a>
+<ul>
+<li><a href="#install-kubectl">Install kubectl</a></li>
+<li><a href="#use-docker-for-mac-edge">Use docker for Mac edge</a></li>
+<li><a href="#use-minikube">Use minikube</a></li>
+<li><a href="#common-used-commands">Common used commands</a></li>
+<li><a href="#access-the-dashboard">Access the dashboard</a></li>
+<li><a href="#run-sample-container">Run sample container</a></li>
+<li><a href="#pod-definition">Pod definition</a></li>
+</ul></li>
+<li><a href="#using-with-gcp-and-aws">Using with GCP and AWS</a></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
     <section id="post-body">
         
 
@@ -418,7 +447,7 @@ spec:
 </footer>
 
 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -510,6 +539,7 @@ spec:
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://dashengsun.github.io/js/main.js"></script>
 <script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script src="https://dashengsun.github.io/js/fix-toc.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

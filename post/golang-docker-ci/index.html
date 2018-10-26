@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
-<meta name="generator" content="Hugo 0.27.1" />
+<meta name="generator" content="Hugo 0.49.2" />
 <title>Golang web 开发</title>
 <link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
 <link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
@@ -27,22 +27,8 @@
 Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dashengsun.github.io/post/golang-docker-ci/" />
-
-
-
-<meta property="article:published_time" content="2017-07-05T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://dashengsun.github.io/post/golang-docker-ci/" /><meta property="article:published_time" content="2017-07-05T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2017-07-05T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -53,6 +39,7 @@ Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部�
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github.">
 
 
+<meta itemprop="datePublished" content="2017-07-05T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-07-05T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="376">
 
@@ -60,7 +47,8 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Golang web 开发"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang web 开发"/>
 <meta name="twitter:description" content="背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
 Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
@@ -87,6 +75,7 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
     <section id="wrapper">
         
         
+
 <article class="post">
     <header>
         <h1>Golang web 开发</h1>
@@ -97,6 +86,36 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
         
         </h2>
     </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#背景">背景</a></li>
+<li><a href="#why-go">Why Go?</a></li>
+<li><a href="#golang第三方框架选择">Golang第三方框架选择</a></li>
+<li><a href="#dockerize-开发环境">Dockerize 开发环境</a>
+<ul>
+<li><a href="#发布应用-base-image">发布应用 base image</a></li>
+<li><a href="#发布数据库-base-image">发布数据库 base image</a></li>
+<li><a href="#启动服务">启动服务</a></li>
+</ul></li>
+<li><a href="#业务实现">业务实现</a>
+<ul>
+<li><a href="#router">Router</a></li>
+<li><a href="#handler">handler</a></li>
+<li><a href="#model">model</a></li>
+<li><a href="#建立db连接">建立DB连接</a></li>
+<li><a href="#view">View</a></li>
+<li><a href="#测试">测试</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
     <section id="post-body">
         
 
@@ -383,7 +402,7 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
 </footer>
 
 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -475,6 +494,7 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://dashengsun.github.io/js/main.js"></script>
 <script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script src="https://dashengsun.github.io/js/fix-toc.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

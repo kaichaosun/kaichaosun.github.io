@@ -43,7 +43,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 .icon-facebook-rect:before { content: '\e803'; }
 
 /* Spacing */
-.post h1, h3, h4, h5, p, .post-body ul, ol, pre {
+.post h1, h2, h3, h4, h5, p, .post-body ul, ol, pre {
 margin-bottom: 20px;
 }
 
@@ -71,7 +71,7 @@ h2 {
 
 .profile #wrapper {
 	padding: 100px 40px 0px;
-	max-width: 720px;
+	max-width: 800px;
 	margin: 0 auto;
 }
 
@@ -137,13 +137,13 @@ nav.main-nav a.cta {
 }
 
 #wrapper {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 60px 40px 100px 40px;
 }
 
 #wrapper.home {
-	max-width: 720px;
+	max-width: 800px;
 	margin: 0 auto;
 	padding: 0px 40px 20px 40px;
 }
@@ -233,9 +233,9 @@ em, i { font-style: italic; }
 }
 
 .post h2 {
-	margin-bottom: 40px;
-	  font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
-	  color: #111;
+	margin-top: 40px;
+	font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #111;
 }
 
 .post h2.subtitle {
@@ -263,8 +263,9 @@ em, i { font-style: italic; }
 }
 
 h3, h4, h5 { color:#333; }
-
-h3 { font-size:20px; font-weight: 400; }
+h1 {margin-bottom: 30px}
+h2 {margin-bottom: 20px}
+h3 { font-size:20px; font-weight: 400; margin-bottom: 10px;}
 h4 { font-size:16px; font-weight:bold; }
 h5 { font-size:15px; font-weight: bold; }
 
@@ -587,7 +588,7 @@ h2.month {
   box-shadow: 0 0 0 3px #fff, 0 0 0 4px #eee;
 }
 
-#post-list.archive.readmore h3{
+#post-list.archive.readmore {
 
 	  font: 400 20px "Helvetica Neue", Helvetica,Arial,sans-serif;
 	  margin-bottom: 30px;
@@ -666,4 +667,35 @@ code {
 	background-color:#EEE; font-size:14px; 
 	padding: 4px; 
 	font-weight: 600;
+}
+
+ul {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	padding-left: 1em;
+}
+
+ol > li {
+	list-style-type: decimal;
+}
+
+li {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+	list-style-type: disc;
+	list-style-position: inside;
+}
+
+ul > li > ul > li {
+	list-style-type: circle;
+}
+
+ul > li > ul > li > ul > li {
+	list-style-type: square;
+}
+
+#post-list li {
+	margin: 0px;
+	padding-top: 15px;
+	padding-bottom: 5px;
 }

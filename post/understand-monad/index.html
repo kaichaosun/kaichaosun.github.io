@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
-<meta name="generator" content="Hugo 0.27.1" />
+<meta name="generator" content="Hugo 0.49.2" />
 <title>Understand Monad in Functional Programming</title>
 <link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
 <link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
@@ -22,45 +22,30 @@
 
 
 <meta property="og:title" content="Understand Monad in Functional Programming" />
-<meta property="og:description" content="[TOC]
-Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta property="og:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dashengsun.github.io/post/understand-monad/" />
-
-
-
-<meta property="article:published_time" content="2018-10-13T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://dashengsun.github.io/post/understand-monad/" /><meta property="article:published_time" content="2018-10-13T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2018-10-13T00:00:00&#43;00:00"/>
 
 
 
-
-
-
-
-
-
-
-
-
-
 <meta itemprop="name" content="Understand Monad in Functional Programming">
-<meta itemprop="description" content="[TOC]
-Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta itemprop="description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet.">
 
 
+<meta itemprop="datePublished" content="2018-10-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1669">
+<meta itemprop="wordCount" content="1674">
 
 
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Understand Monad in Functional Programming"/>
-<meta name="twitter:description" content="[TOC]
-Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Understand Monad in Functional Programming"/>
+<meta name="twitter:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
@@ -84,6 +69,7 @@ If there is one rule in software development, i think that must be no silver bul
     <section id="wrapper">
         
         
+
 <article class="post">
     <header>
         <h1>Understand Monad in Functional Programming</h1>
@@ -94,10 +80,46 @@ If there is one rule in software development, i think that must be no silver bul
         
         </h2>
     </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#why-functional-programming">Why Functional Programming?</a></li>
+<li><a href="#pure-function">Pure Function</a></li>
+<li><a href="#function-composition">Function Composition</a></li>
+<li><a href="#monad">Monad</a>
+<ul>
+<li><a href="#define-a-monad">Define a Monad</a></li>
+<li><a href="#monad-laws">Monad Laws</a></li>
+</ul></li>
+<li><a href="#free-monad">Free Monad</a>
+<ul>
+<li><a href="#why-need-it">Why need it</a></li>
+<li><a href="#how-to-use">How to use</a></li>
+<li><a href="#what-s-the-implementation">What&rsquo;s the implementation</a></li>
+</ul></li>
+<li><a href="#monad-transformer">Monad transformer</a>
+<ul>
+<li><a href="#why-need-it-1">Why need it</a></li>
+<li><a href="#how-to-use-1">How to use</a></li>
+<li><a href="#what-s-the-implementation-1">What&rsquo;s the implementation</a></li>
+</ul></li>
+<li><a href="#extensible-effect">Extensible Effect</a>
+<ul>
+<li><a href="#why-need-it-2">Why need it</a></li>
+<li><a href="#how-to-use-2">How to use</a></li>
+<li><a href="#what-s-the-implementation-2">What&rsquo;s the implementation</a></li>
+</ul></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
     <section id="post-body">
         
-
-<p>[TOC]</p>
 
 <h2 id="why-functional-programming">Why Functional Programming?</h2>
 
@@ -148,9 +170,8 @@ If there is one rule in software development, i think that must be no silver bul
 <p>A short summary is:</p>
 
 <ul>
-<li><p>Output depends only on input.</p></li>
-
-<li><p>No side effects</p></li>
+<li>Output depends only on input.</li>
+<li>No side effects</li>
 </ul>
 
 <p>What can be done if we don&rsquo;t read any inputs and write any outputs?</p>
@@ -240,9 +261,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
 
 <p>Following steps show the way to use free monad provides by cats library (need to add <code>cats-free</code> dependency):</p>
 
-<ol>
-<li>Create custome ADT to represent the operation:</li>
-</ol>
+<p>1. Create custome ADT to represent the operation:</p>
 
 <pre><code class="language-scala">   sealed trait KVStoreA[A]
    
@@ -251,9 +270,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
    case class Delete(key: String) extends KVStoreA[Unit]
 </code></pre>
 
-<ol>
-<li>Define free monad with Free for above ADT:</li>
-</ol>
+<p>2. Define free monad with Free for above ADT:</p>
 
 <pre><code class="language-scala">   import cats.free.Free
    
@@ -261,9 +278,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
    type KVStore[A] = Free[KVStoreA, A]
 </code></pre>
 
-<ol>
-<li>Using <strong>liftF</strong> Create DSL related functions which return above free monad:</li>
-</ol>
+<p>3. Using <strong>liftF</strong> Create DSL related functions which return above free monad:</p>
 
 <pre><code class="language-scala">   import cats.free.Free.liftF
       
@@ -287,9 +302,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
      } yield ()
 </code></pre>
 
-<ol>
-<li>Build a program with constructed function:</li>
-</ol>
+<p>4. Build a program with constructed function:</p>
 
 <pre><code class="language-scala">   def program: KVStore[Option[Int]] =
      for {
@@ -300,9 +313,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
      } yield n
 </code></pre>
 
-<ol>
-<li>Implement the interpreter which is a natural transformation to interpret each operation:</li>
-</ol>
+<p>5. Implement the interpreter which is a natural transformation to interpret each operation:</p>
 
 <pre><code class="language-scala">   import cats.{Id, ~&gt;}
    import scala.collection.mutable
@@ -330,9 +341,7 @@ x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
      }
 </code></pre>
 
-<ol>
-<li>Run the program with defined interpreter:</li>
-</ol>
+<p>6. Run the program with defined interpreter:</p>
 
 <pre><code class="language-scala">   // Free[_] is just a recursive structure, which similar to List.
    val result: Option[Int] = program.foldMap(impureCompiler)
@@ -438,9 +447,8 @@ object OptionT {
 
 <blockquote>
 <ul>
-<li><p>An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.</p></li>
-
-<li><p>An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.</p></li>
+<li>An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.</li>
+<li>An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.</li>
 </ul>
 </blockquote>
 
@@ -515,7 +523,7 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
 </footer>
 
 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -607,6 +615,7 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://dashengsun.github.io/js/main.js"></script>
 <script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script src="https://dashengsun.github.io/js/fix-toc.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

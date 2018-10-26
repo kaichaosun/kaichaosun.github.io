@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
-<meta name="generator" content="Hugo 0.27.1" />
+<meta name="generator" content="Hugo 0.49.2" />
 <title>理解 Javascript 的几种异步模式</title>
 <link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
 <link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
@@ -31,22 +31,8 @@ MDN提供的伪代码实现如下:
 while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&rdquo;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
 function bar(cb) { setTimeout(cb,2000); } function foo() { console." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dashengsun.github.io/post/callback-promise/" />
-
-
-
-<meta property="article:published_time" content="2017-04-05T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://dashengsun.github.io/post/callback-promise/" /><meta property="article:published_time" content="2017-04-05T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2017-04-05T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -61,6 +47,7 @@ while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback
 function bar(cb) { setTimeout(cb,2000); } function foo() { console.">
 
 
+<meta itemprop="datePublished" content="2017-04-05T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-04-05T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="957">
 
@@ -68,7 +55,8 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console.">
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="理解 Javascript 的几种异步模式"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="理解 Javascript 的几种异步模式"/>
 <meta name="twitter:description" content="Javacript 提供了基于回调的异步编程模式，如回调函数，Promise对象，Async Function 等。下面是我在学习过程中总结的 一些特性和使用方式。
 Javascript 运行时概念  栈(Stack)  和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
   单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件    堆(Heap)  堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
@@ -99,6 +87,7 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console."/>
     <section id="wrapper">
         
         
+
 <article class="post">
     <header>
         <h1>理解 Javascript 的几种异步模式</h1>
@@ -109,6 +98,52 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console."/>
         
         </h2>
     </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#javascript-运行时概念">Javascript 运行时概念</a></li>
+<li><a href="#callback">Callback</a>
+<ul>
+<li><a href="#callback函数">Callback函数</a></li>
+<li><a href="#callback-hell">Callback hell</a></li>
+</ul></li>
+<li><a href="#promise">Promise</a>
+<ul>
+<li><a href="#什么是promise">什么是Promise</a></li>
+<li><a href="#promise-api">Promise API</a>
+<ul>
+<li><a href="#promise状态">Promise状态</a></li>
+<li><a href="#promise方法">Promise方法</a></li>
+</ul></li>
+<li><a href="#simple-example">Simple Example</a>
+<ul>
+<li><a href="#构造一个-promise-通过-then-函数取值">构造一个 Promise, 通过 <code>then</code> 函数取值:</a></li>
+<li><a href="#then-的回调函数有返回值时-返回一个-relove-该值的-promise"><code>then</code> 的回调函数有返回值时,返回一个 relove 该值的 Promise:</a></li>
+<li><a href="#then-的回调函数中没有返回值-调用-then-函数返回一个promise-其relove的值为-undefined"><code>then</code>的回调函数中没有返回值,调用<code>then</code>函数返回一个Promise,其relove的值为<code>undefined</code></a></li>
+<li><a href="#同一个promise被多次使用时-执行顺序为-then-调用的先后顺序">同一个Promise被多次使用时,执行顺序为<code>then</code>调用的先后顺序:</a></li>
+<li><a href="#promise-all-异步执行">Promise.all (异步执行)</a></li>
+<li><a href="#promise-race-异步执行">Promise.race (异步执行)</a></li>
+</ul></li>
+<li><a href="#promise-实现">Promise 实现</a></li>
+</ul></li>
+<li><a href="#generator">Generator</a>
+<ul>
+<li><a href="#simple-example-1">Simple example</a></li>
+<li><a href="#理解双向消息传递">理解双向消息传递</a></li>
+<li><a href="#其他api">其他API</a></li>
+<li><a href="#generator结合promise实现异步控制流">Generator结合Promise实现异步控制流</a></li>
+</ul></li>
+<li><a href="#async-function-es7">Async Function (ES7)</a></li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
     <section id="post-body">
         
 
@@ -716,7 +751,7 @@ sum().then(v =&gt; {console.log(v)})
 </footer>
 
 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -808,6 +843,7 @@ sum().then(v =&gt; {console.log(v)})
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://dashengsun.github.io/js/main.js"></script>
 <script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script src="https://dashengsun.github.io/js/fix-toc.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

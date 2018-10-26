@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
-<meta name="generator" content="Hugo 0.27.1" />
+<meta name="generator" content="Hugo 0.49.2" />
 <title>理解Golang并发编程</title>
 <link rel="shortcut icon" href="https://dashengsun.github.io/images/favicon.ico">
 <link rel="stylesheet" href="https://dashengsun.github.io/css/style.css">
@@ -37,22 +37,8 @@ begin main goroutine end main goroutine  上面的例子中，并不会输出beg
 time.Sleep(1 * time.Second)  就可以正常输出begin hello goroutine。
 channel Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://dashengsun.github.io/post/go-channel/" />
-
-
-
-<meta property="article:published_time" content="2017-07-29T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://dashengsun.github.io/post/go-channel/" /><meta property="article:published_time" content="2017-07-29T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2017-07-29T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -73,6 +59,7 @@ time.Sleep(1 * time.Second)  就可以正常输出begin hello goroutine。
 channel Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。">
 
 
+<meta itemprop="datePublished" content="2017-07-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-07-29T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="427">
 
@@ -80,7 +67,8 @@ channel Go提供了一种机制能够使goroutine之间进行通信和同步，�
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="理解Golang并发编程"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="理解Golang并发编程"/>
 <meta name="twitter:description" content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
 在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
 计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
@@ -117,6 +105,7 @@ channel Go提供了一种机制能够使goroutine之间进行通信和同步，�
     <section id="wrapper">
         
         
+
 <article class="post">
     <header>
         <h1>理解Golang并发编程</h1>
@@ -127,6 +116,27 @@ channel Go提供了一种机制能够使goroutine之间进行通信和同步，�
         
         </h2>
     </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#concurrency-vs-parallelism">concurrency vs parallelism</a></li>
+<li><a href="#goroutine">Goroutine</a></li>
+<li><a href="#channel">channel</a>
+<ul>
+<li><a href="#unbuffered-channel">unbuffered channel</a></li>
+<li><a href="#buffered-channel">buffered channel</a></li>
+</ul></li>
+<li><a href="#select">select</a></li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
     <section id="post-body">
         
 
@@ -439,7 +449,7 @@ channel作为goroutine通信的媒介，安全高效的实现了goroutine之间�
 </footer>
 
 <div id="disqus_thread"></div>
-<script>
+<script type="application/javascript">
     var disqus_config = function () {
     
     
@@ -531,6 +541,7 @@ channel作为goroutine通信的媒介，安全高效的实现了goroutine之间�
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://dashengsun.github.io/js/main.js"></script>
 <script src="https://dashengsun.github.io/js/highlight.js"></script>
+<script src="https://dashengsun.github.io/js/fix-toc.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 
