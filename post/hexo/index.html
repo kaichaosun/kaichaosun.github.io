@@ -95,8 +95,6 @@ hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 <ul>
 <li>
 <ul>
-<li>
-<ul>
 <li><a href="#安装-hexo">安装 Hexo</a></li>
 <li><a href="#创建-github-blog-project">创建 Github blog project</a></li>
 <li><a href="#run-server">Run server</a></li>
@@ -105,7 +103,6 @@ hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 <li><a href="#创建post">创建post</a></li>
 <li><a href="#deploy">Deploy</a></li>
 <li><a href="#绑定万网域名">绑定万网域名</a></li>
-</ul></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
 </ul>
@@ -118,14 +115,14 @@ hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 <p><a href="https://hexo.io/">Hexo</a> 是一个博客框架,支持Markdown,通过命令行可以快速部署,
 有大量的主题和插件,让你的blog飞起来&hellip;</p>
 
-<h3 id="安装-hexo">安装 Hexo</h3>
+<h2 id="安装-hexo">安装 Hexo</h2>
 
 <pre><code class="language-bash">sudo npm install -g hexo-cli
 
 hexo -v
 </code></pre>
 
-<h3 id="创建-github-blog-project">创建 Github blog project</h3>
+<h2 id="创建-github-blog-project">创建 Github blog project</h2>
 
 <p>个人习惯将source和deploy分开,在github上创建一个blog项目(保存源文件)和
 xxx.github.io项目(用于部署Github个人主页,xxx为用户名,具体参考Github <a href="https://pages.github.com/">Pages</a>)</p>
@@ -137,14 +134,14 @@ cd blog
 npm install
 </code></pre>
 
-<h3 id="run-server">Run server</h3>
+<h2 id="run-server">Run server</h2>
 
 <pre><code class="language-bash">$ hexo s
 </code></pre>
 
 <p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
 
-<h3 id="设置博客页个人信息">设置博客页个人信息</h3>
+<h2 id="设置博客页个人信息">设置博客页个人信息</h2>
 
 <p>我的配置文件 _config.yml</p>
 
@@ -164,7 +161,7 @@ permalink: :year/:month/:day/:title/
 permalink_defaults:
 </code></pre>
 
-<h3 id="绑定github地址">绑定Github地址</h3>
+<h2 id="绑定github地址">绑定Github地址</h2>
 
 <pre><code class="language-bash">$ npm install hexo-deployer-git --save
 </code></pre>
@@ -181,19 +178,19 @@ deploy:
 
 <p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
 
-<h3 id="创建post">创建post</h3>
+<h2 id="创建post">创建post</h2>
 
 <pre><code class="language-bash">hexo new hello-world
 </code></pre>
 
-<h3 id="deploy">Deploy</h3>
+<h2 id="deploy">Deploy</h2>
 
 <pre><code class="language-bash">hexo clean
 
 hexo deploy
 </code></pre>
 
-<h3 id="绑定万网域名">绑定万网域名</h3>
+<h2 id="绑定万网域名">绑定万网域名</h2>
 
 <ul>
 <li>在hexo博客项目,source目录下添加名称为<code>CNAME</code>的文件,内容为个性化域名,如:whisperd.tech</li>
@@ -333,6 +330,19 @@ hexo deploy
 
 
 
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-128168145-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
 
 
 </body>
