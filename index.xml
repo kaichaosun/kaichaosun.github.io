@@ -139,11 +139,12 @@ REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂
       <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://dashengsun.github.io/post/hexo/</guid>
-      <description>Hexo 是一个博客框架,支持Markdown,通过命令行可以快速部署, 有大量的主题和插件,让你的blog飞起来&amp;hellip;
+      <description>Note: 已经使用Hugo创建博客。
+Hexo 是一个博客框架,支持Markdown,通过命令行可以快速部署, 有大量的主题和插件,让你的blog飞起来&amp;hellip;
 安装 Hexo sudo npm install -g hexo-cli hexo -v  创建 Github blog project 个人习惯将source和deploy分开,在github上创建一个blog项目(保存源文件)和 xxx.github.io项目(用于部署Github个人主页,xxx为用户名,具体参考Github Pages)
 hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 设置博客页个人信息 我的配置文件 _config.yml
-# Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39; url: https://dashengsun.</description>
+# Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.</description>
     </item>
     
   </channel>
