@@ -17,7 +17,7 @@
       <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/understand-monad/</guid>
-      <description>Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+      <description>Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet.</description>
     </item>
     

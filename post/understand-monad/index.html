@@ -22,7 +22,7 @@
 
 
 <meta property="og:title" content="Understand Monad in Functional Programming" />
-<meta property="og:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta property="og:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/understand-monad/" /><meta property="article:published_time" content="2018-10-13T00:00:00&#43;00:00"/>
@@ -31,13 +31,13 @@ If there is one rule in software development, i think that must be no silver bul
 
 
 <meta itemprop="name" content="Understand Monad in Functional Programming">
-<meta itemprop="description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta itemprop="description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet.">
 
 
 <meta itemprop="datePublished" content="2018-10-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1674">
+<meta itemprop="wordCount" content="1800">
 
 
 
@@ -45,7 +45,7 @@ If there is one rule in software development, i think that must be no silver bul
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Understand Monad in Functional Programming"/>
-<meta name="twitter:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have Procedure-oriented programming. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
+<meta name="twitter:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
@@ -123,12 +123,12 @@ If there is one rule in software development, i think that must be no silver bul
 
 <h2 id="why-functional-programming">Why Functional Programming?</h2>
 
-<p>The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have <strong>Procedure-oriented programming</strong>. As the system becomes bigger and bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with <strong>OOP</strong> with the <strong>SOLID</strong> principles to guide the daily dev work.</p>
+<p>The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have <strong>procedure-oriented programming</strong>. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with <strong>OOP</strong> with the <strong>SOLID</strong> principles to guide the daily dev work.</p>
 
 <p>If there is one rule in software development, i think that must be <code>no silver bullet</code>. The OOP has ruled the system development for more that 20 years (The number comes from JAVA becomes popularity). More and more devs find object-oriented programming sucks:</p>
 
 <ul>
-<li>Mutable state of class instances</li>
+<li>Mutable state of instances, variables</li>
 <li>Hard to conform with SOLID when business logic becomes messy</li>
 <li>Hard to test caused by improper DI</li>
 <li>So many lines of code</li>
@@ -167,6 +167,19 @@ If there is one rule in software development, i think that must be no silver bul
 <li>The function should only depends on the return value to change the whole &ldquo;world&rdquo;, which means no side effects. The side effects can be an exception, mutate an object, IO operation, etc.</li>
 </ol>
 
+<p>I will give one example to understand pure function:</p>
+
+<pre><code class="language-scala">// pure function
+def add(i: Int, y: Int) =
+  i + y
+
+// impure function
+def addAndPrint(i: Int, y: Int) = {
+  val result = i + y
+  println(s&quot;The result is ${result}&quot;)
+}
+</code></pre>
+
 <p>A short summary is:</p>
 
 <ul>
@@ -174,12 +187,14 @@ If there is one rule in software development, i think that must be no silver bul
 <li>No side effects</li>
 </ul>
 
+<p>With pure function, it&rsquo;s possible to make sure our program is <strong>referential transparency</strong> which means that an expression always evaluate to the same result in any piece of code. Referential transparency makes the code easier to reason about.</p>
+
 <p>What can be done if we don&rsquo;t read any inputs and write any outputs?</p>
 
-<p>Usually, we can refactor impure function to be pure by adding a proper <strong>context</strong> like <strong>Option</strong>, <strong>cats.effect.IO</strong> or <strong>monix.eval.Task</strong> to the function return type. Some cases are:</p>
+<p>Usually, we can refactor impure function to be pure by adding a proper <strong>context</strong> (here a context is what a value wrapped in.) like <strong>Option</strong>, <strong>cats.effect.IO</strong> or <strong>monix.eval.Task</strong> to the function return type. Some cases are:</p>
 
 <ul>
-<li>Use <strong>Option</strong> to represent exception</li>
+<li>Use <strong>Either</strong> to represent exception</li>
 <li>Use <strong>IO</strong> or <strong>Task</strong> to delay the I/O operation</li>
 </ul>
 
@@ -187,13 +202,21 @@ If there is one rule in software development, i think that must be no silver bul
 
 <p>Basicly, FP is about fucntion composition. That means:</p>
 
-<pre><code class="language-scala">// a, b, c are types
-f: a -&gt; b, 
-g: b -&gt; c, 
-g compose f: a -&gt; c
+<pre><code class="language-scala">// A, B, C are types
+f: A -&gt; B, 
+g: B -&gt; C, 
+g compose f: A -&gt; C
 </code></pre>
 
-<p>But how should we deal with the values with context like Option or IO? There could be lots of scheleton code if we still use simple function composition in this case. Then, there comes <strong>Monad</strong>, it opens the context and keeps the context same in the following computation.</p>
+<p>But how should we deal with the values wrapped in context like Option or IO? There could be lots of scheleton code if we still use simple function composition in this case. Then, there comes <strong>monad</strong>, it opens the context and keeps the context same in the following computation. Usually we use for comprehension to simplise the control flow:</p>
+
+<pre><code class="language-scala">val result = for {
+  a &lt;- Option.apply(1) // this is equal to Some(1)
+  b &lt;- Option.apply(2)
+} yield a + b
+
+// result is: Some(3)
+</code></pre>
 
 <h2 id="monad">Monad</h2>
 
@@ -495,6 +518,7 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
 <li><a href="https://typelevel.org/cats/datatypes/optiont.html">Cats: OptionT</a></li>
 <li><a href="http://degoes.net/articles/effects-without-transformers">No More Transformers: High-Performance Effects in Scalaz 8</a></li>
 <li><a href="http://www.haskellforall.com/2012/06/you-could-have-invented-free-monads.html">Why free monads matter</a></li>
+<li><a href="https://wiki.haskell.org/Referential_transparency">Referential transparency</a></li>
 </ul>
 
     </section>
@@ -616,6 +640,7 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
 <script src="https://whisperd.tech/js/main.js"></script>
 <script src="https://whisperd.tech/js/highlight.js"></script>
 <script src="https://whisperd.tech/js/fix-toc.js"></script>
+<script src="https://whisperd.tech/js/gulugulu.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <script>
