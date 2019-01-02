@@ -6,10 +6,28 @@
     <description>Recent content on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 13 Oct 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 02 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cheat sheet for Shell programming</title>
+      <link>https://whisperd.tech/post/shell-cheat-sheet/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/shell-cheat-sheet/</guid>
+      <description> Concepts Reference </description>
+    </item>
+    
+    <item>
+      <title>Cheat sheet for common used CLI</title>
+      <link>https://whisperd.tech/post/common-cli-cheat-sheet/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/common-cli-cheat-sheet/</guid>
+      <description> Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  Reference </description>
+    </item>
     
     <item>
       <title>Understand Monad in Functional Programming</title>
