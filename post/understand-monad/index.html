@@ -37,7 +37,7 @@ If there is one rule in software development, i think that must be no silver bul
 
 <meta itemprop="datePublished" content="2018-10-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1800">
+<meta itemprop="wordCount" content="1791">
 
 
 
@@ -179,6 +179,7 @@ def add(i: Int, y: Int) =
 def addAndPrint(i: Int, y: Int) = {
   val result = i + y
   println(s&quot;The result is ${result}&quot;)
+  result
 }
 </code></pre>
 
@@ -224,26 +225,23 @@ g compose f: A -&gt; C
 
 <h3 id="define-a-monad">Define a Monad</h3>
 
-<p>In this section, we will implement an &lsquo;ugly&rsquo; Either monad, without considering any variance in type marameter:</p>
+<p>In this section, we will implement an &lsquo;ugly&rsquo; Option monad, without considering any variance in type marameter:</p>
 
-<pre><code class="language-scala">sealed trait Either[A, B] {
-  def flatMap(f: B =&gt; Either[A, B]): Either[A, B] =
+<pre><code class="language-scala">sealed trait Option[+A] {
+  def flatMap[B](func: A =&gt; Option[B]): Option[B] =
     this match {
-      case Right(v) =&gt;
-        f(v)
-      case _ =&gt;
-        this
+      case None =&gt; None
+      case Some(a) =&gt; func(a)
     }
-
-  def map[C](f: B =&gt; C): Either[A, C] =
+  
+  def map[B](func: A =&gt; B): Option[B] =
     this match {
-      case Right(v) =&gt; Right(f(v))
-      case _ =&gt; this.asInstanceOf[Either[A, C]]
+      case None =&gt; None
+      case Some(a) =&gt; Some(func(a))
     }
 }
-
-case class Left[A, B](e: A) extends Either[A, B]
-case class Right[A, B](v: B) extends Either[A, B]
+case object None extends Option[Nothing]
+case class Some[T](value: T) extends Option[T]
 </code></pre>
 
 <p>The usage of this either monad:</p>
