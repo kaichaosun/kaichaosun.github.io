@@ -26,7 +26,7 @@
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/common-cli-cheat-sheet/</guid>
-      <description> Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  Reference </description>
+      <description> Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  SSH tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip  Generate table of contents for markdown gh-md-toc README.md  Reference </description>
     </item>
     
     <item>
