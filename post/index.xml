@@ -17,7 +17,7 @@
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/shell-cheat-sheet/</guid>
-      <description> Concepts Reference </description>
+      <description> If else if [[ -z ${APP_ENV} ]]; then echo &amp;quot;The APP_ENV should be set to prod or staging, got: $0&amp;quot; exit -1 fi  For loop for i in *.tar; do echo working on $i; tar xvzf $i ; done  Reference </description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/common-cli-cheat-sheet/</guid>
-      <description> Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  SSH tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip  Generate table of contents for markdown gh-md-toc README.md  Reference </description>
+      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.</description>
     </item>
     
     <item>

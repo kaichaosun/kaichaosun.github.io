@@ -22,7 +22,7 @@
 
 
 <meta property="og:title" content="Cheat sheet for common used CLI" />
-<meta property="og:description" content=" Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  SSH tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip  Generate table of contents for markdown gh-md-toc README.md  Reference " />
+<meta property="og:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/common-cli-cheat-sheet/" /><meta property="article:published_time" content="2019-01-02T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2019-01-02T00:00:00&#43;00:00"/>
@@ -30,12 +30,12 @@
 
 
 <meta itemprop="name" content="Cheat sheet for common used CLI">
-<meta itemprop="description" content=" Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  SSH tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip  Generate table of contents for markdown gh-md-toc README.md  Reference ">
+<meta itemprop="description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.">
 
 
 <meta itemprop="datePublished" content="2019-01-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="31">
+<meta itemprop="wordCount" content="118">
 
 
 
@@ -43,7 +43,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Cheat sheet for common used CLI"/>
-<meta name="twitter:description" content=" Calculate lines of code in project find . -name &#39;*.scala&#39; | xargs wc -l  SSH tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip  Generate table of contents for markdown gh-md-toc README.md  Reference "/>
+<meta name="twitter:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -85,9 +85,14 @@
 <ul>
 <li>
 <ul>
-<li><a href="#calculate-lines-of-code-in-project">Calculate lines of code in project</a></li>
-<li><a href="#ssh-tunel">SSH tunel</a></li>
+<li><a href="#curl-post-json">Curl Post JSON</a></li>
+<li><a href="#mysql">MySQL</a></li>
+<li><a href="#zip-tar">Zip / tar</a></li>
+<li><a href="#ssh-scp">SSH / scp</a></li>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#journalctl">Journalctl</a></li>
 <li><a href="#generate-table-of-contents-for-markdown">Generate table of contents for markdown</a></li>
+<li><a href="#calculate-lines-of-code-in-project">Calculate lines of code in project</a></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
 </ul>
@@ -97,19 +102,61 @@
     <section id="post-body">
         
 
-<h2 id="calculate-lines-of-code-in-project">Calculate lines of code in project</h2>
+<h2 id="curl-post-json">Curl Post JSON</h2>
 
-<pre><code>find . -name '*.scala' | xargs wc -l
+<pre><code>curl -i -d '{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00+10:00&quot;,&quot;des&quot;: &quot;test&quot;}]' -H &quot;Content-Type: application/json&quot; -X POST https://endpoint
+
+curl -i -d '{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}' -H &quot;Content-Type: application/json&quot; -X POST https://endpoint
 </code></pre>
 
-<h2 id="ssh-tunel">SSH tunel</h2>
+<h2 id="mysql">MySQL</h2>
 
-<pre><code>ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip
+<pre><code>SHOW VARIABLES;
+
+SELECT FROM_UNIXTIME(1510289234);
+
+SELECT NOW();
+
+SELECT UNIX_TIMESTAMP();
+</code></pre>
+
+<h2 id="zip-tar">Zip / tar</h2>
+
+<pre><code>zip filename.zip file1 file2
+</code></pre>
+
+<h2 id="ssh-scp">SSH / scp</h2>
+
+<pre><code>// setup tunel
+ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip
+
+// from local to remote
+scp /filename hostname@ip:~
+
+// from remote to local
+scp -i ~/.ssh/ssh-key root@host:~/hello ./
+</code></pre>
+
+<h2 id="docker">Docker</h2>
+
+<pre><code>// docker download file
+docker cp &lt;containerId&gt;:/file/path/within/container /host/path/target
+</code></pre>
+
+<h2 id="journalctl">Journalctl</h2>
+
+<pre><code>// Display kernal message:
+journalctl -k | grep -i -e memory -e oom
 </code></pre>
 
 <h2 id="generate-table-of-contents-for-markdown">Generate table of contents for markdown</h2>
 
 <pre><code>gh-md-toc README.md
+</code></pre>
+
+<h2 id="calculate-lines-of-code-in-project">Calculate lines of code in project</h2>
+
+<pre><code>find . -name '*.scala' | xargs wc -l
 </code></pre>
 
 <h2 id="reference">Reference</h2>
