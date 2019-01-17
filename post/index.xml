@@ -30,6 +30,16 @@
     </item>
     
     <item>
+      <title>Understand Error Handling in Scala</title>
+      <link>https://whisperd.tech/post/error_handling_in_scala/</link>
+      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/error_handling_in_scala/</guid>
+      <description>What is error Exception model How to handle exception try catch We should avoid using try catch except calling some unsafe or Java oriented API that provided by thirdparty library. Instead of using try catch, it&amp;rsquo;s recommended to use Try which will be explained in another section.
+def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch { case e: Exception =&amp;gt; e.</description>
+    </item>
+    
+    <item>
       <title>Understand Monad in Functional Programming</title>
       <link>https://whisperd.tech/post/understand-monad/</link>
       <pubDate>Sat, 13 Oct 2018 00:00:00 +0000</pubDate>
