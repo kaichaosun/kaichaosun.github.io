@@ -138,7 +138,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
 
 <p><em>Checked excpetions</em> need to be declared in the method that throws it and must be handled by the callers, unless it will fail the compiler.</p>
 
-<pre><code class="language-Java">public FileInputStream(File file) throws FileNotFoundException
+<pre><code class="language-java">public FileInputStream(File file) throws FileNotFoundException
 </code></pre>
 
 <pre><code class="language-java">try {
@@ -164,7 +164,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
 
 <p>As a programming language aimed for functional programming, we should never throw exception in Scala code. It breaks the referential transparency. We have following two functions <code>foo1</code> and <code>foo2</code>.</p>
 
-<pre><code class="language-Scala">def foo1() = if(false) throw new Exception else 2
+<pre><code class="language-scala">def foo1() = if(false) throw new Exception else 2
 
 def foo2() = {
   val a = throw new Exception
