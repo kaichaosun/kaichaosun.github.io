@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 17 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Master Linux</title>
+      <link>https://whisperd.tech/post/master_linux_os/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/master_linux_os/</guid>
+      <description> Install ArchLinux Reference </description>
+    </item>
     
     <item>
       <title>Understand Error Handling in Scala</title>
@@ -17,8 +26,9 @@
       <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/error_handling_in_scala/</guid>
-      <description>What is error Exception model How to handle exception try catch We should avoid using try catch except calling some unsafe or Java oriented API that provided by thirdparty library. Instead of using try catch, it&amp;rsquo;s recommended to use Try which will be explained in another section.
-def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch { case e: Exception =&amp;gt; e.</description>
+      <description>What&amp;rsquo;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
+Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
+ Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from.</description>
     </item>
     
     <item>

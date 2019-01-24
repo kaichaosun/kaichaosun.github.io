@@ -22,8 +22,9 @@
 
 
 <meta property="og:title" content="Understand Error Handling in Scala" />
-<meta property="og:description" content="What is error Exception model How to handle exception try catch We should avoid using try catch except calling some unsafe or Java oriented API that provided by thirdparty library. Instead of using try catch, it&rsquo;s recommended to use Try which will be explained in another section.
-def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch { case e: Exception =&gt; e." />
+<meta property="og:description" content="What&rsquo;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
+Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
+ Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/error_handling_in_scala/" /><meta property="article:published_time" content="2019-01-17T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2019-01-17T00:00:00&#43;00:00"/>
@@ -31,13 +32,14 @@ def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch
 
 
 <meta itemprop="name" content="Understand Error Handling in Scala">
-<meta itemprop="description" content="What is error Exception model How to handle exception try catch We should avoid using try catch except calling some unsafe or Java oriented API that provided by thirdparty library. Instead of using try catch, it&rsquo;s recommended to use Try which will be explained in another section.
-def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch { case e: Exception =&gt; e.">
+<meta itemprop="description" content="What&rsquo;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
+Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
+ Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from.">
 
 
 <meta itemprop="datePublished" content="2019-01-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="358">
+<meta itemprop="wordCount" content="925">
 
 
 
@@ -45,8 +47,9 @@ def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Understand Error Handling in Scala"/>
-<meta name="twitter:description" content="What is error Exception model How to handle exception try catch We should avoid using try catch except calling some unsafe or Java oriented API that provided by thirdparty library. Instead of using try catch, it&rsquo;s recommended to use Try which will be explained in another section.
-def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch { case e: Exception =&gt; e."/>
+<meta name="twitter:description" content="What&rsquo;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
+Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
+ Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -88,8 +91,12 @@ def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch
 <ul>
 <li>
 <ul>
-<li><a href="#what-is-error">What is error</a></li>
-<li><a href="#exception-model">Exception model</a></li>
+<li><a href="#what-s-exception">What&rsquo;s Exception</a>
+<ul>
+<li><a href="#excpetion-hirarchy">Excpetion hirarchy</a></li>
+<li><a href="#checked-vs-unchecked-exceptions">Checked vs unchecked exceptions</a></li>
+<li><a href="#exceptions-in-scala">Exceptions in Scala</a></li>
+</ul></li>
 <li><a href="#how-to-handle-exception">How to handle exception</a>
 <ul>
 <li><a href="#try-catch">try catch</a></li>
@@ -109,9 +116,68 @@ def divide(m: Int, n: Int): Int = m / n val result = try { divide(10, 0) } catch
     <section id="post-body">
         
 
-<h2 id="what-is-error">What is error</h2>
+<h2 id="what-s-exception">What&rsquo;s Exception</h2>
 
-<h2 id="exception-model">Exception model</h2>
+<p><code>Exception</code> are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.</p>
+
+<h3 id="excpetion-hirarchy">Excpetion hirarchy</h3>
+
+<p>Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.</p>
+
+<p><img src="/static/error-handling/exception_hierarchy.png" alt="Exception hierarachy" /></p>
+
+<ul>
+<li><code>Throwable</code> is the root of exception hirarchy.</li>
+<li><code>Exception</code> subclasses represent errors that the program can recover from.</li>
+<li><code>Error</code> subclasses represent errors that a program generally shouldn&rsquo;t expect to catch and recover from, like OutOfMemoryError.</li>
+<li><code>RuntimeException</code> is subclass of <code>Exception</code>, they represent programming errors that a program shouldn&rsquo;t generally expect to occur, but could recover from, like NullPointerException.</li>
+<li>Subclasses of <code>Exception</code>, other than <code>RuntimeException</code>, represent errors that a program could generally meet, like network connection error, file read/write error.</li>
+</ul>
+
+<h3 id="checked-vs-unchecked-exceptions">Checked vs unchecked exceptions</h3>
+
+<p><em>Checked excpetions</em> need to be declared in the method that throws it and must be handled by the callers, unless it will fail the compiler.</p>
+
+<pre><code class="language-Java">public FileInputStream(File file) throws FileNotFoundException
+</code></pre>
+
+<pre><code class="language-java">try {
+  FileInputStream fin = new FileInputStream(file);
+} catch (FileNotFoundException e) {
+  e.getMessage()
+}
+</code></pre>
+
+<p>In Java we can also keep throwing the exception without handling it.</p>
+
+<p>The <code>Error</code>s and <code>RuntimeException</code>s (and their subclasses) are called <em>unchecked exceptions</em>, means that:</p>
+
+<ul>
+<li>they can be thrown &ldquo;at any time&rdquo;</li>
+<li>methods don&rsquo;t need to declare that they can throw such an exception</li>
+<li>callers don&rsquo;t have to handle them explicitly.</li>
+</ul>
+
+<h3 id="exceptions-in-scala">Exceptions in Scala</h3>
+
+<p>All exceptions in Scala are <em>unchecked</em> which means the Scala compiler doesn&rsquo;t require you to declare and handle the exception explicitly.</p>
+
+<p>As a programming language aimed for functional programming, we should never throw exception in Scala code. It breaks the referential transparency. We have following two functions <code>foo1</code> and <code>foo2</code>.</p>
+
+<pre><code class="language-Scala">def foo1() = if(false) throw new Exception else 2
+
+def foo2() = {
+  val a = throw new Exception
+  if (false) a  else 2
+}
+
+foo1() // res0: Int = 2
+foo2() // java.lang.Exception
+</code></pre>
+
+<p>Calling foo1 will terminate normally, calling foo2 will throw an exception.</p>
+
+<p>We should always use a FP way to handle exception in Scala. I have listed a few options below.</p>
 
 <h2 id="how-to-handle-exception">How to handle exception</h2>
 
@@ -182,14 +248,71 @@ val result = for {
 
 <h3 id="validated">Validated</h3>
 
+<p><code>Validated</code> is the data type provided by <a href="https://github.com/typelevel/cats">cats</a>. It&rsquo;s widely used in scenarios that need accumulating error information, like:</p>
+
+<ul>
+<li>input form check</li>
+<li>configuration check</li>
+</ul>
+
+<p>With <code>Validated</code>, user can see all the error information at once, don&rsquo;t need to wait to see next error until fixed previous one. Use <code>Invalid(NonEmptyList(error))</code> when error happens, use <code>Valid(value)</code> when calculation ends properly. <code>NonEmptyList</code> is a <a href="https://typelevel.org/cats/typeclasses/semigroup.html">semigroup</a> defined in cats to fulfill data accumulation.</p>
+
+<pre><code class="language-scala">def divide(m: Int, n: Int): Validated[NonEmptyList[String], Int] =
+  if (n == 0) Invalid(NonEmptyList.of(&quot;one error&quot;))
+  else Valid(m / n)
+
+val result = (divide4(5, 1), divide4(10, 1)).mapN((_, _))
+
+// result is Invalid(NonEmptyList(one error, one error))
+</code></pre>
+
 <h3 id="monad-error">Monad Error</h3>
 
+<pre><code class="language-scala">trait CustomError[A] {
+  def errorFromString(str: String): A
+  def errorFromThrowable(e: Throwable): A
+}
+
+object CustomizeError {
+  implicit val ThrowableCustomError = new CustomError[Throwable] {
+    override def errorFromString(str: String): Throwable =
+      new Exception(str)
+    override def errorFromThrowable(e: Throwable): Throwable =
+      e
+  }
+}
+
+def divide[F[_], E](m: Int, n: Int)(implicit monadError: MonadError[F, E],
+    error: CustomError[E]): F[Int] =
+  if (n == 0) monadError.raiseError(error.errorFromString(&quot;Divide by 0&quot;))
+  else monadError.pure(m / n)
+
+val divideTry = divide[Try, Throwable](10, 0)
+</code></pre>
+
 <h3 id="error-handling-with-io-monad">Error Handling with IO Monad</h3>
+
+<pre><code class="language-scala">case class BusinessException(msg: String) extends Exception(msg)
+
+val boom = IO.raiseError(new BusinessException(&quot;error happens&quot;))
+
+boom.unsafeRunSync()
+
+boom.attempt.map{
+  case Left(BusinessException(msg)) =&gt; &quot;business error&quot;
+  case _ =&gt; &quot;other error&quot;
+}.unsafeRunSync()
+
+val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
+</code></pre>
 
 <h2 id="reference">Reference</h2>
 
 <ul>
 <li><a href="https://nrinaudo.github.io/scala-best-practices/referential_transparency/avoid_throwing_exceptions.html">Scala best practice: do not throw exception</a></li>
+<li><a href="https://typelevel.org/cats/datatypes/validated.html">Cats data type: Validated</a></li>
+<li><a href="https://www.javamex.com/tutorials/exceptions/exceptions_hierarchy.shtml">The exception hierarchy in Java</a></li>
+<li><a href="https://pedrorijo.com/blog/scala-exceptions/">Handling exceptions in Scala</a></li>
 </ul>
 
     </section>
@@ -245,6 +368,10 @@ val result = for {
     
     
         <li>
+            <a href="/post/master_linux_os/">Master Linux<aside class="dates">Jan 24 2019</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/shell-cheat-sheet/">Cheat sheet for Shell programming<aside class="dates">Jan 2 2019</aside></a>
         </li>
     
@@ -278,10 +405,6 @@ val result = for {
     
         <li>
             <a href="/post/callback-promise/">理解 Javascript 的几种异步模式<aside class="dates">Apr 5 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/hackday/">Hackday是一种怎样的体验？<aside class="dates">Jan 7 2017</aside></a>
         </li>
     
 </ul>
