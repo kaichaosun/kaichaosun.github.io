@@ -22,7 +22,9 @@
 
 
 <meta property="og:title" content="Master Linux" />
-<meta property="og:description" content=" Install ArchLinux Reference " />
+<meta property="og:description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+ Check the hash and compare with the hash provided on the site:
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/master_linux_os/" /><meta property="article:published_time" content="2019-01-24T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2019-01-24T00:00:00&#43;00:00"/>
@@ -30,12 +32,14 @@
 
 
 <meta itemprop="name" content="Master Linux">
-<meta itemprop="description" content=" Install ArchLinux Reference ">
+<meta itemprop="description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+ Check the hash and compare with the hash provided on the site:
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.">
 
 
 <meta itemprop="datePublished" content="2019-01-24T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-24T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="3">
+<meta itemprop="wordCount" content="295">
 
 
 
@@ -43,7 +47,9 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Master Linux"/>
-<meta name="twitter:description" content=" Install ArchLinux Reference "/>
+<meta name="twitter:description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+ Check the hash and compare with the hash provided on the site:
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -58,7 +64,7 @@
  		<a href='/about/'>About</a>
   	
 
-	<a href="/resume">Resume</a>
+	
 
 	
 		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
@@ -85,7 +91,19 @@
 <ul>
 <li>
 <ul>
-<li><a href="#install-archlinux">Install ArchLinux</a></li>
+<li><a href="#install-manjaro-linux">Install Manjaro Linux</a>
+<ul>
+<li><a href="#burn-iso-to-usb-stick">Burn ISO to usb stick:</a></li>
+<li><a href="#bios-set">Bios set</a></li>
+<li><a href="#windows-setting">Windows setting</a></li>
+</ul></li>
+<li><a href="#software-install">Software install</a></li>
+<li><a href="#configuration">Configuration</a>
+<ul>
+<li><a href="#turn-capslock-into-control">Turn CapsLock into Control</a></li>
+<li><a href="#create-workspace">Create workspace</a></li>
+<li><a href="#configure-terminal">Configure terminal</a></li>
+</ul></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
 </ul>
@@ -95,9 +113,131 @@
     <section id="post-body">
         
 
-<h2 id="install-archlinux">Install ArchLinux</h2>
+<h2 id="install-manjaro-linux">Install Manjaro Linux</h2>
+
+<h3 id="burn-iso-to-usb-stick">Burn ISO to usb stick:</h3>
+
+<ol>
+<li><p>Download mankato - GNOME <a href="https://manjaro.org/download/gnome/">here</a></p></li>
+
+<li><p>Check the hash and compare with the hash provided on the site:</p></li>
+</ol>
+
+<pre><code class="language-shell">shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso
+</code></pre>
+
+<ol>
+<li>Burn the iso file to USB stick on Linux</li>
+</ol>
+
+<pre><code class="language-shell">diskutil list
+sudo umount /dev/disk2s4
+sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m
+</code></pre>
+
+<pre><code>On windows, use [rufus](https://rufus.ie/) with `dd` mode.
+</code></pre>
+
+<h3 id="bios-set">Bios set</h3>
+
+<ul>
+<li>Insert USB stick</li>
+<li>Restart pc with <code>F2</code> into bios，set <code>secure boot</code> to be disable，F10 save and exit</li>
+<li>Press <code>F12</code> select start using USB.</li>
+</ul>
+
+<h3 id="windows-setting">Windows setting</h3>
+
+<pre><code>In the Control Panel app
+
+Click on System and Security
+Click on Power Options
+Click on Choose what power buttons do
+a. Click on Change settings that are currently unavailable
+b. Uncheck the option Turn on fast startup
+Click on Save Changes
+</code></pre>
+
+<h2 id="software-install">Software install</h2>
+
+<p>Use <code>tweaks</code> to adjust dock icon location and size</p>
+
+<pre><code class="language-shell">sudo pacman -S yay
+
+yay -S shadowsocks-qt5
+
+yay -S google-chrome
+
+yay -S typora
+
+yay -S neofetch
+
+yay -S xorg-xev
+
+sudo pacman -S zsh zsh-completions
+cat /etc/shells
+chsh -s /bin/zsh
+sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+</code></pre>
+
+<h2 id="configuration">Configuration</h2>
+
+<h3 id="turn-capslock-into-control">Turn CapsLock into Control</h3>
+
+<pre><code class="language-shell">xmodmap -pke &gt; ~/.Xmodmap
+</code></pre>
+
+<p>Add in <code>~/.Xmodmap</code>：</p>
+
+<pre><code class="language-shell">clear lock
+clear control
+keycode 66 = Control_L
+add control = Control_L Control_R
+</code></pre>
+
+<p>Activate and restar, add <code>my-xmodmap.desktop</code>  in <code>.config/autostart</code>:</p>
+
+<pre><code class="language-shell">[Desktop Entry]
+Exec=sh -c &quot;xmodmap ~/.Xmodmap&quot;
+Name=my-xmodmap
+Comment=Apply my xmodmap
+Type=Application
+Icon=nautilus`
+</code></pre>
+
+<h3 id="create-workspace">Create workspace</h3>
+
+<pre><code class="language-shell">mkdir ~/workspace
+mkdir ~/workspace/Github/dasheng
+mkdir ~/workspace/Github/other
+</code></pre>
+
+<p>Sync time</p>
+
+<pre><code class="language-shell">sudo pacman -S ntp
+sudo timedatectl set-ntp true
+</code></pre>
+
+<h3 id="configure-terminal">Configure terminal</h3>
+
+<pre><code>Ctrl+W: close tab
+Ctrl+T: new tab
+Ctrl+N: new window
+Alt+Q: close window
+</code></pre>
 
 <h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://forum.manjaro.org/t/create-a-usb-installer-on-mac-os-x-and-install-manjaro-on-dell-precision-5520/21392">Create a USB installer on Mac OS X and install Manjaro</a></li>
+<li><a href="https://forum.manjaro.org/t/wiki-windows-10-manjaro-dual-boot-step-by-step/52668">Wiki: Windows 10 - Manjaro - Dual-boot - Step by Step</a></li>
+<li><a href="https://www.jianshu.com/p/447003e8e482">Manjaro 安装后的一些配置</a></li>
+<li><a href="https://forum.manjaro.org/t/solved-swap-alt-with-ctrl-keep-window-switcher-alt-tab/36091/2">Swap Alt with Ctrl (keep window switcher Alt-Tab)</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/xmodmap">Archlinux: xmodmap</a></li>
+<li><a href="https://bbs.archlinux.org/viewtopic.php?id=235633">nome 3.28 removes the option to display desktop icons</a></li>
+<li><a href="https://forum.manjaro.org/t/how-to-setup-oh-my-zsh-in-manjaro/34519">Setup oh-my-zsh in Manjaro</a></li>
+<li><a href="https://news.ycombinator.com/item?id=16719336">Use 1password in Linux</a></li>
+</ul>
 
     </section>
 </article>
@@ -152,6 +292,10 @@
     
     
         <li>
+            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
@@ -185,10 +329,6 @@
     
         <li>
             <a href="/post/golang-docker-ci/">Golang web 开发<aside class="dates">Jul 5 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/callback-promise/">理解 Javascript 的几种异步模式<aside class="dates">Apr 5 2017</aside></a>
         </li>
     
 </ul>

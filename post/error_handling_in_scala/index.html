@@ -39,7 +39,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
 
 <meta itemprop="datePublished" content="2019-01-17T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="925">
+<meta itemprop="wordCount" content="1133">
 
 
 
@@ -64,7 +64,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
  		<a href='/about/'>About</a>
   	
 
-	<a href="/resume">Resume</a>
+	
 
 	
 		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
@@ -107,6 +107,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
 <li><a href="#monad-error">Monad Error</a></li>
 <li><a href="#error-handling-with-io-monad">Error Handling with IO Monad</a></li>
 </ul></li>
+<li><a href="#summary">Summary</a></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
 </ul>
@@ -268,6 +269,17 @@ val result = (divide4(5, 1), divide4(10, 1)).mapN((_, _))
 
 <h3 id="monad-error">Monad Error</h3>
 
+<p><code>MonadError</code> is a monad that abstracts over error handling monad like Option / Either / Try, which means we can writing business code without concerning about the specific error handling monad. In this way, our code becomes more generic and compact.</p>
+
+<ul>
+<li><code>pure</code>: create a value with a successful result wrapped by the error handling monad.</li>
+<li><code>raiseError</code> –  create a value which represents an error.</li>
+<li><code>fromEither / fromTry / fromOption / fromValidated</code> – convert a specific error handling monad into the related MonadError</li>
+<li><code>handleError / handleErrorWith / recover / recoverWith</code> – handle the error scenario and return a successful value.</li>
+</ul>
+
+<p>One example looks like following code:</p>
+
 <pre><code class="language-scala">trait CustomError[A] {
   def errorFromString(str: String): A
   def errorFromThrowable(e: Throwable): A
@@ -282,15 +294,22 @@ object CustomizeError {
   }
 }
 
-def divide[F[_], E](m: Int, n: Int)(implicit monadError: MonadError[F, E],
-    error: CustomError[E]): F[Int] =
+def divide[F[_], E](m: Int, n: Int)(implicit monadError: MonadError[F, E], error: CustomError[E]): F[Int] =
   if (n == 0) monadError.raiseError(error.errorFromString(&quot;Divide by 0&quot;))
   else monadError.pure(m / n)
 
+import cats.implicits._
 val divideTry = divide[Try, Throwable](10, 0)
 </code></pre>
 
 <h3 id="error-handling-with-io-monad">Error Handling with IO Monad</h3>
+
+<p><code>IO</code> monad is commonly used while dealing with side effects provided by <a href="https://github.com/typelevel/cats-effect">cats-effect</a>. There is an instance of <code>MonadError[IO, Throwable]</code> in cats-effect, all the error handling  is done throught it. The convenient function to handle error scenario.</p>
+
+<ul>
+<li><code>raiseError</code>: constructs an <code>IO</code> which wraps up a Throwable.</li>
+<li><code>attemp</code>: sequence the convertion between exception in IO and Either.</li>
+</ul>
 
 <pre><code class="language-scala">case class BusinessException(msg: String) extends Exception(msg)
 
@@ -306,6 +325,10 @@ boom.attempt.map{
 val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
 </code></pre>
 
+<h2 id="summary">Summary</h2>
+
+<p>Error handling is one of the most important field in programming. FP provides a more graceful way to do it comparing with OO. Review this post and contact me if you got any thoughts.</p>
+
 <h2 id="reference">Reference</h2>
 
 <ul>
@@ -313,6 +336,8 @@ val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
 <li><a href="https://typelevel.org/cats/datatypes/validated.html">Cats data type: Validated</a></li>
 <li><a href="https://www.javamex.com/tutorials/exceptions/exceptions_hierarchy.shtml">The exception hierarchy in Java</a></li>
 <li><a href="https://pedrorijo.com/blog/scala-exceptions/">Handling exceptions in Scala</a></li>
+<li><a href="https://www.codacy.com/blog/monad-error-for-the-rest-of-us/">Monad Error for the rest of us</a></li>
+<li><a href="https://typelevel.org/cats-effect/datatypes/io.html">Cats Effect: IO</a></li>
 </ul>
 
     </section>
@@ -368,6 +393,10 @@ val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
     
     
         <li>
+            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/master_linux_os/">Master Linux<aside class="dates">Jan 24 2019</aside></a>
         </li>
     
@@ -401,10 +430,6 @@ val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
     
         <li>
             <a href="/post/golang-docker-ci/">Golang web 开发<aside class="dates">Jul 5 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/callback-promise/">理解 Javascript 的几种异步模式<aside class="dates">Apr 5 2017</aside></a>
         </li>
     
 </ul>
