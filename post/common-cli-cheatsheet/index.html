@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Kaichao Sun">
+<meta name="description" content="dasheng&#39;s blog">
+<meta name="generator" content="Hugo 0.49.2" />
+<title>Cheatsheet for common used CLI</title>
+<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
+<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
+<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
+
+
+<meta property="og:title" content="Cheatsheet for common used CLI" />
+<meta property="og:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://whisperd.tech/post/common-cli-cheatsheet/" /><meta property="article:published_time" content="2019-01-02T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-01-02T00:00:00&#43;00:00"/>
+
+
+
+<meta itemprop="name" content="Cheatsheet for common used CLI">
+<meta itemprop="description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.">
+
+
+<meta itemprop="datePublished" content="2019-01-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-01-02T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="180">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cheatsheet for common used CLI"/>
+<meta name="twitter:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/."/>
+<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+
+	
+		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+
+<article class="post">
+    <header>
+        <h1>Cheatsheet for common used CLI</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 2, 2019
+        <br>
+        
+        </h2>
+    </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#curl-post-json">Curl Post JSON</a></li>
+<li><a href="#database">Database</a>
+<ul>
+<li><a href="#mysql">MySQL</a></li>
+<li><a href="#mongodb">MongoDB</a></li>
+</ul></li>
+<li><a href="#zip-tar">Zip / tar</a></li>
+<li><a href="#ssh-scp">SSH / scp</a></li>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#journalctl">Journalctl</a></li>
+<li><a href="#generate-table-of-contents-for-markdown">Generate table of contents for markdown</a></li>
+<li><a href="#calculate-lines-of-code-in-project">Calculate lines of code in project</a></li>
+<li><a href="#docker-override-entrypoint">Docker override entrypoint</a></li>
+<li><a href="#git">Git</a></li>
+<li><a href="#nodejs-npm-mirror">Nodejs npm mirror</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
+    <section id="post-body">
+        
+
+<h2 id="curl-post-json">Curl Post JSON</h2>
+
+<pre><code class="language-shell">curl -i -d '{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00+10:00&quot;,&quot;des&quot;: &quot;test&quot;}]' -H &quot;Content-Type: application/json&quot; -X POST https://endpoint
+
+curl -i -d '{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}' -H &quot;Content-Type: application/json&quot; -X POST https://endpoint
+</code></pre>
+
+<h2 id="database">Database</h2>
+
+<h3 id="mysql">MySQL</h3>
+
+<pre><code class="language-shell">SHOW VARIABLES;
+
+SELECT FROM_UNIXTIME(1510289234);
+
+SELECT NOW();
+
+SELECT UNIX_TIMESTAMP();
+</code></pre>
+
+<h3 id="mongodb">MongoDB</h3>
+
+<pre><code class="language-shell">mongod --dbpath ~/data/mongodb
+</code></pre>
+
+<h2 id="zip-tar">Zip / tar</h2>
+
+<pre><code>zip filename.zip file1 file2
+</code></pre>
+
+<h2 id="ssh-scp">SSH / scp</h2>
+
+<pre><code>// setup tunel
+ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip
+
+// from local to remote
+scp /filename hostname@ip:~
+
+// from remote to local
+scp -i ~/.ssh/ssh-key root@host:~/hello ./
+</code></pre>
+
+<h2 id="docker">Docker</h2>
+
+<pre><code>// docker download file
+docker cp &lt;containerId&gt;:/file/path/within/container /host/path/target
+</code></pre>
+
+<h2 id="journalctl">Journalctl</h2>
+
+<pre><code>// Display kernal message:
+journalctl -k | grep -i -e memory -e oom
+</code></pre>
+
+<h2 id="generate-table-of-contents-for-markdown">Generate table of contents for markdown</h2>
+
+<pre><code>gh-md-toc README.md
+</code></pre>
+
+<h2 id="calculate-lines-of-code-in-project">Calculate lines of code in project</h2>
+
+<pre><code>find . -name '*.scala' | xargs wc -l
+</code></pre>
+
+<h2 id="docker-override-entrypoint">Docker override entrypoint</h2>
+
+<pre><code>docker run -it --entrypoint /usr/bin/redis-cli example/redis
+</code></pre>
+
+<h2 id="git">Git</h2>
+
+<p><strong>Reset local branch after force push:</strong></p>
+
+<pre><code class="language-shell">git reset origin/master --hard
+</code></pre>
+
+<p><strong>Rebase to certain commit, like change commit msg:</strong></p>
+
+<pre><code class="language-shell">git rebase -i commit-id // p to pick, r to change msg
+</code></pre>
+
+<p>** Delete branch with illegal name:**</p>
+
+<pre><code class="language-shell">git branch -D -- --track
+</code></pre>
+
+<h2 id="nodejs-npm-mirror">Nodejs npm mirror</h2>
+
+<pre><code>npm config set registry=http://registry.npm.taobao.org
+</code></pre>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/SunWillsuna">
+    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
+    <div>
+        <span class="dark">Kaichao Sun</span>
+        <span>Mark it down</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fcommon-cli-cheatsheet%2f - Cheatsheet%20for%20common%20used%20CLI by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell programming<aside class="dates">Mar 30 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/master_linux_os/">The tutorial of Manjaro Linux usage<aside class="dates">Mar 3 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/understand-monad/">Understand Monad in Functional Programming<aside class="dates">Oct 13 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/solidity-basics/">(WIP) Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/kubernetes-basics/">Kubernetes basics<aside class="dates">Jun 21 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/how-to-setup-iri/">如何部署 IOTA 的 IRI headless 全节点<aside class="dates">Dec 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/go-channel/">理解Golang并发编程<aside class="dates">Jul 29 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/dashengSun">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/SunWillsuna">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2019 Kaichao Sun
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://whisperd.tech/js/main.js"></script>
+<script src="https://whisperd.tech/js/highlight.js"></script>
+<script src="https://whisperd.tech/js/fix-toc.js"></script>
+<script src="https://whisperd.tech/js/gulugulu.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2513693433628672",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-128168145-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+</body>
+</html>

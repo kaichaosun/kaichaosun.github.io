@@ -7,7 +7,7 @@
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
 <meta name="generator" content="Hugo 0.49.2" />
-<title>Master Linux</title>
+<title>The tutorial of Manjaro Linux usage</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
 <link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
@@ -21,35 +21,44 @@
 <link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
 
 
-<meta property="og:title" content="Master Linux" />
-<meta property="og:description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+<meta property="og:title" content="The tutorial of Manjaro Linux usage" />
+<meta property="og:description" content="[TOC]
+Install Manjaro Linux Burn image to usb stick: Steps:
+ Download mankato - GNOME here
  Check the hash and compare with the hash provided on the site:
-  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB." />
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use rufus with dd mode.
+Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/master_linux_os/" /><meta property="article:published_time" content="2019-01-24T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-01-24T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://whisperd.tech/post/master_linux_os/" /><meta property="article:published_time" content="2019-03-03T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-03T00:00:00&#43;00:00"/>
 
 
 
-<meta itemprop="name" content="Master Linux">
-<meta itemprop="description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+<meta itemprop="name" content="The tutorial of Manjaro Linux usage">
+<meta itemprop="description" content="[TOC]
+Install Manjaro Linux Burn image to usb stick: Steps:
+ Download mankato - GNOME here
  Check the hash and compare with the hash provided on the site:
-  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.">
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use rufus with dd mode.
+Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.">
 
 
-<meta itemprop="datePublished" content="2019-01-24T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-01-24T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="295">
+<meta itemprop="datePublished" content="2019-03-03T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-03T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="551">
 
 
 
 <meta itemprop="keywords" content="" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Master Linux"/>
-<meta name="twitter:description" content="Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
+<meta name="twitter:title" content="The tutorial of Manjaro Linux usage"/>
+<meta name="twitter:description" content="[TOC]
+Install Manjaro Linux Burn image to usb stick: Steps:
+ Download mankato - GNOME here
  Check the hash and compare with the hash provided on the site:
-  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB."/>
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use rufus with dd mode.
+Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -77,10 +86,10 @@
 
 <article class="post">
     <header>
-        <h1>Master Linux</h1>
+        <h1>The tutorial of Manjaro Linux usage</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
-        January 24, 2019
+        March 3, 2019
         <br>
         
         </h2>
@@ -93,16 +102,41 @@
 <ul>
 <li><a href="#install-manjaro-linux">Install Manjaro Linux</a>
 <ul>
-<li><a href="#burn-iso-to-usb-stick">Burn ISO to usb stick:</a></li>
+<li><a href="#burn-image-to-usb-stick">Burn image to usb stick:</a></li>
 <li><a href="#bios-set">Bios set</a></li>
 <li><a href="#windows-setting">Windows setting</a></li>
 </ul></li>
-<li><a href="#software-install">Software install</a></li>
 <li><a href="#configuration">Configuration</a>
 <ul>
-<li><a href="#turn-capslock-into-control">Turn CapsLock into Control</a></li>
+<li><a href="#gnome-tweak">Gnome Tweak</a></li>
+<li><a href="#map-capslock-into-control">Map CapsLock into Control</a></li>
 <li><a href="#create-workspace">Create workspace</a></li>
+<li><a href="#sync-time">Sync time</a></li>
 <li><a href="#configure-terminal">Configure terminal</a></li>
+<li><a href="#git-config">Git config</a></li>
+<li><a href="#ssh-config">SSH config</a></li>
+</ul></li>
+<li><a href="#software-installation">Software installation</a>
+<ul>
+<li><a href="#docker">Docker</a></li>
+<li><a href="#chrome-extensions">Chrome extensions:</a></li>
+<li><a href="#gnome-desktop-icon">Gnome desktop icon</a></li>
+<li><a href="#kill-process">Kill process:</a></li>
+<li><a href="#install-z">install z</a></li>
+<li><a href="#install-email-client">Install Email client</a></li>
+<li><a href="#update-mirror">Update mirror</a></li>
+<li><a href="#install-java">Install java</a></li>
+<li><a href="#install-alacritty">Install Alacritty</a></li>
+<li><a href="#install-googlepinyin">Install googlepinyin</a></li>
+<li><a href="#install-password-manager">Install password manager:</a></li>
+<li><a href="#shadowsocks-in-terminal">Shadowsocks in terminal:</a></li>
+<li><a href="#hacker-news-cli">Hacker news cli:</a></li>
+<li><a href="#use-openconnect">Use openconnect:</a></li>
+<li><a href="#网易云音乐">网易云音乐:</a></li>
+<li><a href="#install-tmux">Install tmux:</a></li>
+<li><a href="#sbt-usage">Sbt usage:</a></li>
+<li><a href="#intellij-vim-plugin">Intellij Vim plugin</a></li>
+<li><a href="#wunderlist">Wunderlist</a></li>
 </ul></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
@@ -113,30 +147,33 @@
     <section id="post-body">
         
 
+<p>[TOC]</p>
+
 <h2 id="install-manjaro-linux">Install Manjaro Linux</h2>
 
-<h3 id="burn-iso-to-usb-stick">Burn ISO to usb stick:</h3>
+<h3 id="burn-image-to-usb-stick">Burn image to usb stick:</h3>
 
-<ol>
+<p>Steps:</p>
+
+<ul>
 <li><p>Download mankato - GNOME <a href="https://manjaro.org/download/gnome/">here</a></p></li>
 
 <li><p>Check the hash and compare with the hash provided on the site:</p></li>
-</ol>
+</ul>
 
 <pre><code class="language-shell">shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso
 </code></pre>
 
-<ol>
+<ul>
 <li>Burn the iso file to USB stick on Linux</li>
-</ol>
+</ul>
 
 <pre><code class="language-shell">diskutil list
 sudo umount /dev/disk2s4
 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m
 </code></pre>
 
-<pre><code>On windows, use [rufus](https://rufus.ie/) with `dd` mode.
-</code></pre>
+<p>On windows, use <a href="https://rufus.ie/">rufus</a> with <code>dd</code> mode.</p>
 
 <h3 id="bios-set">Bios set</h3>
 
@@ -158,31 +195,13 @@ b. Uncheck the option Turn on fast startup
 Click on Save Changes
 </code></pre>
 
-<h2 id="software-install">Software install</h2>
+<h2 id="configuration">Configuration</h2>
+
+<h3 id="gnome-tweak">Gnome Tweak</h3>
 
 <p>Use <code>tweaks</code> to adjust dock icon location and size</p>
 
-<pre><code class="language-shell">sudo pacman -S yay
-
-yay -S shadowsocks-qt5
-
-yay -S google-chrome
-
-yay -S typora
-
-yay -S neofetch
-
-yay -S xorg-xev
-
-sudo pacman -S zsh zsh-completions
-cat /etc/shells
-chsh -s /bin/zsh
-sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
-</code></pre>
-
-<h2 id="configuration">Configuration</h2>
-
-<h3 id="turn-capslock-into-control">Turn CapsLock into Control</h3>
+<h3 id="map-capslock-into-control">Map CapsLock into Control</h3>
 
 <pre><code class="language-shell">xmodmap -pke &gt; ~/.Xmodmap
 </code></pre>
@@ -212,7 +231,7 @@ mkdir ~/workspace/Github/dasheng
 mkdir ~/workspace/Github/other
 </code></pre>
 
-<p>Sync time</p>
+<h3 id="sync-time">Sync time</h3>
 
 <pre><code class="language-shell">sudo pacman -S ntp
 sudo timedatectl set-ntp true
@@ -220,10 +239,206 @@ sudo timedatectl set-ntp true
 
 <h3 id="configure-terminal">Configure terminal</h3>
 
-<pre><code>Ctrl+W: close tab
+<p>Ctrl+W: close tab
 Ctrl+T: new tab
 Ctrl+N: new window
-Alt+Q: close window
+Alt+Q: close window</p>
+
+<h3 id="git-config">Git config</h3>
+
+<pre><code class="language-shell">git config --global user.name &quot;dasheng&quot;
+git config --global user.email &quot;kaichaosuna@gmail.com&quot;
+</code></pre>
+
+<h3 id="ssh-config">SSH config</h3>
+
+<pre><code class="language-shell">ssh-keygen -t rsa -C &quot;kaichaosuna@gmail.com&quot;
+</code></pre>
+
+<h2 id="software-installation">Software installation</h2>
+
+<p>Package manager - yay</p>
+
+<pre><code class="language-shell">sudo pacman -S yay
+
+yay -S shadowsocks-qt5
+
+yay -S google-chrome
+
+yay -S typora
+
+yay -S neofetch
+
+yay -S xorg-xev
+
+sudo pacman -S zsh zsh-completions
+cat /etc/shells
+chsh -s /bin/zsh
+sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)&quot;
+</code></pre>
+
+<p>yay usage:</p>
+
+<pre><code class="language-shell">yay -Syu  # Update all packages from AUR and official repo
+yay -Yc # Remove unwanted dependencies
+</code></pre>
+
+<h3 id="docker">Docker</h3>
+
+<pre><code class="language-shell">sudo pacman -S docker docker-compose
+
+sudo systemctl start docker
+sudo systemctl enable docker
+
+sudo usermod -aG docker $USER
+</code></pre>
+
+<p>vim /etc/docker/daemon.json</p>
+
+<pre><code class="language-json">{
+  &quot;registry-mirrors&quot;: [&quot;https://registry.docker-cn.com&quot;]
+}
+</code></pre>
+
+<h3 id="chrome-extensions">Chrome extensions:</h3>
+
+<ul>
+<li>Vimium</li>
+<li>Keepin&rsquo; Tabs – tabs manager</li>
+<li>1password X</li>
+</ul>
+
+<p>Shortcuts:</p>
+
+<p>Ctrl + Shift + T: reopen closed tabs</p>
+
+<h3 id="gnome-desktop-icon">Gnome desktop icon</h3>
+
+<p>Gnome 3.28 desktop icon issue, solved with install nemo:</p>
+
+<pre><code class="language-shell">yay -S nemo
+</code></pre>
+
+<p>Add new autostart script in ./config/autostart</p>
+
+<pre><code>[Desktop Entry]
+Type=Application
+Name=Desktop Icons
+Exec=nemo-desktop
+OnlyShowIn=GNOME;
+NoDisplay=true
+X-GNOME-Autostart-Phase=Desktop
+X-GNOME-Autostart-Notify=true
+X-GNOME-AutoRestart=true
+X-GNOME-Provides=filemanager
+</code></pre>
+
+<h3 id="kill-process">Kill process:</h3>
+
+<p>ctrl+z =&gt; kill %1</p>
+
+<h3 id="install-z">install z</h3>
+
+<pre><code class="language-shell">yay -S z-git
+</code></pre>
+
+<h3 id="install-email-client">Install Email client</h3>
+
+<pre><code class="language-shell">yay -S mailspring
+</code></pre>
+
+<h3 id="update-mirror">Update mirror</h3>
+
+<pre><code class="language-shell">pacman-mirrors --country China
+</code></pre>
+
+<h3 id="install-java">Install java</h3>
+
+<pre><code class="language-shell">yay -S jdk8
+archlinux-java status
+sudo archlinux-java set jdk-8
+</code></pre>
+
+<h3 id="install-alacritty">Install Alacritty</h3>
+
+<p><a href="https://arslan.io/2018/02/05/gpu-accelerated-terminal-alacritty/">https://arslan.io/2018/02/05/gpu-accelerated-terminal-alacritty/</a></p>
+
+<h3 id="install-googlepinyin">Install googlepinyin</h3>
+
+<pre><code>yay -S fcitx fcitx-googlepinyin fcitx-im fcitx-configtool
+</code></pre>
+
+<h3 id="install-password-manager">Install password manager:</h3>
+
+<pre><code class="language-shell">yay -S bitwarden-bin
+yay -S bitwarden-cli
+</code></pre>
+
+<h3 id="shadowsocks-in-terminal">Shadowsocks in terminal:</h3>
+
+<pre><code class="language-shell">export ALL_PROXY=socks5://127.0.0.1:1080
+unset ALL_PROXY
+</code></pre>
+
+<h3 id="hacker-news-cli">Hacker news cli:</h3>
+
+<pre><code class="language-shell">yay -S base-devel
+
+yay -S haxor-news
+
+yay -S python-pip
+
+sudo pip install 'prompt-toolkit==1.0.15'
+
+sudo pip install 'click==6.7'
+
+haxor-news
+</code></pre>
+
+<h3 id="use-openconnect">Use openconnect:</h3>
+
+<pre><code class="language-shell">sudo openconnect --user=username --authgroup=group vpnhost
+</code></pre>
+
+<h3 id="网易云音乐">网易云音乐:</h3>
+
+<pre><code class="language-shell">yay -S netease-cloud-music
+</code></pre>
+
+<h3 id="install-tmux">Install tmux:</h3>
+
+<pre><code class="language-shell">yay -S tmux
+ln -s ~/Workspace/Github/dasheng/init.conf/tmux/.tmux.conf ~/.tmux.conf
+</code></pre>
+
+<h3 id="sbt-usage">Sbt usage:</h3>
+
+<p>Proxy repository:</p>
+
+<p>add ~/.sbt/reposities</p>
+
+<pre><code class="language-shell">[repositories]
+  local
+  aliyun: http://maven.aliyun.com/nexus/content/groups/public/
+  aliyun-ivy: http://maven.aliyun.com/nexus/content/groups/public/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+  central: http://repo1.maven.org/maven2/
+</code></pre>
+
+<p>then run</p>
+
+<pre><code class="language-shell">sbt -Dsbt.override.build.repos=true
+</code></pre>
+
+<h3 id="intellij-vim-plugin">Intellij Vim plugin</h3>
+
+<p>add content in ~/.ideavimrc</p>
+
+<pre><code class="language-shell">source ~/.vimrc
+</code></pre>
+
+<h3 id="wunderlist">Wunderlist</h3>
+
+<pre><code class="language-shell">yay -S wunderline
 </code></pre>
 
 <h2 id="reference">Reference</h2>
@@ -251,7 +466,7 @@ Alt+Q: close window
     </div>
     </a>
     <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fmaster_linux_os%2f - Master%20Linux by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fmaster_linux_os%2f - The%20tutorial%20of%20Manjaro%20Linux%20usage by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
@@ -292,7 +507,15 @@ Alt+Q: close window
     
     
         <li>
+            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell programming<aside class="dates">Mar 30 2019</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
         <li>
@@ -300,11 +523,7 @@ Alt+Q: close window
         </li>
     
         <li>
-            <a href="/post/shell-cheat-sheet/">Cheat sheet for Shell programming<aside class="dates">Jan 2 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/common-cli-cheat-sheet/">Cheat sheet for common used CLI<aside class="dates">Jan 2 2019</aside></a>
+            <a href="/post/common-cli-cheatsheet/">Cheatsheet for common used CLI<aside class="dates">Jan 2 2019</aside></a>
         </li>
     
         <li>
@@ -312,7 +531,7 @@ Alt+Q: close window
         </li>
     
         <li>
-            <a href="/post/solidity-basics/">Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
+            <a href="/post/solidity-basics/">(WIP) Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
         </li>
     
         <li>
@@ -325,10 +544,6 @@ Alt+Q: close window
     
         <li>
             <a href="/post/go-channel/">理解Golang并发编程<aside class="dates">Jul 29 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/golang-docker-ci/">Golang web 开发<aside class="dates">Jul 5 2017</aside></a>
         </li>
     
 </ul>

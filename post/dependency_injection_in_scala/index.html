@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Kaichao Sun">
+<meta name="description" content="dasheng&#39;s blog">
+<meta name="generator" content="Hugo 0.49.2" />
+<title>(WIP) Dependency Injection in Scala</title>
+<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
+<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
+<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
+
+
+<meta property="og:title" content="(WIP) Dependency Injection in Scala" />
+<meta property="og:description" content="What&rsquo;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
+Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.
+Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://whisperd.tech/post/dependency_injection_in_scala/" /><meta property="article:published_time" content="2019-01-17T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-01-17T00:00:00&#43;00:00"/>
+
+
+
+<meta itemprop="name" content="(WIP) Dependency Injection in Scala">
+<meta itemprop="description" content="What&rsquo;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
+Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.
+Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:">
+
+
+<meta itemprop="datePublished" content="2019-01-17T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-01-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="452">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="(WIP) Dependency Injection in Scala"/>
+<meta name="twitter:description" content="What&rsquo;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
+Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.
+Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:"/>
+<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+
+	
+		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+
+<article class="post">
+    <header>
+        <h1>(WIP) Dependency Injection in Scala</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 17, 2019
+        <br>
+        
+        </h2>
+    </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#what-s-dependency-injection">What&rsquo;s Dependency Injection</a></li>
+<li><a href="#how-to-do-di-in-scala">How to do DI in Scala</a>
+<ul>
+<li><a href="#cake-pattern">Cake pattern</a></li>
+<li><a href="#reader-monad">Reader monad</a></li>
+<li><a href="#macwire">Macwire</a></li>
+<li><a href="#guice">Guice</a></li>
+<li><a href="#tagless-final">Tagless final</a></li>
+<li><a href="#eff-monad">Eff monad</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
+    <section id="post-body">
+        
+
+<h2 id="what-s-dependency-injection">What&rsquo;s Dependency Injection</h2>
+
+<p>Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.</p>
+
+<p>Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.</p>
+
+<p>Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:</p>
+
+<ul>
+<li>construct the provider in consumer.</li>
+<li>inject the provider to consumer when calling the consumer.</li>
+</ul>
+
+<p>Injection is better since it help us to do split concern (and conform with SRP). As a result, it makes our code easier to understand, more testable and more reusable.</p>
+
+<p>Different programming language have different way or library to do DI, but the idea behind it is nearly same.</p>
+
+<h2 id="how-to-do-di-in-scala">How to do DI in Scala</h2>
+
+<p>Functional programming is all about make function pure, and pure function has two rules:</p>
+
+<ul>
+<li>Output only depend on input</li>
+<li>No side effect</li>
+</ul>
+
+<p>That means we prefer to use DI and should never use global state. I have listed a few common ways to do DI in Scala.</p>
+
+<h3 id="cake-pattern">Cake pattern</h3>
+
+<p>There is a saying that the cake pattern is dead. You can skip this section without hesitation. If you are still interested in this feature, keep reading from here.</p>
+
+<p>First let&rsquo;s introduce <em>Self-type</em> identifier <code>self: AnotherTrait =&gt;</code> at first line of class or trait definition.</p>
+
+<pre><code class="language-scala">trait A {
+  def doAStuff = &quot;in A&quot;
+}
+
+trait B {
+  self: A =&gt;
+  def doBStuff = s&quot;in B, ${doAStuff}&quot;
+}
+</code></pre>
+
+<p>It means that you can mixed in the trait B only if you mixed in trait A first. <code>self</code> is just an alias for <code>this</code> keyword, using <code>this</code> will cause <a href="https://stackoverflow.com/questions/4017357/difference-between-this-and-self-in-self-type-annotations/4018995#4018995">issue</a> when access the outer scope from inner class.</p>
+
+<pre><code class="language-scala">case class AppConfig(host: String)
+
+trait Config {
+  def get: AppConfig
+}
+
+class Service {
+  self: Config =&gt;
+  def run = println(s&quot;config: $get&quot;)
+}
+
+val service = new Service with Config {
+  def get: AppConfig = AppConfig(&quot;http://example.com&quot;)
+}
+
+service.run  // config: AppConfig(http://example.com)
+</code></pre>
+
+<p>In above code, we need to give implementation for each injected trait when instantiate the <code>Service</code> class or trait. Here is a more practical way to do it.</p>
+
+<pre><code class="language-scala">trait ConfigComponent {
+  val config: Config
+  
+  class Config {
+    def get: AppConfig = AppConfig(&quot;http://example.com&quot;)
+  }
+}
+
+class Service {
+  self: ConfigComponent =&gt;
+  def run = println(s&quot;config: ${config.get}&quot;)
+}
+
+val service = new Service with ConfigComponent {
+  val config = new Config
+}
+
+service.run  // config: AppConfig(http://example.com)
+</code></pre>
+
+<p>If there is multiple dependencies, you can simply use <code>with</code> between the traits.</p>
+
+<h3 id="reader-monad">Reader monad</h3>
+
+<h3 id="macwire">Macwire</h3>
+
+<h3 id="guice">Guice</h3>
+
+<h3 id="tagless-final">Tagless final</h3>
+
+<h3 id="eff-monad">Eff monad</h3>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><a href="https://github.com/adamw/macwire">macwire</a></li>
+<li><a href="http://di-in-scala.github.io/">DI in Scala guide</a></li>
+<li><a href="https://mikulskibartosz.name/the-cake-pattern-is-a-lie-2fe1cfd7dea9">The cake pattern is a lie</a></li>
+<li><a href="https://docs.scala-lang.org/tour/self-types.html">Scala: Self-type</a></li>
+<li><a href="http://enear.github.io/2018/10/08/self-arrow/">Disambiguating &lsquo;this&rsquo; in Scala</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/SunWillsuna">
+    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
+    <div>
+        <span class="dark">Kaichao Sun</span>
+        <span>Mark it down</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fdependency_injection_in_scala%2f - %28WIP%29%20Dependency%20Injection%20in%20Scala by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell programming<aside class="dates">Mar 30 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/master_linux_os/">The tutorial of Manjaro Linux usage<aside class="dates">Mar 3 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/common-cli-cheatsheet/">Cheatsheet for common used CLI<aside class="dates">Jan 2 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/understand-monad/">Understand Monad in Functional Programming<aside class="dates">Oct 13 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/solidity-basics/">(WIP) Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/kubernetes-basics/">Kubernetes basics<aside class="dates">Jun 21 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/how-to-setup-iri/">如何部署 IOTA 的 IRI headless 全节点<aside class="dates">Dec 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/go-channel/">理解Golang并发编程<aside class="dates">Jul 29 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/dashengSun">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/SunWillsuna">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2019 Kaichao Sun
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://whisperd.tech/js/main.js"></script>
+<script src="https://whisperd.tech/js/highlight.js"></script>
+<script src="https://whisperd.tech/js/fix-toc.js"></script>
+<script src="https://whisperd.tech/js/gulugulu.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2513693433628672",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-128168145-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+</body>
+</html>

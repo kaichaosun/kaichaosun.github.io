@@ -6,10 +6,33 @@
     <description>Recent content in Posts on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 Mar 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Cheatsheet for Shell programming</title>
+      <link>https://whisperd.tech/post/shell-cheatsheet/</link>
+      <pubDate>Sat, 30 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/shell-cheatsheet/</guid>
+      <description>Variables NAME=&amp;quot;John&amp;quot; echo $NAME echo &amp;quot;$NAME&amp;quot; echo &amp;quot;${NAME}!&amp;quot;  String NAME=&amp;quot;John&amp;quot; echo &amp;quot;Hi $NAME&amp;quot; #=&amp;gt; Hi John echo &#39;Hi $NAME&#39; #=&amp;gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&amp;quot;Apple&amp;quot; Fruits[1]=&amp;quot;Banana&amp;quot; Fruits[2]=&amp;quot;Orange&amp;quot;  And / Or git commit &amp;amp;&amp;amp; git push git commit || echo &amp;quot;Commit failed&amp;quot;  Function get_name() { echo &amp;quot;John&amp;quot; } echo &amp;quot;You are $(get_name)&amp;quot; myfunc() { echo &amp;quot;hello $1&amp;quot; } # Same as above (alternate syntax) function myfunc() { echo &amp;quot;hello $1&amp;quot; } myfunc &amp;quot;John&amp;quot;  If else if [[ -z ${APP_ENV} ]]; then echo &amp;quot;The APP_ENV should be set to prod or staging, got: $0&amp;quot; exit -1 fi if [[ -z &amp;quot;$string&amp;quot; ]]; then echo &amp;quot;String is empty&amp;quot; elif [[ -n &amp;quot;$string&amp;quot; ]]; then echo &amp;quot;String is not empty&amp;quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !</description>
+    </item>
+    
+    <item>
+      <title>The tutorial of Manjaro Linux usage</title>
+      <link>https://whisperd.tech/post/master_linux_os/</link>
+      <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/master_linux_os/</guid>
+      <description>[TOC]
+Install Manjaro Linux Burn image to usb stick: Steps:
+ Download mankato - GNOME here
+ Check the hash and compare with the hash provided on the site:
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use rufus with dd mode.
+Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.</description>
+    </item>
     
     <item>
       <title>老宅记忆</title>
@@ -31,14 +54,14 @@
     </item>
     
     <item>
-      <title>Master Linux</title>
-      <link>https://whisperd.tech/post/master_linux_os/</link>
-      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      <title>(WIP) Dependency Injection in Scala</title>
+      <link>https://whisperd.tech/post/dependency_injection_in_scala/</link>
+      <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://whisperd.tech/post/master_linux_os/</guid>
-      <description>Install Manjaro Linux Burn ISO to usb stick:  Download mankato - GNOME here
- Check the hash and compare with the hash provided on the site:
-  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use [rufus](https://rufus.ie/) with `dd` mode.  Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.</description>
+      <guid>https://whisperd.tech/post/dependency_injection_in_scala/</guid>
+      <description>What&amp;rsquo;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
+Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.
+Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:</description>
     </item>
     
     <item>
@@ -53,21 +76,12 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
     </item>
     
     <item>
-      <title>Cheat sheet for Shell programming</title>
-      <link>https://whisperd.tech/post/shell-cheat-sheet/</link>
+      <title>Cheatsheet for common used CLI</title>
+      <link>https://whisperd.tech/post/common-cli-cheatsheet/</link>
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://whisperd.tech/post/shell-cheat-sheet/</guid>
-      <description> If else if [[ -z ${APP_ENV} ]]; then echo &amp;quot;The APP_ENV should be set to prod or staging, got: $0&amp;quot; exit -1 fi  For loop for i in *.tar; do echo working on $i; tar xvzf $i ; done  Reference </description>
-    </item>
-    
-    <item>
-      <title>Cheat sheet for common used CLI</title>
-      <link>https://whisperd.tech/post/common-cli-cheat-sheet/</link>
-      <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://whisperd.tech/post/common-cli-cheat-sheet/</guid>
-      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.</description>
+      <guid>https://whisperd.tech/post/common-cli-cheatsheet/</guid>
+      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.</description>
     </item>
     
     <item>
@@ -81,7 +95,7 @@ If there is one rule in software development, i think that must be no silver bul
     </item>
     
     <item>
-      <title>Understanding smart contracts</title>
+      <title>(WIP) Understanding smart contracts</title>
       <link>https://whisperd.tech/post/solidity-basics/</link>
       <pubDate>Fri, 22 Jun 2018 00:00:00 +0000</pubDate>
       
@@ -182,7 +196,7 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console.</description
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/hackday/</guid>
-      <description>加入 Thoughtworks 之后，经历了REA (realestate.com.au) 三次 Hackday，感受一次比一次强烈，我觉得有必要和大家分享一下这么优秀的想法和活动。
+      <description>加入 Thoughtworks 之后，经历了REA (realestate.com.au) 三次 Hackday，感受很多，我觉得有必要和大家分享一下这么优秀的想法和活动。
 什么是 hackday？ Hackday，有时也被叫做 Hackathon，是IT行业一个类似于“百米冲刺”的活动，主要目的在于围绕一个主题，进行软件设计和开发，持续时间不等，可以是一天，也可以是一周，以2~3天为多数。活动范围有企业内部、社区等。
 REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂，每个季度会举办一次hackday，为期三天，除非有相当紧急的线上问题需要处理，一般来说，大部分人都是能够参与其中的。很难想象一个公司所有人三天里都在搞“飞机”，不干“正事”，但是这不也正体现了一个企业的文化、魄力和产品的稳定性吗？ hackday 流程大致是这样的，
  团队内部 brain storm，收集 idea； 投票选出意向参与的项目，分配资源； 公司范围的 Stand up，阐述 idea，并找到目标资源（UX，前端Dev，后端Dev，等等） 团队内部 Kick off，划分 story MVP 功能开发（结对编程），一般为 1.5~2天 制作 Showcase 海报 公司范围 Showcase 拉票，投票 根据项目的情况，少数会进入产品，多数会成为工作生活的小助手，解决工作生活中的痛点。  我参与的 hackday 项目 印象比较深刻的是4个:

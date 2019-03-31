@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Kaichao Sun">
+<meta name="description" content="dasheng&#39;s blog">
+<meta name="generator" content="Hugo 0.49.2" />
+<title>Cheatsheet for Shell programming</title>
+<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
+<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
+<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+
+
+<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
+
+
+<meta property="og:title" content="Cheatsheet for Shell programming" />
+<meta property="og:description" content="Variables NAME=&quot;John&quot; echo $NAME echo &quot;$NAME&quot; echo &quot;${NAME}!&quot;  String NAME=&quot;John&quot; echo &quot;Hi $NAME&quot; #=&gt; Hi John echo &#39;Hi $NAME&#39; #=&gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&quot;Apple&quot; Fruits[1]=&quot;Banana&quot; Fruits[2]=&quot;Orange&quot;  And / Or git commit &amp;&amp; git push git commit || echo &quot;Commit failed&quot;  Function get_name() { echo &quot;John&quot; } echo &quot;You are $(get_name)&quot; myfunc() { echo &quot;hello $1&quot; } # Same as above (alternate syntax) function myfunc() { echo &quot;hello $1&quot; } myfunc &quot;John&quot;  If else if [[ -z ${APP_ENV} ]]; then echo &quot;The APP_ENV should be set to prod or staging, got: $0&quot; exit -1 fi if [[ -z &quot;$string&quot; ]]; then echo &quot;String is empty&quot; elif [[ -n &quot;$string&quot; ]]; then echo &quot;String is not empty&quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://whisperd.tech/post/shell-cheatsheet/" /><meta property="article:published_time" content="2019-03-30T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-03-30T00:00:00&#43;00:00"/>
+
+
+
+<meta itemprop="name" content="Cheatsheet for Shell programming">
+<meta itemprop="description" content="Variables NAME=&quot;John&quot; echo $NAME echo &quot;$NAME&quot; echo &quot;${NAME}!&quot;  String NAME=&quot;John&quot; echo &quot;Hi $NAME&quot; #=&gt; Hi John echo &#39;Hi $NAME&#39; #=&gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&quot;Apple&quot; Fruits[1]=&quot;Banana&quot; Fruits[2]=&quot;Orange&quot;  And / Or git commit &amp;&amp; git push git commit || echo &quot;Commit failed&quot;  Function get_name() { echo &quot;John&quot; } echo &quot;You are $(get_name)&quot; myfunc() { echo &quot;hello $1&quot; } # Same as above (alternate syntax) function myfunc() { echo &quot;hello $1&quot; } myfunc &quot;John&quot;  If else if [[ -z ${APP_ENV} ]]; then echo &quot;The APP_ENV should be set to prod or staging, got: $0&quot; exit -1 fi if [[ -z &quot;$string&quot; ]]; then echo &quot;String is empty&quot; elif [[ -n &quot;$string&quot; ]]; then echo &quot;String is not empty&quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !">
+
+
+<meta itemprop="datePublished" content="2019-03-30T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-03-30T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="349">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Cheatsheet for Shell programming"/>
+<meta name="twitter:description" content="Variables NAME=&quot;John&quot; echo $NAME echo &quot;$NAME&quot; echo &quot;${NAME}!&quot;  String NAME=&quot;John&quot; echo &quot;Hi $NAME&quot; #=&gt; Hi John echo &#39;Hi $NAME&#39; #=&gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&quot;Apple&quot; Fruits[1]=&quot;Banana&quot; Fruits[2]=&quot;Orange&quot;  And / Or git commit &amp;&amp; git push git commit || echo &quot;Commit failed&quot;  Function get_name() { echo &quot;John&quot; } echo &quot;You are $(get_name)&quot; myfunc() { echo &quot;hello $1&quot; } # Same as above (alternate syntax) function myfunc() { echo &quot;hello $1&quot; } myfunc &quot;John&quot;  If else if [[ -z ${APP_ENV} ]]; then echo &quot;The APP_ENV should be set to prod or staging, got: $0&quot; exit -1 fi if [[ -z &quot;$string&quot; ]]; then echo &quot;String is empty&quot; elif [[ -n &quot;$string&quot; ]]; then echo &quot;String is not empty&quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !"/>
+<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='/about/'>About</a>
+  	
+
+	
+
+	
+		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+
+<article class="post">
+    <header>
+        <h1>Cheatsheet for Shell programming</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        March 30, 2019
+        <br>
+        
+        </h2>
+    </header>
+
+    <aside>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#variables">Variables</a></li>
+<li><a href="#string">String</a></li>
+<li><a href="#array">Array</a></li>
+<li><a href="#and-or">And / Or</a></li>
+<li><a href="#function">Function</a></li>
+<li><a href="#if-else">If else</a></li>
+<li><a href="#condition">Condition</a></li>
+<li><a href="#for-loop">For loop</a></li>
+<li><a href="#default-value">Default value</a></li>
+<li><a href="#auguments">Auguments</a></li>
+<li><a href="#reference">Reference</a></li>
+</ul></li>
+</ul>
+</nav>
+    </aside>
+
+    <section id="post-body">
+        
+
+<h2 id="variables">Variables</h2>
+
+<pre><code class="language-shell">NAME=&quot;John&quot;
+echo $NAME
+echo &quot;$NAME&quot;
+echo &quot;${NAME}!&quot;
+</code></pre>
+
+<h2 id="string">String</h2>
+
+<pre><code class="language-shell">NAME=&quot;John&quot;
+echo &quot;Hi $NAME&quot;  #=&gt; Hi John
+echo 'Hi $NAME'  #=&gt; Hi $NAME
+</code></pre>
+
+<h2 id="array">Array</h2>
+
+<pre><code class="language-shell">Fruits=('Apple' 'Banana' 'Orange')
+Fruits[0]=&quot;Apple&quot;
+Fruits[1]=&quot;Banana&quot;
+Fruits[2]=&quot;Orange&quot;
+</code></pre>
+
+<h2 id="and-or">And / Or</h2>
+
+<pre><code class="language-shell">git commit &amp;&amp; git push
+git commit || echo &quot;Commit failed&quot;
+</code></pre>
+
+<h2 id="function">Function</h2>
+
+<pre><code class="language-shell">get_name() {
+  echo &quot;John&quot;
+}
+
+echo &quot;You are $(get_name)&quot;
+
+myfunc() {
+    echo &quot;hello $1&quot;
+}
+# Same as above (alternate syntax)
+function myfunc() {
+    echo &quot;hello $1&quot;
+}
+myfunc &quot;John&quot;
+</code></pre>
+
+<h2 id="if-else">If else</h2>
+
+<pre><code class="language-shell">if [[ -z ${APP_ENV} ]]; then
+  echo &quot;The APP_ENV should be set to prod or staging, got: $0&quot;
+  exit -1
+fi
+
+if [[ -z &quot;$string&quot; ]]; then
+  echo &quot;String is empty&quot;
+elif [[ -n &quot;$string&quot; ]]; then
+  echo &quot;String is not empty&quot;
+fi
+</code></pre>
+
+<h2 id="condition">Condition</h2>
+
+<pre><code class="language-shell">[[ -z STRING ]]						# Empty string
+[[ -n STRING ]]						# Not empty string
+[[ STRING == STRING ]]		# Equal
+[[ STRING != STRING ]]		# Not Equal
+
+[[ NUM -eq NUM ]]					# Equal
+[[ NUM -ne NUM ]]					# Not equal
+[[ NUM -lt NUM ]]					# Less than
+[[ NUM -le NUM ]]	 				# Less than or equal
+[[ NUM -gt NUM ]]					# Greater than
+[[ NUM -ge NUM ]]					# Greater than or equal
+
+[[ ! EXPR ]]							# Not
+[[ X ]] &amp;&amp; [[ Y ]]				# And
+[[ X ]] || [[ Y ]]				# Or
+
+[[ -e FILE ]]							# Exists
+[[ -r FILE ]]							# Readable
+[[ -h FILE ]]							# Symlink
+[[ -d FILE ]]							# Directory
+[[ -w FILE ]]							# Writable
+[[ -s FILE ]]							# Size is &gt; 0 bytes
+[[ -f FILE ]]							# File
+[[ -x FILE ]]							# Executable
+</code></pre>
+
+<h2 id="for-loop">For loop</h2>
+
+<pre><code class="language-shell">for i in *.tar; do echo working on $i; tar xvzf $i ; done
+
+while true; do
+  ···
+done
+
+for i in {1..5}; do
+    echo &quot;Welcome $i&quot;
+done
+</code></pre>
+
+<h2 id="default-value">Default value</h2>
+
+<pre><code class="language-shell">${FOO:-val} 	# $FOO, or val if not set
+${FOO:=val}		# Set $FOO to val if not set
+</code></pre>
+
+<h2 id="auguments">Auguments</h2>
+
+<pre><code class="language-shell">$#	# Number of arguments
+$*	# All arguments
+$@	# All arguments, starting from first
+$1	# First argument
+</code></pre>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+<li><a href="https://devhints.io/bash">bash</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/SunWillsuna">
+    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
+    <div>
+        <span class="dark">Kaichao Sun</span>
+        <span>Mark it down</span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fshell-cheatsheet%2f - Cheatsheet%20for%20Shell%20programming by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/post/master_linux_os/">The tutorial of Manjaro Linux usage<aside class="dates">Mar 3 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/common-cli-cheatsheet/">Cheatsheet for common used CLI<aside class="dates">Jan 2 2019</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/understand-monad/">Understand Monad in Functional Programming<aside class="dates">Oct 13 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/solidity-basics/">(WIP) Understanding smart contracts<aside class="dates">Jun 22 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/kubernetes-basics/">Kubernetes basics<aside class="dates">Jun 21 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/how-to-setup-iri/">如何部署 IOTA 的 IRI headless 全节点<aside class="dates">Dec 17 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="/post/go-channel/">理解Golang并发编程<aside class="dates">Jul 29 2017</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://github.com/dashengSun">
+        <i class="fa fa-github"></i>
+    </a>
+    
+    <a class="symbol" href="https://twitter.com/SunWillsuna">
+        <i class="fa fa-twitter"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2019 Kaichao Sun
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://whisperd.tech/js/main.js"></script>
+<script src="https://whisperd.tech/js/highlight.js"></script>
+<script src="https://whisperd.tech/js/fix-toc.js"></script>
+<script src="https://whisperd.tech/js/gulugulu.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2513693433628672",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-128168145-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+</body>
+</html>
