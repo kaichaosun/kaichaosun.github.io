@@ -7,7 +7,7 @@
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="dasheng&#39;s blog">
 <meta name="generator" content="Hugo 0.49.2" />
-<title>(WIP) Understanding smart contracts</title>
+<title>理解Ethereum智能合约开发</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
 <link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
@@ -21,38 +21,74 @@
 <link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
 
 
-<meta property="og:title" content="(WIP) Understanding smart contracts" />
-<meta property="og:description" content="Concepts Demo Embark integrate with Ethereum, IPFS, etc.
-Reference https://embark.status.im/docs/setup.html
-https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4
-https://github.com/AugurProject/augur-core" />
+<meta property="og:title" content="理解Ethereum智能合约开发" />
+<meta property="og:description" content="[TOC]
+背景知识 为什么是分布式账本？ 从第一台计算机的诞生开始，地球的计算能力就一直在按照摩尔定律 (每隔两年计算能力翻倍)所指示的那样，持续地在增长（近年有放缓）。计算早已经不再是一种稀缺的资源，个人计算机的普及乃至泛滥，也说明了这一现象。
+另一方面，我们处在飞速发展的信息社会，各种媒介充斥在生活里的方方面面，每个人在互联网上留下的一切痕迹，统称为数据，也是信息社会最有价值的。如果你看过《西部世界》，你就能够明白数据的力量是有多强大和危险。越来越多的人，意识到这一点，并且不希望自己的数据尤其是私密数据被企业或组织控制。
+这些企业包含但不局限于支付宝、微信等等独角兽企业。分布式账本技术去除了对中心化的服务或组织的依赖，通过提供计算资源，每一个计算单元或者节点（简单的说就是一台计算机）共同维护着一个数据库或者账本，数据库中的数据可以被所有人读，但只有数据的拥有人才能进行转移或者处理，甚至可以进一步通过密码学对数据加密存储，只有持有秘钥的数据拥有人才能读取和处理数据。
+数据的价值在于流动。不论在什么系统中，交易都是极为重要的，但是交易必须是可控和合理的。任何交易的促成都需要建立在一定的共识基础上。比如中心化的服务支付宝，交易成功的标识是支付宝后台数据库完成价值的转移，并返回成功消息给用户，支付宝是整个交易周期的信任基础。种种原因导致我们并不是百分百地信任支付宝。而去中心化的系统不存在这样的信任中心角色，交易的最终确定是由整个系统基于一定的共识算法完成的，这些算法包括但不局限于工作量证明、权益证明、代理权益证明等。
+在分布式账本技术中，我们通过移除信任中心，实现了数据自由；通过开源代码，建立了另一个维度的信任关系。这项技术，还处在很早期的阶段，需要通过减缓交易的完成时间来提高安全性；需要通过花费大量的计算资源来达到彻底的去中心化。
+到底什么是智能合约？ 日常生活中充满了各种各样的合约机制，比如房屋租赁合约、银行存取款合约、商务合作合约等等，这些合约的目的都只有一个，就是保证合约的参与方正常履行自己的义务。
+智能合约的作用也是同样的，只不过合约的形式发生了改变，不再是纸质签名，而是存储在分布式账本中的代码。
+为什么要选择智能合约而不是传统合约形式呢？原因我总结大致有以下几个：
+ 去中心化的合约形式，摆脱了对代理人的依赖，解决了对于代理人的信任问题。 分布式账本这个跨越一切国家和地区的技术，使得自由的全球化经济更进一步发展，智能合约能够方便快速地满足多种行业全球化经济的需要。 智能合约以开源代码的形式展示，使得合约更加可信、透明。 新的组织、文化、工作形式，如远程协作办公，开源社团，需要一个更加灵活地协作方式，这里应用智能合约恰到好处。 正是由于代码运行在公共的分布式账本上，满足条件的合约可以随时执行，永不离线。  合约解决了现实生活中的协作问题，智能合约则将协作的广度和深度推向了另一个高度。
+以太坊和Solidity 以太坊 分布式账本和智能合约的结合，创造了一种新的协作方式。以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。
+当应用程序的功能由智能合约来提供时，也常被认为是去中心化应用 (DAPP)。DApp前端依然是传统的HTML、CSS、JavaScript “三剑客”，通过发送请求到以太坊节点，上传数据到链上，响应链上的事件如智能合约代码的执行结果。对于DApp的后端，从传统中心化的服务器转变为链上可执行的智能合约，通过执行链上的交易请求完成用户账户或者合约账户状态的改变。
+越来越多的领域采用DApp的解决方案，例如：
+ 知识产权保护 金融衍生品交易 去中心化的自治组织  Solidity编程语言 所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过交互式编程环境熟悉Solidity的基本用法
+基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
+    举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/solidity-basics/" /><meta property="article:published_time" content="2018-06-22T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2018-06-22T00:00:00&#43;00:00"/>
 
 
 
-<meta itemprop="name" content="(WIP) Understanding smart contracts">
-<meta itemprop="description" content="Concepts Demo Embark integrate with Ethereum, IPFS, etc.
-Reference https://embark.status.im/docs/setup.html
-https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4
-https://github.com/AugurProject/augur-core">
+<meta itemprop="name" content="理解Ethereum智能合约开发">
+<meta itemprop="description" content="[TOC]
+背景知识 为什么是分布式账本？ 从第一台计算机的诞生开始，地球的计算能力就一直在按照摩尔定律 (每隔两年计算能力翻倍)所指示的那样，持续地在增长（近年有放缓）。计算早已经不再是一种稀缺的资源，个人计算机的普及乃至泛滥，也说明了这一现象。
+另一方面，我们处在飞速发展的信息社会，各种媒介充斥在生活里的方方面面，每个人在互联网上留下的一切痕迹，统称为数据，也是信息社会最有价值的。如果你看过《西部世界》，你就能够明白数据的力量是有多强大和危险。越来越多的人，意识到这一点，并且不希望自己的数据尤其是私密数据被企业或组织控制。
+这些企业包含但不局限于支付宝、微信等等独角兽企业。分布式账本技术去除了对中心化的服务或组织的依赖，通过提供计算资源，每一个计算单元或者节点（简单的说就是一台计算机）共同维护着一个数据库或者账本，数据库中的数据可以被所有人读，但只有数据的拥有人才能进行转移或者处理，甚至可以进一步通过密码学对数据加密存储，只有持有秘钥的数据拥有人才能读取和处理数据。
+数据的价值在于流动。不论在什么系统中，交易都是极为重要的，但是交易必须是可控和合理的。任何交易的促成都需要建立在一定的共识基础上。比如中心化的服务支付宝，交易成功的标识是支付宝后台数据库完成价值的转移，并返回成功消息给用户，支付宝是整个交易周期的信任基础。种种原因导致我们并不是百分百地信任支付宝。而去中心化的系统不存在这样的信任中心角色，交易的最终确定是由整个系统基于一定的共识算法完成的，这些算法包括但不局限于工作量证明、权益证明、代理权益证明等。
+在分布式账本技术中，我们通过移除信任中心，实现了数据自由；通过开源代码，建立了另一个维度的信任关系。这项技术，还处在很早期的阶段，需要通过减缓交易的完成时间来提高安全性；需要通过花费大量的计算资源来达到彻底的去中心化。
+到底什么是智能合约？ 日常生活中充满了各种各样的合约机制，比如房屋租赁合约、银行存取款合约、商务合作合约等等，这些合约的目的都只有一个，就是保证合约的参与方正常履行自己的义务。
+智能合约的作用也是同样的，只不过合约的形式发生了改变，不再是纸质签名，而是存储在分布式账本中的代码。
+为什么要选择智能合约而不是传统合约形式呢？原因我总结大致有以下几个：
+ 去中心化的合约形式，摆脱了对代理人的依赖，解决了对于代理人的信任问题。 分布式账本这个跨越一切国家和地区的技术，使得自由的全球化经济更进一步发展，智能合约能够方便快速地满足多种行业全球化经济的需要。 智能合约以开源代码的形式展示，使得合约更加可信、透明。 新的组织、文化、工作形式，如远程协作办公，开源社团，需要一个更加灵活地协作方式，这里应用智能合约恰到好处。 正是由于代码运行在公共的分布式账本上，满足条件的合约可以随时执行，永不离线。  合约解决了现实生活中的协作问题，智能合约则将协作的广度和深度推向了另一个高度。
+以太坊和Solidity 以太坊 分布式账本和智能合约的结合，创造了一种新的协作方式。以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。
+当应用程序的功能由智能合约来提供时，也常被认为是去中心化应用 (DAPP)。DApp前端依然是传统的HTML、CSS、JavaScript “三剑客”，通过发送请求到以太坊节点，上传数据到链上，响应链上的事件如智能合约代码的执行结果。对于DApp的后端，从传统中心化的服务器转变为链上可执行的智能合约，通过执行链上的交易请求完成用户账户或者合约账户状态的改变。
+越来越多的领域采用DApp的解决方案，例如：
+ 知识产权保护 金融衍生品交易 去中心化的自治组织  Solidity编程语言 所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过交互式编程环境熟悉Solidity的基本用法
+基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
+    举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {">
 
 
 <meta itemprop="datePublished" content="2018-06-22T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-06-22T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="12">
+<meta itemprop="wordCount" content="525">
 
 
 
 <meta itemprop="keywords" content="" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="(WIP) Understanding smart contracts"/>
-<meta name="twitter:description" content="Concepts Demo Embark integrate with Ethereum, IPFS, etc.
-Reference https://embark.status.im/docs/setup.html
-https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4
-https://github.com/AugurProject/augur-core"/>
+<meta name="twitter:title" content="理解Ethereum智能合约开发"/>
+<meta name="twitter:description" content="[TOC]
+背景知识 为什么是分布式账本？ 从第一台计算机的诞生开始，地球的计算能力就一直在按照摩尔定律 (每隔两年计算能力翻倍)所指示的那样，持续地在增长（近年有放缓）。计算早已经不再是一种稀缺的资源，个人计算机的普及乃至泛滥，也说明了这一现象。
+另一方面，我们处在飞速发展的信息社会，各种媒介充斥在生活里的方方面面，每个人在互联网上留下的一切痕迹，统称为数据，也是信息社会最有价值的。如果你看过《西部世界》，你就能够明白数据的力量是有多强大和危险。越来越多的人，意识到这一点，并且不希望自己的数据尤其是私密数据被企业或组织控制。
+这些企业包含但不局限于支付宝、微信等等独角兽企业。分布式账本技术去除了对中心化的服务或组织的依赖，通过提供计算资源，每一个计算单元或者节点（简单的说就是一台计算机）共同维护着一个数据库或者账本，数据库中的数据可以被所有人读，但只有数据的拥有人才能进行转移或者处理，甚至可以进一步通过密码学对数据加密存储，只有持有秘钥的数据拥有人才能读取和处理数据。
+数据的价值在于流动。不论在什么系统中，交易都是极为重要的，但是交易必须是可控和合理的。任何交易的促成都需要建立在一定的共识基础上。比如中心化的服务支付宝，交易成功的标识是支付宝后台数据库完成价值的转移，并返回成功消息给用户，支付宝是整个交易周期的信任基础。种种原因导致我们并不是百分百地信任支付宝。而去中心化的系统不存在这样的信任中心角色，交易的最终确定是由整个系统基于一定的共识算法完成的，这些算法包括但不局限于工作量证明、权益证明、代理权益证明等。
+在分布式账本技术中，我们通过移除信任中心，实现了数据自由；通过开源代码，建立了另一个维度的信任关系。这项技术，还处在很早期的阶段，需要通过减缓交易的完成时间来提高安全性；需要通过花费大量的计算资源来达到彻底的去中心化。
+到底什么是智能合约？ 日常生活中充满了各种各样的合约机制，比如房屋租赁合约、银行存取款合约、商务合作合约等等，这些合约的目的都只有一个，就是保证合约的参与方正常履行自己的义务。
+智能合约的作用也是同样的，只不过合约的形式发生了改变，不再是纸质签名，而是存储在分布式账本中的代码。
+为什么要选择智能合约而不是传统合约形式呢？原因我总结大致有以下几个：
+ 去中心化的合约形式，摆脱了对代理人的依赖，解决了对于代理人的信任问题。 分布式账本这个跨越一切国家和地区的技术，使得自由的全球化经济更进一步发展，智能合约能够方便快速地满足多种行业全球化经济的需要。 智能合约以开源代码的形式展示，使得合约更加可信、透明。 新的组织、文化、工作形式，如远程协作办公，开源社团，需要一个更加灵活地协作方式，这里应用智能合约恰到好处。 正是由于代码运行在公共的分布式账本上，满足条件的合约可以随时执行，永不离线。  合约解决了现实生活中的协作问题，智能合约则将协作的广度和深度推向了另一个高度。
+以太坊和Solidity 以太坊 分布式账本和智能合约的结合，创造了一种新的协作方式。以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。
+当应用程序的功能由智能合约来提供时，也常被认为是去中心化应用 (DAPP)。DApp前端依然是传统的HTML、CSS、JavaScript “三剑客”，通过发送请求到以太坊节点，上传数据到链上，响应链上的事件如智能合约代码的执行结果。对于DApp的后端，从传统中心化的服务器转变为链上可执行的智能合约，通过执行链上的交易请求完成用户账户或者合约账户状态的改变。
+越来越多的领域采用DApp的解决方案，例如：
+ 知识产权保护 金融衍生品交易 去中心化的自治组织  Solidity编程语言 所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过交互式编程环境熟悉Solidity的基本用法
+基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
+    举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {"/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -80,7 +116,7 @@ https://github.com/AugurProject/augur-core"/>
 
 <article class="post">
     <header>
-        <h1>(WIP) Understanding smart contracts</h1>
+        <h1>理解Ethereum智能合约开发</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
         June 22, 2018
@@ -94,8 +130,31 @@ https://github.com/AugurProject/augur-core"/>
 <ul>
 <li>
 <ul>
-<li><a href="#concepts">Concepts</a></li>
-<li><a href="#demo">Demo</a></li>
+<li><a href="#背景知识">背景知识</a>
+<ul>
+<li><a href="#为什么是分布式账本">为什么是分布式账本？</a></li>
+<li><a href="#到底什么是智能合约">到底什么是智能合约？</a></li>
+</ul></li>
+<li><a href="#以太坊和solidity">以太坊和Solidity</a>
+<ul>
+<li><a href="#以太坊">以太坊</a></li>
+<li><a href="#solidity编程语言">Solidity编程语言</a>
+<ul>
+<li><a href="#基础数据类型">基础数据类型</a></li>
+<li><a href="#枚举类型">枚举类型</a></li>
+<li><a href="#函数">函数</a></li>
+<li><a href="#引用类型">引用类型</a></li>
+<li><a href="#条件控制">条件控制</a></li>
+<li><a href="#循环控制">循环控制</a></li>
+<li><a href="#异常处理">异常处理</a></li>
+<li><a href="#面向对象特性">面向对象特性</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#常用开发框架">常用开发框架</a></li>
+<li><a href="#应用场景练习">应用场景练习</a>
+<ul>
+<li><a href="#交易">交易</a></li>
+</ul></li>
 <li><a href="#reference">Reference</a></li>
 </ul></li>
 </ul>
@@ -105,17 +164,365 @@ https://github.com/AugurProject/augur-core"/>
     <section id="post-body">
         
 
-<h2 id="concepts">Concepts</h2>
+<p>[TOC]</p>
 
-<h2 id="demo">Demo</h2>
+<h2 id="背景知识">背景知识</h2>
 
-<p>Embark integrate with Ethereum, IPFS, etc.</p>
+<h3 id="为什么是分布式账本">为什么是分布式账本？</h3>
+
+<p>从第一台计算机的诞生开始，地球的计算能力就一直在按照<a href="https://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E5%AE%9A%E5%BE%8B">摩尔定律</a> (每隔两年计算能力翻倍)所指示的那样，持续地在增长（近年有放缓）。<strong>计算早已经不再是一种稀缺的资源</strong>，个人计算机的普及乃至泛滥，也说明了这一现象。</p>
+
+<p>另一方面，我们处在飞速发展的信息社会，各种媒介充斥在生活里的方方面面，<strong>每个人在互联网上留下的一切痕迹，统称为数据，也是信息社会最有价值的</strong>。如果你看过《<a href="https://movie.douban.com/subject/2338055/">西部世界</a>》，你就能够明白数据的力量是有多强大和危险。越来越多的人，意识到这一点，并且不希望自己的数据尤其是私密数据被企业或组织控制。</p>
+
+<p><img src="https://github.com/dashengSun/drawio/blob/master/blog/solidity/western_world_start_pic.jpeg?raw=true" alt="data_is_gold" /></p>
+
+<p>这些企业包含但不局限于支付宝、微信等等独角兽企业。<strong>分布式账本技术去除了对中心化的服务或组织的依赖</strong>，通过提供计算资源，每一个计算单元或者节点（简单的说就是一台计算机）共同维护着一个数据库或者账本，数据库中的数据可以被所有人读，但只有数据的拥有人才能进行转移或者处理，甚至可以进一步通过密码学对数据加密存储，只有持有秘钥的数据拥有人才能读取和处理数据。</p>
+
+<p><img src="https://github.com/dashengSun/drawio/blob/master/blog/solidity/ethereum_peer_network.jpg?raw=true" alt="node_connection" /></p>
+
+<p><strong>数据的价值在于流动</strong>。不论在什么系统中，交易都是极为重要的，但是交易必须是可控和合理的。任何交易的促成都需要建立在一定的共识基础上。比如中心化的服务支付宝，交易成功的标识是支付宝后台数据库完成价值的转移，并返回成功消息给用户，支付宝是整个交易周期的信任基础。种种原因导致我们并不是百分百地信任支付宝。而去中心化的系统不存在这样的信任中心角色，交易的最终确定是由整个系统基于一定的共识算法完成的，这些算法包括但不局限于工作量证明、权益证明、代理权益证明等。</p>
+
+<p>在分布式账本技术中，我们通过移除信任中心，实现了<strong>数据自由</strong>；通过<strong>开源代码</strong>，建立了另一个维度的信任关系。这项技术，还处在很早期的阶段，需要通过<strong>减缓交易的完成时间来提高安全性</strong>；需要通过<strong>花费大量的计算资源来达到彻底的去中心化</strong>。</p>
+
+<h3 id="到底什么是智能合约">到底什么是智能合约？</h3>
+
+<p>日常生活中充满了各种各样的合约机制，比如房屋租赁合约、银行存取款合约、商务合作合约等等，这些合约的目的都只有一个，就是<strong>保证合约的参与方正常履行自己的义务</strong>。</p>
+
+<p>智能合约的作用也是同样的，只不过合约的形式发生了改变，不再是纸质签名，而是存储在分布式账本中的代码。</p>
+
+<p><img src="https://github.com/dashengSun/drawio/blob/master/blog/solidity/contract-in-code.png?raw=true" alt="contract_in_code" /></p>
+
+<p>为什么要选择智能合约而不是传统合约形式呢？原因我总结大致有以下几个：</p>
+
+<ul>
+<li>去中心化的合约形式，<strong>摆脱了对代理人的依赖</strong>，解决了对于代理人的信任问题。</li>
+<li>分布式账本这个跨越一切国家和地区的技术，使得<strong>自由的全球化经济</strong>更进一步发展，智能合约能够方便快速地满足多种行业全球化经济的需要。</li>
+<li>智能合约以开源代码的形式展示，使得<strong>合约更加可信、透明</strong>。</li>
+<li><strong>新的组织、文化、工作形式</strong>，如远程协作办公，开源社团，需要一个更加灵活地协作方式，这里应用智能合约恰到好处。</li>
+<li>正是由于代码运行在公共的分布式账本上，满足条件的合约可以随时执行，<strong>永不离线</strong>。</li>
+</ul>
+
+<p>合约解决了现实生活中的协作问题，智能合约则将协作的广度和深度推向了另一个高度。</p>
+
+<h2 id="以太坊和solidity">以太坊和Solidity</h2>
+
+<h3 id="以太坊">以太坊</h3>
+
+<p><strong>分布式账本和智能合约的结合，创造了一种新的协作方式。</strong>以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。</p>
+
+<p>当应用程序的功能由智能合约来提供时，也常被认为是<strong>去中心化应用</strong> (DAPP)。DApp前端依然是传统的HTML、CSS、JavaScript “三剑客”，通过发送请求到以太坊节点，上传数据到链上，响应链上的事件如智能合约代码的执行结果。对于DApp的后端，从传统中心化的服务器转变为链上可执行的智能合约，通过执行链上的交易请求完成用户账户或者合约账户状态的改变。</p>
+
+<p>越来越多的领域采用DApp的解决方案，例如：</p>
+
+<ul>
+<li>知识产权保护</li>
+<li>金融衍生品交易</li>
+<li>去中心化的自治组织</li>
+</ul>
+
+<h3 id="solidity编程语言">Solidity编程语言</h3>
+
+<p>所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过<a href="https://github.com/raineorshine/solidity-repl">交互式编程环境</a>熟悉Solidity的基本用法</p>
+
+<h4 id="基础数据类型">基础数据类型</h4>
+
+<p>基于按值传递的特性，通常也叫以下类型为<a href="https://solidity.readthedocs.io/en/v0.5.6/types.html#value-types">值类型</a>。</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>举例</th>
+<th>解释</th>
+<th>操作</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>bool</td>
+<td>true / false</td>
+<td></td>
+<td>!, &amp;&amp;, ||, ==, !=</td>
+</tr>
+
+<tr>
+<td>int / uint(8~256)</td>
+<td>8</td>
+<td>默认是256位</td>
+<td>比较，位移，算数加减乘除、取模<code>**</code>，位操作</td>
+</tr>
+
+<tr>
+<td>address</td>
+<td>0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20</td>
+<td>20字节，也即160位二进制码组成，代表以太坊的地址</td>
+<td>transfer, call</td>
+</tr>
+
+<tr>
+<td>contract</td>
+<td>contract MyContract {<br />    &hellip;<br />}</td>
+<td>合约类，是对函数和数据的封装</td>
+<td>new</td>
+</tr>
+
+<tr>
+<td>bytes(1~32)</td>
+<td>&ldquo;foo&rdquo;</td>
+<td>定长字节数组</td>
+<td></td>
+</tr>
+
+<tr>
+<td>bytes</td>
+<td>&ldquo;bar&rdquo;</td>
+<td>变长字节数组</td>
+<td></td>
+</tr>
+
+<tr>
+<td>string</td>
+<td>&ldquo;this is a string&rdquo;</td>
+<td>UTF-8字符串</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h4 id="枚举类型">枚举类型</h4>
+
+<p>例如：</p>
+
+<pre><code class="language-javascript">enum ActionChoices { GoLeft, GoRight, GoStraight, SitStill }
+</code></pre>
+
+<h4 id="函数">函数</h4>
+
+<p>函数可以是<code>public</code>和<code>internal</code>的，internal函数只能在合约类内部调用，public函数可以被其他合约类调用。</p>
+
+<p>可以通过<code>pure</code>, <code>view</code>, <code>payable</code>等关键字对函数进行约束：</p>
+
+<ul>
+<li>view: 函数对于状态可读不可写</li>
+<li>pure: 函数不会与外界状态发生交互，即不会读写状态</li>
+<li>payable: 允许函数接收ether</li>
+</ul>
+
+<pre><code class="language-javascript">function f(uint num) public pure returns (uint) {
+  return num + 1;
+}
+</code></pre>
+
+<h4 id="引用类型">引用类型</h4>
+
+<p>由于不同的变量名可以指向同一个引用类型的数据，使用引用类型的时候需要格外小心。常用的引用类型有：</p>
+
+<ul>
+<li><p>数组，如<code>[uint(1), 2, 3]</code></p></li>
+
+<li><p>结构体,</p></li>
+</ul>
+
+<pre><code class="language-javascript">  struct Funder {
+  	address addr;
+  	uint amount;
+  }
+  
+  Funder({addr: msg.sender, amount: msg.value});
+</code></pre>
+
+<ul>
+<li>哈希,</li>
+</ul>
+
+<pre><code class="language-javascript">  mapping(address =&gt; uint) public balances;
+  
+  balances[msg.sender] = newBalance;
+</code></pre>
+
+<p>引用类型通过关键字<code>memory</code>, <code>storage</code>,<code>calldata</code>来确定<a href="https://solidity.readthedocs.io/en/v0.5.6/types.html#data-location">存储位置</a>。</p>
+
+<h4 id="条件控制">条件控制</h4>
+
+<p>即<code>if else</code></p>
+
+<pre><code class="language-javascript">function max(uint a, uint b) internal pure returns (uint) {
+  if (a &gt; b) {
+  	return a;
+	} else {
+  	return b;
+	}
+}
+</code></pre>
+
+<h4 id="循环控制">循环控制</h4>
+
+<p>即<code>for, while, break, continue</code></p>
+
+<pre><code class="language-javascript">function sum(uint[] numbers) internal pure returns (uint) {
+  uint temp;
+  for (i=0; i&lt;numbers.length; i++) {
+    temp += numbers[i];
+  }
+}
+</code></pre>
+
+<h4 id="异常处理">异常处理</h4>
+
+<p>Solidity使用异常来回退状态，常用的方式有<code>assert, aequire, revert</code>，抛出的异常不能由代码捕获处理。</p>
+
+<pre><code class="language-javascript">require(msg.value % 2 == 0, &quot;Even value required.&quot;);
+
+assert(address(this).balance == balanceBeforeTransfer - msg.value / 2);
+
+function buy(uint amount) public payable {
+  if (amount &gt; msg.value / 2 ether)
+    revert(&quot;Not enough Ether provided.&quot;);
+  // Alternative way to do it:
+  require(
+    amount &lt;= msg.value / 2 ether,
+    &quot;Not enough Ether provided.&quot;
+  );
+  // Perform the purchase.
+}
+</code></pre>
+
+<h4 id="面向对象特性">面向对象特性</h4>
+
+<p><strong>抽象合约类：</strong>内部存在没有实现的方法。</p>
+
+<pre><code class="language-javascript">contract Feline {
+    function utterance() public returns (bytes32);
+}
+</code></pre>
+
+<p><strong>接口：</strong>和其他语言类似，接口内的方法不能有实现。</p>
+
+<pre><code class="language-javascript">interface Token {
+    enum TokenType { Fungible, NonFungible }
+    struct Coin { string obverse; string reverse; }
+    function transfer(address recipient, uint amount) external;
+}
+</code></pre>
+
+<p><strong>继承和多态：</strong></p>
+
+<pre><code class="language-javascript">contract X {}
+contract A is X {}
+</code></pre>
+
+<p><strong>Libraries：</strong> 请参考<a href="https://solidity.readthedocs.io/en/v0.5.6/contracts.html#libraries">这里</a>.</p>
+
+<h2 id="常用开发框架">常用开发框架</h2>
+
+<p><strong>Truffle:</strong> 基于以太坊平台的开源开发、测试、部署框架，可以一站式完成以太坊智能合约的开发。</p>
+
+<p>快速练习参考<a href="https://truffleframework.com/docs/truffle/quickstart">官方资料</a>。</p>
+
+<p>常用命令：</p>
+
+<pre><code class="language-shell"># install
+npm install -g truffle
+
+# create project from template
+truffle unbox metacoin
+
+# run all the test
+truffle test
+
+# compile solidity to abi json file
+truffle compile
+
+# start personal ethereum like blockchain
+truffle develop
+
+# migrate the contract on blockchain
+turffle migrate
+
+# install dependency in ethpm.json
+truffle install
+
+# publish your own package
+truffle publish
+
+# user debugger
+truffle debug &lt;transaction hash&gt;
+</code></pre>
+
+<p><strong>Ganache:</strong> 本地以太坊私有链客户端，用来本地模拟线上环境，用来本地部署、测试合约。</p>
+
+<p><strong>Drizzle：</strong>DApp前端开发框架</p>
+
+<ul>
+<li>对合约数据响应式编程，包含state,event和transaction</li>
+<li>声明式，可以减少处理无用数据时的资源浪费。</li>
+<li>封装底层接口。</li>
+</ul>
+
+<h2 id="应用场景练习">应用场景练习</h2>
+
+<h3 id="交易">交易</h3>
+
+<p>代码源自<code>metacoin</code> template.</p>
+
+<p>ConvertLib.sol:</p>
+
+<pre><code class="language-javascript">pragma solidity &gt;=0.4.25 &lt;0.6.0;
+
+library ConvertLib{
+	function convert(uint amount,uint conversionRate) public pure returns (uint convertedAmount)
+	{
+		return amount * conversionRate;
+	}
+}
+
+</code></pre>
+
+<p>MetaCoin.sol</p>
+
+<pre><code class="language-javascript">pragma solidity &gt;=0.4.25 &lt;0.6.0;
+
+import &quot;./ConvertLib.sol&quot;;
+
+// This is just a simple example of a coin-like contract.
+// It is not standards compatible and cannot be expected to talk to other
+// coin/token contracts. If you want to create a standards-compliant
+// token, see: https://github.com/ConsenSys/Tokens. Cheers!
+
+contract MetaCoin {
+	mapping (address =&gt; uint) balances;
+
+	event Transfer(address indexed _from, address indexed _to, uint256 _value);
+
+	constructor() public {
+		balances[tx.origin] = 10000;
+	}
+
+	function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
+		if (balances[msg.sender] &lt; amount) return false;
+		balances[msg.sender] -= amount;
+		balances[receiver] += amount;
+		emit Transfer(msg.sender, receiver, amount);
+		return true;
+	}
+
+	function getBalanceInEth(address addr) public view returns(uint){
+		return ConvertLib.convert(getBalance(addr),2);
+	}
+
+	function getBalance(address addr) public view returns(uint) {
+		return balances[addr];
+	}
+}
+
+</code></pre>
 
 <h2 id="reference">Reference</h2>
 
-<p><a href="https://embark.status.im/docs/setup.html">https://embark.status.im/docs/setup.html</a><br />
-<a href="https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4">https://medium.com/@ConsenSys/a-101-noob-intro-to-programming-smart-contracts-on-ethereum-695d15c1dab4</a><br />
-<a href="https://github.com/AugurProject/augur-core">https://github.com/AugurProject/augur-core</a></p>
+<ul>
+<li><a href="https://truffleframework.com/docs">Truffle framework docs</a></li>
+</ul>
 
     </section>
 </article>
@@ -129,7 +536,7 @@ https://github.com/AugurProject/augur-core"/>
     </div>
     </a>
     <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fsolidity-basics%2f - %28WIP%29%20Understanding%20smart%20contracts by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fsolidity-basics%2f - %e7%90%86%e8%a7%a3Ethereum%e6%99%ba%e8%83%bd%e5%90%88%e7%ba%a6%e5%bc%80%e5%8f%91 by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
@@ -170,11 +577,11 @@ https://github.com/AugurProject/augur-core"/>
     
     
         <li>
-            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell programming<aside class="dates">Mar 30 2019</aside></a>
+            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell Programming<aside class="dates">Mar 30 2019</aside></a>
         </li>
     
         <li>
-            <a href="/post/master_linux_os/">The tutorial of Manjaro Linux usage<aside class="dates">Mar 3 2019</aside></a>
+            <a href="/post/master_linux_os/">The Tutorial of Manjaro Linux Usage<aside class="dates">Mar 3 2019</aside></a>
         </li>
     
         <li>
@@ -190,7 +597,7 @@ https://github.com/AugurProject/augur-core"/>
         </li>
     
         <li>
-            <a href="/post/common-cli-cheatsheet/">Cheatsheet for common used CLI<aside class="dates">Jan 2 2019</aside></a>
+            <a href="/post/common-cli-cheatsheet/">Cheatsheet for Common Usage CLI<aside class="dates">Jan 2 2019</aside></a>
         </li>
     
         <li>
