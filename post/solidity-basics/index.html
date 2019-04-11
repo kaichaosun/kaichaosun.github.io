@@ -39,8 +39,8 @@
 基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
     举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/solidity-basics/" /><meta property="article:published_time" content="2018-06-22T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2018-06-22T00:00:00&#43;00:00"/>
+<meta property="og:url" content="https://whisperd.tech/post/solidity-basics/" /><meta property="article:published_time" content="2019-04-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-11T00:00:00&#43;00:00"/>
 
 
 
@@ -63,8 +63,8 @@
     举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {">
 
 
-<meta itemprop="datePublished" content="2018-06-22T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-06-22T00:00:00&#43;00:00" />
+<meta itemprop="datePublished" content="2019-04-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-11T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="526">
 
 
@@ -119,7 +119,7 @@
         <h1>理解Ethereum智能合约开发</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
-        June 22, 2018
+        April 11, 2019
         <br>
         
         </h2>
@@ -319,14 +319,14 @@
 <p>由于不同的变量名可以指向同一个引用类型的数据，使用引用类型的时候需要格外小心。常用的引用类型有：</p>
 
 <ul>
-<li><p>数组，如  [uint(1), 2, 3]</p></li>
+<li><p>数组，如 <code>[uint(1), 2, 3]</code></p></li>
 
 <li><p>结构体,</p></li>
 </ul>
 
-<pre><code>  struct Funder {
-  	address addr;
-  	uint amount;
+<pre><code class="language-javascript">  struct Funder {
+    address addr;
+    uint amount;
   }
   
   Funder({addr: msg.sender, amount: msg.value});
