@@ -6,10 +6,26 @@
     <description>Recent content on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 05 Aug 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Substrate应用 - 抛硬币游戏(一)</title>
+      <link>https://whisperd.tech/post/substrate_coin_flip/</link>
+      <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/substrate_coin_flip/</guid>
+      <description>当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
+ Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
+ 本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
+初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
+substrate-node-new demo-node yourname  启动刚刚生成的节点：
+cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &amp;quot;sup&amp;quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&amp;gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127.</description>
+    </item>
     
     <item>
       <title>使用Substrate搭建你的第一条区块链</title>
@@ -273,22 +289,6 @@ Hexo 是一个博客框架,支持Markdown,通过命令行可以快速部署, 有
 hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 设置博客页个人信息 我的配置文件 _config.yml
 # Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://whisperd.tech/post/substrate_coin_flip/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://whisperd.tech/post/substrate_coin_flip/</guid>
-      <description>Substrate应用 - 抛硬币游戏(一) 当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
-预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
- Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
- 本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
-初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
-substrate-node-new demo-node yourname  启动刚刚生成的节点：
-cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.</description>
     </item>
     
   </channel>

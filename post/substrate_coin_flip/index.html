@@ -7,7 +7,7 @@
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
 <meta name="generator" content="Hugo 0.49.2" />
-<title></title>
+<title>Substrate应用 - 抛硬币游戏(一)</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
 <link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
@@ -21,48 +21,50 @@
 <link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
 
 
-<meta property="og:title" content="" />
-<meta property="og:description" content="Substrate应用 - 抛硬币游戏(一) 当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+<meta property="og:title" content="Substrate应用 - 抛硬币游戏(一)" />
+<meta property="og:description" content="当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname  启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1." />
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/substrate_coin_flip/" />
+<meta property="og:url" content="https://whisperd.tech/post/substrate_coin_flip/" /><meta property="article:published_time" content="2019-08-05T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-08-05T00:00:00&#43;00:00"/>
 
 
 
-<meta itemprop="name" content="">
-<meta itemprop="description" content="Substrate应用 - 抛硬币游戏(一) 当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+<meta itemprop="name" content="Substrate应用 - 抛硬币游戏(一)">
+<meta itemprop="description" content="当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname  启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.">
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127.">
 
 
-
-<meta itemprop="wordCount" content="1017">
+<meta itemprop="datePublished" content="2019-08-05T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-05T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1014">
 
 
 
 <meta itemprop="keywords" content="" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="Substrate应用 - 抛硬币游戏(一) 当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+<meta name="twitter:title" content="Substrate应用 - 抛硬币游戏(一)"/>
+<meta name="twitter:description" content="当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname  启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1."/>
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -90,10 +92,10 @@ cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内
 
 <article class="post">
     <header>
-        <h1></h1>
+        <h1>Substrate应用 - 抛硬币游戏(一)</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
-        January 1, 0001
+        August 5, 2019
         <br>
         
         </h2>
@@ -102,7 +104,7 @@ cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内
     <aside>
         <nav id="TableOfContents">
 <ul>
-<li><a href="#substrate应用-抛硬币游戏-一">Substrate应用 - 抛硬币游戏(一)</a>
+<li>
 <ul>
 <li><a href="#预备">预备</a></li>
 <li><a href="#创建区块链节点">创建区块链节点</a>
@@ -130,8 +132,6 @@ cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内
 
     <section id="post-body">
         
-
-<h1 id="substrate应用-抛硬币游戏-一">Substrate应用 - 抛硬币游戏(一)</h1>
 
 <p><strong>当我们应用区块链解决生活中问题的时候，它的价值就产生了。</strong>如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：<a href="https://substrate.dev">https://substrate.dev</a> 或者参考之前的教程<a href="https://zhuanlan.zhihu.com/p/67580341">《使用Substrate搭建你的第一条区块链》</a>来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。</p>
 
@@ -566,7 +566,7 @@ fn play(origin) -&gt; Result {
     </div>
     </a>
     <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fsubstrate_coin_flip%2f -  by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fsubstrate_coin_flip%2f - Substrate%e5%ba%94%e7%94%a8%20-%20%e6%8a%9b%e7%a1%ac%e5%b8%81%e6%b8%b8%e6%88%8f%28%e4%b8%80%29 by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
