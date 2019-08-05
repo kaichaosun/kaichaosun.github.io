@@ -35,7 +35,7 @@
 
 <meta itemprop="datePublished" content="2019-01-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="180">
+<meta itemprop="wordCount" content="205">
 
 
 
@@ -100,6 +100,11 @@
 <li><a href="#docker-override-entrypoint">Docker override entrypoint</a></li>
 <li><a href="#git">Git</a></li>
 <li><a href="#nodejs-npm-mirror">Nodejs npm mirror</a></li>
+<li><a href="#rust-and-cargo">Rust and Cargo</a>
+<ul>
+<li><a href="#source">Source</a></li>
+<li><a href="#cargo-expand">cargo expand</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -199,6 +204,23 @@ journalctl -k | grep -i -e memory -e oom
 
 <pre><code>npm config set registry=http://registry.npm.taobao.org
 </code></pre>
+
+<h2 id="rust-and-cargo">Rust and Cargo</h2>
+
+<h3 id="source">Source</h3>
+
+<p>Configiure china source, modify the file <code>$HOME/.cargo/config</code></p>
+
+<pre><code>[source.crates-io]
+registry = &quot;https://github.com/rust-lang/crates.io-index&quot;
+replace-with = 'ustc'
+[source.ustc]
+registry = &quot;git://mirrors.ustc.edu.cn/crates.io-index&quot;
+</code></pre>
+
+<h3 id="cargo-expand">cargo expand</h3>
+
+<p><a href="https://github.com/dtolnay/cargo-expand">https://github.com/dtolnay/cargo-expand</a></p>
 
     </section>
 </article>
