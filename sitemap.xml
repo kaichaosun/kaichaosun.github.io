@@ -4,16 +4,21 @@
   
   <url>
     <loc>https://whisperd.tech/post/</loc>
-    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://whisperd.tech/post/substrate_coin_flip/</loc>
-    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://whisperd.tech/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://whisperd.tech/post/coin_flip_test_and_ui/</loc>
+    <lastmod>2019-10-03T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://whisperd.tech/post/substrate_coin_flip/</loc>
     <lastmod>2019-08-05T00:00:00+00:00</lastmod>
   </url>
   
@@ -105,11 +110,6 @@
   <url>
     <loc>https://whisperd.tech/post/hexo/</loc>
     <lastmod>2017-01-04T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://whisperd.tech/post/coin_flip_test_and_ui/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
