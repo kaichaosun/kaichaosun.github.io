@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>Cheatsheet for Common Usage CLI</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -22,20 +22,20 @@
 
 
 <meta property="og:title" content="Cheatsheet for Common Usage CLI" />
-<meta property="og:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/." />
+<meta property="og:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/common-cli-cheatsheet/" /><meta property="article:published_time" content="2019-01-02T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-01-02T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/common-cli-cheatsheet/" />
+<meta property="article:published_time" content="2019-01-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-01-02T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="Cheatsheet for Common Usage CLI">
-<meta itemprop="description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.">
+<meta itemprop="description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode.">
 
 
 <meta itemprop="datePublished" content="2019-01-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="205">
+<meta itemprop="wordCount" content="267">
 
 
 
@@ -43,7 +43,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Cheatsheet for Common Usage CLI"/>
-<meta name="twitter:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/."/>
+<meta name="twitter:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode."/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -98,7 +98,10 @@
 <li><a href="#generate-table-of-contents-for-markdown">Generate table of contents for markdown</a></li>
 <li><a href="#calculate-lines-of-code-in-project">Calculate lines of code in project</a></li>
 <li><a href="#docker-override-entrypoint">Docker override entrypoint</a></li>
-<li><a href="#git">Git</a></li>
+<li><a href="#git">Git</a>
+<ul>
+<li><a href="#submodule">Submodule</a></li>
+</ul></li>
 <li><a href="#nodejs-npm-mirror">Nodejs npm mirror</a></li>
 <li><a href="#rust-and-cargo">Rust and Cargo</a>
 <ul>
@@ -143,6 +146,20 @@ SELECT UNIX_TIMESTAMP();
 
 <pre><code>zip filename.zip file1 file2
 </code></pre>
+
+<pre><code class="language-shell">tar -czvf name-of-archive.tar.gz /path/to/directory-or-file
+</code></pre>
+
+<ul>
+<li>-c: <strong>C</strong>reate an archive.</li>
+<li>-z: Compress the archive with g<strong>z</strong>ip.</li>
+<li>-v: Display progress in the terminal while creating the archive, also known as “<strong>v</strong>erbose” mode. The v is always optional in these commands, but it’s helpful.</li>
+
+<li><p>-f: Allows you to specify the <strong>f</strong>ilename of the archive.</p>
+
+<pre><code>tar -xzvf archive.tar.gz
+</code></pre></li>
+</ul>
 
 <h2 id="ssh-scp">SSH / scp</h2>
 
@@ -198,6 +215,15 @@ journalctl -k | grep -i -e memory -e oom
 <p>** Delete branch with illegal name:**</p>
 
 <pre><code class="language-shell">git branch -D -- --track
+</code></pre>
+
+<h3 id="submodule">Submodule</h3>
+
+<p>To remove a submodule</p>
+
+<p><a href="https://gist.github.com/myusuf3/7f645819ded92bda6677">https://gist.github.com/myusuf3/7f645819ded92bda6677</a></p>
+
+<pre><code>git submodule status
 </code></pre>
 
 <h2 id="nodejs-npm-mirror">Nodejs npm mirror</h2>

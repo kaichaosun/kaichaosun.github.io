@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>Understand Error Handling in Scala</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -26,9 +26,9 @@
 Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
  Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/error_handling_in_scala/" /><meta property="article:published_time" content="2019-01-17T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-01-17T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/error_handling_in_scala/" />
+<meta property="article:published_time" content="2019-01-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-01-17T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="Understand Error Handling in Scala">
@@ -309,8 +309,8 @@ val divideTry = divide[Try, Throwable](10, 0)
 
 <ul>
 <li><code>raiseError</code>: constructs an <code>IO</code> which wraps up a Throwable.</li>
-<li><code>attemp</code>: sequence the convertion between exception in IO and Either.</li>
-</ul>
+
+<li><p><code>attemp</code>: sequence the convertion between exception in IO and Either.</p>
 
 <pre><code class="language-scala">case class BusinessException(msg: String) extends Exception(msg)
 
@@ -319,12 +319,13 @@ val boom = IO.raiseError(new BusinessException(&quot;error happens&quot;))
 boom.unsafeRunSync()
 
 boom.attempt.map{
-  case Left(BusinessException(msg)) =&gt; &quot;business error&quot;
-  case _ =&gt; &quot;other error&quot;
+case Left(BusinessException(msg)) =&gt; &quot;business error&quot;
+case _ =&gt; &quot;other error&quot;
 }.unsafeRunSync()
 
 val result = IO.delay(10 / 0).flatMap(n =&gt; IO(println(n)))
-</code></pre>
+</code></pre></li>
+</ul>
 
 <h2 id="summary">Summary</h2>
 

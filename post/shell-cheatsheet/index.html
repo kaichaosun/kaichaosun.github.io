@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>Cheatsheet for Shell Programming</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -24,9 +24,9 @@
 <meta property="og:title" content="Cheatsheet for Shell Programming" />
 <meta property="og:description" content="Variables NAME=&quot;John&quot; echo $NAME echo &quot;$NAME&quot; echo &quot;${NAME}!&quot;  String NAME=&quot;John&quot; echo &quot;Hi $NAME&quot; #=&gt; Hi John echo &#39;Hi $NAME&#39; #=&gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&quot;Apple&quot; Fruits[1]=&quot;Banana&quot; Fruits[2]=&quot;Orange&quot;  And / Or git commit &amp;&amp; git push git commit || echo &quot;Commit failed&quot;  Function get_name() { echo &quot;John&quot; } echo &quot;You are $(get_name)&quot; myfunc() { echo &quot;hello $1&quot; } # Same as above (alternate syntax) function myfunc() { echo &quot;hello $1&quot; } myfunc &quot;John&quot;  If else if [[ -z ${APP_ENV} ]]; then echo &quot;The APP_ENV should be set to prod or staging, got: $0&quot; exit -1 fi if [[ -z &quot;$string&quot; ]]; then echo &quot;String is empty&quot; elif [[ -n &quot;$string&quot; ]]; then echo &quot;String is not empty&quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/shell-cheatsheet/" /><meta property="article:published_time" content="2019-03-30T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-03-30T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/shell-cheatsheet/" />
+<meta property="article:published_time" content="2019-03-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-03-30T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="Cheatsheet for Shell Programming">

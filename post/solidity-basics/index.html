@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>理解Ethereum智能合约开发</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -39,9 +39,9 @@
 基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
     举例 解释 操作     bool true / false  !, &amp;&amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/solidity-basics/" /><meta property="article:published_time" content="2019-04-11T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-04-11T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/solidity-basics/" />
+<meta property="article:published_time" content="2019-04-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-04-11T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="理解Ethereum智能合约开发">
@@ -307,13 +307,14 @@
 <ul>
 <li>view: 函数对于状态可读不可写</li>
 <li>pure: 函数不会与外界状态发生交互，即不会读写状态</li>
-<li>payable: 允许函数接收ether</li>
-</ul>
+
+<li><p>payable: 允许函数接收ether</p>
 
 <pre><code class="language-javascript">function f(uint num) public pure returns (uint) {
-  return num + 1;
+return num + 1;
 }
-</code></pre>
+</code></pre></li>
+</ul>
 
 <h4 id="引用类型">引用类型</h4>
 
@@ -322,25 +323,23 @@
 <ul>
 <li><p>数组，如 <code>[uint(1), 2, 3]</code></p></li>
 
-<li><p>结构体,</p></li>
-</ul>
+<li><p>结构体,</p>
 
-<pre><code class="language-javascript">  struct Funder {
-    address addr;
-    uint amount;
-  }
+<pre><code class="language-javascript">struct Funder {
+address addr;
+uint amount;
+}
   
-  Funder({addr: msg.sender, amount: msg.value});
-</code></pre>
+Funder({addr: msg.sender, amount: msg.value});
+</code></pre></li>
 
-<ul>
-<li>哈希,</li>
-</ul>
+<li><p>哈希,</p>
 
-<pre><code class="language-javascript">  mapping(address =&gt; uint) public balances;
+<pre><code class="language-javascript">mapping(address =&gt; uint) public balances;
   
-  balances[msg.sender] = newBalance;
-</code></pre>
+balances[msg.sender] = newBalance;
+</code></pre></li>
+</ul>
 
 <p>引用类型通过关键字<code>memory</code>, <code>storage</code>,<code>calldata</code>来确定<a href="https://solidity.readthedocs.io/en/v0.5.6/types.html#data-location">存储位置</a>。</p>
 

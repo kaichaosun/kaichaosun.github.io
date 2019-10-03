@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>理解Golang并发编程</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -37,9 +37,9 @@ begin main goroutine end main goroutine  上面的例子中，并不会输出beg
 time.Sleep(1 * time.Second)  就可以正常输出begin hello goroutine。
 channel Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/go-channel/" /><meta property="article:published_time" content="2017-07-29T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2017-07-29T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/go-channel/" />
+<meta property="article:published_time" content="2017-07-29T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-07-29T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="理解Golang并发编程">
@@ -219,8 +219,8 @@ channel是一种类型，关键字<code>chan</code>和channel传输内容的类�
 
 <ul>
 <li><code>c &lt;- &quot;ping&quot;</code>向channel发送一个值为“ping”的字符串，<br /></li>
-<li><code>msg := &lt;- c</code>接收channel中的一个值，并赋給msg。</li>
-</ul>
+
+<li><p><code>msg := &lt;- c</code>接收channel中的一个值，并赋給msg。</p>
 
 <pre><code>package main
 
@@ -251,7 +251,8 @@ func print(c chan string) {
 		time.Sleep(1 * time.Second)
 	}
 }
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p>输出：</p>
 
@@ -358,8 +359,8 @@ process
 <li><code>select</code>选择第一个就绪的channel进行处理</li>
 <li>如果有多个就绪的channel，则随机选择一个channel进行处理</li>
 <li>如果没有就绪的channel，则等待直到某一channel就绪</li>
-<li>如果有<code>default</code>，则在3情形中不会等待，而是立即执行default中的代码</li>
-</ol>
+
+<li><p>如果有<code>default</code>，则在3情形中不会等待，而是立即执行default中的代码</p>
 
 <pre><code>package main
 
@@ -396,7 +397,8 @@ func print(ch1, ch2 chan int) {
 		fmt.Println(msg)
 	}
 }
-</code></pre>
+</code></pre></li>
+</ol>
 
 <p>两秒钟之后，输出：<code>1</code><br />
 在select语句中添加下面代码：</p>

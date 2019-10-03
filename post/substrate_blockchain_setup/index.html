@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.49.2" />
+<meta name="generator" content="Hugo 0.58.3" />
 <title>使用Substrate搭建你的第一条区块链</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -34,12 +34,13 @@ Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，
 你也可以参考Substrate官方参考文档来了解更多。
 下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
 搭建区块链 通过这一节，你会学到：
- 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：  curl https://getsubstrate.io -sSf | bash  如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
-git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：  substrate-node-new substrate-demo-node someone  你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。" />
+ 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：
+curl https://getsubstrate.io -sSf | bash   如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/substrate_blockchain_setup/" /><meta property="article:published_time" content="2019-05-28T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-05-28T00:00:00&#43;00:00"/>
-
+<meta property="og:url" content="https://whisperd.tech/post/substrate_blockchain_setup/" />
+<meta property="article:published_time" content="2019-05-28T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-05-28T00:00:00+00:00" />
 
 
 <meta itemprop="name" content="使用Substrate搭建你的第一条区块链">
@@ -55,8 +56,9 @@ Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，
 你也可以参考Substrate官方参考文档来了解更多。
 下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
 搭建区块链 通过这一节，你会学到：
- 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：  curl https://getsubstrate.io -sSf | bash  如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
-git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：  substrate-node-new substrate-demo-node someone  你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。">
+ 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：
+curl https://getsubstrate.io -sSf | bash   如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：">
 
 
 <meta itemprop="datePublished" content="2019-05-28T00:00:00&#43;00:00" />
@@ -81,8 +83,9 @@ Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，
 你也可以参考Substrate官方参考文档来了解更多。
 下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
 搭建区块链 通过这一节，你会学到：
- 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：  curl https://getsubstrate.io -sSf | bash  如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
-git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：  substrate-node-new substrate-demo-node someone  你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。"/>
+ 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：
+curl https://getsubstrate.io -sSf | bash   如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行："/>
 <meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
 
 
@@ -206,11 +209,11 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
 <h4 id="方式一">方式一</h4>
 
 <ol>
-<li>安装依赖工具，如Rust环境、openssl、cmake、 llvm库：</li>
-</ol>
+<li><p>安装依赖工具，如Rust环境、openssl、cmake、 llvm库：</p>
 
 <pre><code class="language-shell">curl https://getsubstrate.io -sSf | bash
-</code></pre>
+</code></pre></li>
+</ol>
 
 <p>如果感兴趣上面脚本的具体执行内容，可以参考<a href="https://getsubstrate.io">这里</a>。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。</p>
 
@@ -224,11 +227,11 @@ cp config ~/.cargo/config
 </code></pre>
 
 <ol>
-<li>新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：</li>
-</ol>
+<li><p>新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：</p>
 
 <pre><code class="language-shell">substrate-node-new substrate-demo-node someone
-</code></pre>
+</code></pre></li>
+</ol>
 
 <p>你也可以替换<code>substrate-demo-node</code>为你想要的节点程序名，替换<code>someone</code>为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。</p>
 

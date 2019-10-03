@@ -18,7 +18,9 @@
       
       <guid>https://whisperd.tech/post/substrate_coin_flip/</guid>
       <description>当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
-预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast   更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin  创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
+预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：
+curl https://getsubstrate.io -sSf | bash -s -- --fast  更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：
+git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin   创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
@@ -45,8 +47,9 @@ Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，
 你也可以参考Substrate官方参考文档来了解更多。
 下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
 搭建区块链 通过这一节，你会学到：
- 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：  curl https://getsubstrate.io -sSf | bash  如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
-git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：  substrate-node-new substrate-demo-node someone  你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。</description>
+ 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：
+curl https://getsubstrate.io -sSf | bash   如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：</description>
     </item>
     
     <item>
@@ -113,7 +116,8 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
 Install Manjaro Linux Burn image to usb stick: Steps:
  Download mankato - GNOME here
  Check the hash and compare with the hash provided on the site:
-  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso   Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m  On windows, use rufus with dd mode.
+shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso  Burn the iso file to USB stick on Linux
+diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m   On windows, use rufus with dd mode.
 Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.</description>
     </item>
     
@@ -164,7 +168,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/common-cli-cheatsheet/</guid>
-      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  SSH / scp // setup tunel ssh -L 8002:target-host-ip:80 -i ~/.ssh/ssh-key hostname@host-ip // from local to remote scp /filename hostname@ip:~ // from remote to local scp -i ~/.</description>
+      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode.</description>
     </item>
     
     <item>
@@ -289,6 +293,21 @@ Hexo 是一个博客框架,支持Markdown,通过命令行可以快速部署, 有
 hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
 设置博客页个人信息 我的配置文件 _config.yml
 # Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://whisperd.tech/post/coin_flip_test_and_ui/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/coin_flip_test_and_ui/</guid>
+      <description>抛硬币游戏(二)：编写测试和UI 在之前的文章 Substrate应用 - 抛硬币游戏（一），我们完成了runtime的开发，从而实现了一个自定义功能（即抛硬币游戏）的区块链网络。现在让我们来看一下如何编写测试代码和UI，你也可以直接看最终的模块代码和UI代码。
+测试 重要性 为功能模块编写测试，是软件开发过程中不可缺省的一个环节，完备的测试能够：
+ 确保代码的执行符合预期； 增强重构时的信心； 从代码的使用角度，提升代码的设计等。  通常情况下，测试可以分为以下几种：
+ 单元测试，mock实现代码中的依赖如其它功能模块，仅测试当前函数的功能； 集成测试，不mock实现代码中的依赖，对多个功能模块整体考虑，进行测试； End to End 测试，是面向当前系统与依赖的第三方服务之间的测试。  当我们在使用Substrate进行开发时，主要会使用到单元测试和集成测试的方法，对于不同的场景，可以按需选择。一个最佳实践是，确保自定义的runtime模块有良好的测试覆盖。
+Rust 测试代码 Rust测试代码通常会和实现代码放在同一个文件或相同的目录下，取决于测试代码的数量，更多内容可以参考Rust book。下面是一个简单的测试用例：
+pub fn add_two(a: i32) -&amp;gt; i32 { a + 2 } #[cfg(test)] mod tests { use super::*; #[test] fn test_add_two() { assert_eq!(4, add_two(2)); } }  一些需要注意的点包括：
+ 测试代码使用属性#[cfg(test)]进行标识 use super::*用来引入当前模块的功能代码 测试函数通过属性#[test]进行标识 断言方式有：  表达式的值为true：assert!(expression) 表达式的值是期望的值：assert_eq!(expected, expression) 表达式的值不是其它不相关的值：assert_ne!(other, expression) 异常发生：#[should_panic] Substrate提供了自定义的断言： 结果为Ok(())：assert_ok!(expreesion) 结果为Err(error_info)：assert_err!</description>
     </item>
     
   </channel>

@@ -3,7 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://whisperd.tech/post/</loc>
+    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://whisperd.tech/post/substrate_coin_flip/</loc>
+    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://whisperd.tech/</loc>
     <lastmod>2019-08-05T00:00:00+00:00</lastmod>
   </url>
   
@@ -98,25 +108,16 @@
   </url>
   
   <url>
-    <loc>https://whisperd.tech/categories/</loc>
+    <loc>https://whisperd.tech/post/coin_flip_test_and_ui/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://whisperd.tech/post/</loc>
-    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
+    <loc>https://whisperd.tech/categories/</loc>
   </url>
   
   <url>
     <loc>https://whisperd.tech/tags/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://whisperd.tech/</loc>
-    <lastmod>2019-08-05T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
 </urlset>
