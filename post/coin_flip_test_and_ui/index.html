@@ -62,7 +62,7 @@ pub fn add_two(a: i32) -&gt; i32 { a &#43; 2 } #[cfg(test)] mod tests { use supe
 Rust 测试代码 Rust测试代码通常会和实现代码放在同一个文件或相同的目录下，取决于测试代码的数量，更多内容可以参考Rust book。下面是一个简单的测试用例：
 pub fn add_two(a: i32) -&gt; i32 { a &#43; 2 } #[cfg(test)] mod tests { use super::*; #[test] fn test_add_two() { assert_eq!(4, add_two(2)); } }  一些需要注意的点包括：
  测试代码使用属性#[cfg(test)]进行标识 use super::*用来引入当前模块的功能代码 测试函数通过属性#[test]进行标识 断言方式有：  表达式的值为true：assert!(expression) 表达式的值是期望的值：assert_eq!(expected, expression) 表达式的值不是其它不相关的值：assert_ne!(other, expression) 异常发生：#[should_panic] Substrate提供了自定义的断言： 结果为Ok(())：assert_ok!(expreesion) 结果为Err(error_info)：assert_err!(expression, error_info) 结果为Err(error_info)，并且不修改存储状态：assert_noop!"/>
-<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
 
     </head>
@@ -632,7 +632,7 @@ const [formPayment, setFormPayment] = useState(0);
         </li>
     
         <li>
-            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
+            <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
         <li>
@@ -654,11 +654,11 @@ const [formPayment, setFormPayment] = useState(0);
 
 	
 	
-    <a class="symbol" href="https://github.com/dashengSun">
+    <a class="symbol" href="https://github.com/kaichaosun">
         <i class="fa fa-github"></i>
     </a>
     
-    <a class="symbol" href="https://twitter.com/SunWillsuna">
+    <a class="symbol" href="https://twitter.com/kaichaosun">
         <i class="fa fa-twitter"></i>
     </a>
     

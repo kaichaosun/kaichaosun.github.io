@@ -53,7 +53,7 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
 Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github."/>
-<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
 
     </head>
@@ -134,7 +134,7 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 </ul>
 
 <p>本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境，
-使用Posgres持久化数据，源代码请参考<a href="https://github.com/dashengSun/golang-web-starter">这里</a></p>
+使用Posgres持久化数据，源代码请参考<a href="https://github.com/kaichaosun/golang-web-starter">这里</a></p>
 
 <hr />
 
@@ -462,7 +462,7 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
         </li>
     
         <li>
-            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
+            <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
         <li>
@@ -480,11 +480,11 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
 
 	
 	
-    <a class="symbol" href="https://github.com/dashengSun">
+    <a class="symbol" href="https://github.com/kaichaosun">
         <i class="fa fa-github"></i>
     </a>
     
-    <a class="symbol" href="https://twitter.com/SunWillsuna">
+    <a class="symbol" href="https://twitter.com/kaichaosun">
         <i class="fa fa-twitter"></i>
     </a>
     

@@ -35,7 +35,7 @@
 
 <meta itemprop="datePublished" content="2019-01-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-01-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="267">
+<meta itemprop="wordCount" content="276">
 
 
 
@@ -44,7 +44,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Cheatsheet for Common Usage CLI"/>
 <meta name="twitter:description" content="Curl Post JSON curl -i -d &#39;{&quot;id&quot;: &quot;111111&quot;,&quot;date&quot;: &quot;2018-04-27T00:00:00&#43;10:00&quot;,&quot;des&quot;: &quot;test&quot;}]&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint curl -i -d &#39;{&quot;a&quot;:&quot;1&quot;,&quot;b&quot;:&quot;2&quot;}&#39; -H &quot;Content-Type: application/json&quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode."/>
-<meta name="twitter:site" content="@https://twitter.com/SunWillsuna"/>
+<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
 
     </head>
@@ -177,6 +177,9 @@ scp -i ~/.ssh/ssh-key root@host:~/hello ./
 
 <pre><code>// docker download file
 docker cp &lt;containerId&gt;:/file/path/within/container /host/path/target
+
+// show sha256
+docker inspect --format='{{index .RepoDigests 0}}' $IMAGE
 </code></pre>
 
 <h2 id="journalctl">Journalctl</h2>
@@ -333,7 +336,7 @@ registry = &quot;git://mirrors.ustc.edu.cn/crates.io-index&quot;
         </li>
     
         <li>
-            <a href="/post/dependency_injection_in_scala/">(WIP) Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
+            <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
         <li>
@@ -351,11 +354,11 @@ registry = &quot;git://mirrors.ustc.edu.cn/crates.io-index&quot;
 
 	
 	
-    <a class="symbol" href="https://github.com/dashengSun">
+    <a class="symbol" href="https://github.com/kaichaosun">
         <i class="fa fa-github"></i>
     </a>
     
-    <a class="symbol" href="https://twitter.com/SunWillsuna">
+    <a class="symbol" href="https://twitter.com/kaichaosun">
         <i class="fa fa-twitter"></i>
     </a>
     

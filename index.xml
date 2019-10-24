@@ -156,7 +156,7 @@ Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be 
     </item>
     
     <item>
-      <title>(WIP) Dependency Injection in Scala</title>
+      <title>Dependency Injection in Scala</title>
       <link>https://whisperd.tech/post/dependency_injection_in_scala/</link>
       <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
       
