@@ -13,10 +13,10 @@
     
     <item>
       <title>Substrate存储数据类型概览</title>
-      <link>https://whisperd.tech/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/</link>
+      <link>https://whisperd.tech/post/substrate_storage_data_type/</link>
       <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://whisperd.tech/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/</guid>
+      <guid>https://whisperd.tech/post/substrate_storage_data_type/</guid>
       <description>通过本文，你将学会：
  区块链应用和传统应用在数据存储层的不同之处； 使用区块链进行数据存储时遇到的约束； Substrate可用的存储数据类型和使用方法。  如果想更好的理解本文的内容，最好有Substrate runtime的开发经验，你可以根据官方的教程（Proof Of Existence 或 Cryptokitties）来实践，也可以参考本专栏的其它文章。需要说明的是Substrate源码正在快速迭代更新中，部分语法可能不适用。遇到任何问题欢迎到相应的渠道来咨询。本文源码位于kaichaosun/play-substrate。
 区块链数据存储的不同 在传统web应用开发领域，数据库相关内容的设计和操作是极为重要的一部分。底层数据库可以分为：
