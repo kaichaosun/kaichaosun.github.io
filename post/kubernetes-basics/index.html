@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.58.3" />
+<meta name="generator" content="Hugo 0.62.2" />
 <title>Kubernetes basics</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -23,7 +23,7 @@
 
 <meta property="og:title" content="Kubernetes basics" />
 <meta property="og:description" content="Background &amp; why kubernetes Micro services Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:
- Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services." />
+ Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&#39;s micro services." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/kubernetes-basics/" />
 <meta property="article:published_time" content="2018-06-21T00:00:00+00:00" />
@@ -32,21 +32,18 @@
 
 <meta itemprop="name" content="Kubernetes basics">
 <meta itemprop="description" content="Background &amp; why kubernetes Micro services Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:
- Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services.">
-
-
+ Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&#39;s micro services.">
 <meta itemprop="datePublished" content="2018-06-21T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-06-21T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1038">
+<meta itemprop="wordCount" content="1036">
 
 
 
 <meta itemprop="keywords" content="" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kubernetes basics"/>
 <meta name="twitter:description" content="Background &amp; why kubernetes Micro services Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:
- Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services."/>
+ Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &hellip;  So we need to make big application to be small different services depends on a few principles, that&#39;s micro services."/>
 <meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
 
@@ -85,112 +82,92 @@
 
     <aside>
         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#background-why-kubernetes">Background &amp; why kubernetes</a>
-<ul>
-<li><a href="#micro-services">Micro services</a></li>
-<li><a href="#container">Container</a></li>
-<li><a href="#cluster">Cluster</a></li>
-</ul></li>
-<li><a href="#architecture-in-kubernetes">Architecture in kubernetes</a>
-<ul>
-<li><a href="#master-node">Master node</a></li>
-<li><a href="#worker-node">Worker node</a></li>
-</ul></li>
-<li><a href="#useful-services">Useful services</a>
-<ul>
-<li><a href="#pods">Pods</a></li>
-<li><a href="#controllers">Controllers</a></li>
-<li><a href="#services">Services</a></li>
-</ul></li>
-<li><a href="#practice">Practice</a>
-<ul>
-<li><a href="#install-kubectl">Install kubectl</a></li>
-<li><a href="#use-docker-for-mac-edge">Use docker for Mac edge</a></li>
-<li><a href="#use-minikube">Use minikube</a></li>
-<li><a href="#common-used-commands">Common used commands</a></li>
-<li><a href="#access-the-dashboard">Access the dashboard</a></li>
-<li><a href="#run-sample-container">Run sample container</a></li>
-<li><a href="#pod-definition">Pod definition</a></li>
-</ul></li>
-<li><a href="#using-with-gcp-and-aws">Using with GCP and AWS</a></li>
-<li><a href="#references">References</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#background--why-kubernetes">Background & why kubernetes</a>
+      <ul>
+        <li><a href="#micro-services">Micro services</a></li>
+        <li><a href="#container">Container</a></li>
+        <li><a href="#cluster">Cluster</a></li>
+      </ul>
+    </li>
+    <li><a href="#architecture-in-kubernetes">Architecture in kubernetes</a>
+      <ul>
+        <li><a href="#master-node">Master node</a></li>
+        <li><a href="#worker-node">Worker node</a></li>
+      </ul>
+    </li>
+    <li><a href="#useful-services">Useful services</a>
+      <ul>
+        <li><a href="#pods">Pods</a></li>
+        <li><a href="#controllers">Controllers</a></li>
+        <li><a href="#services">Services</a></li>
+      </ul>
+    </li>
+    <li><a href="#practice">Practice</a>
+      <ul>
+        <li><a href="#install-kubectl">Install kubectl</a></li>
+        <li><a href="#use-docker-for-mac-edge">Use docker for Mac edge</a></li>
+        <li><a href="#use-minikube">Use minikube</a></li>
+        <li><a href="#common-used-commands">Common used commands</a></li>
+        <li><a href="#access-the-dashboard">Access the dashboard</a></li>
+        <li><a href="#run-sample-container">Run sample container</a></li>
+        <li><a href="#pod-definition">Pod definition</a></li>
+      </ul>
+    </li>
+    <li><a href="#using-with-gcp-and-aws">Using with GCP and AWS</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
 </nav>
     </aside>
     
 
     <section id="post-body">
-        
-
-<h2 id="background-why-kubernetes">Background &amp; why kubernetes</h2>
-
+        <h2 id="background--why-kubernetes">Background &amp; why kubernetes</h2>
 <h3 id="micro-services">Micro services</h3>
-
 <p>Usually we build a single &ldquo;monolith&rdquo; application at first time. As the business grows, the app becomes &ldquo;heavy&rdquo; and hard to maintain:</p>
-
 <ul>
 <li>Improved cost to communicate within different teams;</li>
 <li>Long enough time to finish the CI pipeline(run the test cases, packages, deployment);</li>
 <li>Hard to scale;</li>
 <li>&hellip;</li>
 </ul>
-
-<p>So we need to make big application to be small different services depends on a few principles, that&rsquo;s micro services. But it&rsquo;s not the silver bullet. Since there is never such thing in software development. With more and more micro services:</p>
-
+<p>So we need to make big application to be small different services depends on a few principles, that's micro services. But it's not the silver bullet. Since there is never such thing in software development. With more and more micro services:</p>
 <ul>
 <li>Take lots of cost to host all the services;</li>
-<li>Don&rsquo;t have a standard way to implement the CI/CD;</li>
+<li>Don't have a standard way to implement the CI/CD;</li>
 </ul>
-
 <h3 id="container">Container</h3>
-
 <p>Now docker and other container technology comes into our vision. Container has become popular in recent years. There are a few container standard, like Docker, <a href="https://coreos.com/rkt/">rkt</a>. The advantages by using container technology:</p>
-
 <ul>
-<li>Clean and consistent execution environment across local, staging and production.<br /></li>
+<li>Clean and consistent execution environment across local, staging and production.</li>
 <li>Resource isolation between apps.</li>
-<li>Born for micro services application design pattern.<br /></li>
+<li>Born for micro services application design pattern.</li>
 </ul>
-
 <p>Now we have solved the above questions by leveraging docker. What other problems we got?</p>
-
 <ul>
-<li>Too many pipelines for each container app;<br /></li>
-<li>Containerized app in same VM don&rsquo;t work as well as expected;<br /></li>
-<li>Costs still not reduced<br /></li>
+<li>Too many pipelines for each container app;</li>
+<li>Containerized app in same VM don't work as well as expected;</li>
+<li>Costs still not reduced</li>
 </ul>
-
 <h3 id="cluster">Cluster</h3>
-
 <p>With complex containers apps in use, we need a way to scale and manage the containers, then container orchestrator comes out, like:</p>
-
 <ul>
-<li>kubernetes<br /></li>
-<li>docker swarm<br /></li>
+<li>kubernetes</li>
+<li>docker swarm</li>
 </ul>
-
 <blockquote>
 <p>Kubernetes is a Container Orchestrator, that abstracts the underlying infrastructure (where the container are run).</p>
 </blockquote>
-
 <p>K8s通过提供易用的API对底层的架构进行了抽象，调用对应的API请求，就可以完成复杂的基于容器的服务编排和管理。</p>
-
-<p>Why use k8s such thing:
-* Standardized the Cloud Service Providers, like AWS, GCP, etc.
-* Manage resources as a whole, reduce costs.</p>
-
+<p>Why use k8s such thing:</p>
+<ul>
+<li>Standardized the Cloud Service Providers, like AWS, GCP, etc.</li>
+<li>Manage resources as a whole, reduce costs.</li>
+</ul>
 <h2 id="architecture-in-kubernetes">Architecture in kubernetes</h2>
-
-<p><img src="/static/k8s/k8s-architecture.png" alt="k8s-architecture" /></p>
-
+<p><img src="/static/k8s/k8s-architecture.png" alt="k8s-architecture"></p>
 <h3 id="master-node">Master node</h3>
-
 <p>The master node is responsible for the management of the cluster. It response to the admin operations, reflect the configuration in certain worker node, ensure the cluster state is as expected. Master node contains following components:</p>
-
 <ul>
 <li>API server: the way to interact with k8s cluster through REST requests.</li>
 <li>etcd: key-value store, used for all cluster data.</li>
@@ -198,39 +175,26 @@
 <li>controller-manager: runs controllers (one of concepts in k8s)</li>
 <li>cloud-controller-manager: runs controllers that interact with the underlying cloud providers. Details refer <a href="https://kubernetes.io/docs/concepts/overview/components/">here</a></li>
 </ul>
-
 <h3 id="worker-node">Worker node</h3>
-
 <p>There are a few components running on every worker node.</p>
-
 <ul>
 <li>kubelet: makes sure that the containers are running as expected in a worker node.</li>
 <li>kube-proxy: enables the k8s service abstraction by maintaining network rules on the host and performing connection forwarding.</li>
 <li>Container Runtime: responsible for running containers, like Docker, rkt.</li>
 </ul>
-
 <h2 id="useful-services">Useful services</h2>
-
 <h3 id="pods">Pods</h3>
-
 <p>Can be composed of one or a group of containers that share the same execution environment. Users should not create pods directly, better to use controllers like <code>Deployments</code> for self-healing.</p>
-
 <p>Features of pods:</p>
-
 <ul>
-<li>Each pod has a unique IP address in the k8s cluster.<br /></li>
-<li>Pod can have multiple containers<br /></li>
-<li>Containers in the same pod share volume, ip, port space, IPC namespace.<br /></li>
+<li>Each pod has a unique IP address in the k8s cluster.</li>
+<li>Pod can have multiple containers</li>
+<li>Containers in the same pod share volume, ip, port space, IPC namespace.</li>
 </ul>
-
 <h3 id="controllers">Controllers</h3>
-
 <p><strong>Deployment:</strong></p>
-
 <p>Declare how many replicas of a pod should be running at same time. When deployment is applied in the cluster, it will automatically spin up the request number of pods. Then monitor them, if a pod dies, the deployment will re-create a new pod to meet the request number.</p>
-
 <p>Define a Deployment:</p>
-
 <pre><code>apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -253,10 +217,7 @@ spec:
         ports:
         - containerPort: 80
 
-</code></pre>
-
-<p>Run command:</p>
-
+</code></pre><p>Run command:</p>
 <pre><code>kubectl create -f ./nginx-deployment.yml --record
 
 kubectl get deployments
@@ -275,125 +236,65 @@ kubectl autoscale deployment nginx-deployment --min=3 --max=6 --cpu-percent=80
 
 kubectl delete deployment nginx-deployment
 
-</code></pre>
-
-<p><strong>Job:</strong></p>
-
+</code></pre><p><strong>Job:</strong></p>
 <p>Run one off tasks. A Job creates Pods that run until successful termination (i.e., exit with 0)</p>
-
 <p><strong>ReplicaSet:</strong></p>
-
 <h3 id="services">Services</h3>
-
 <p>K8s services is an abstraction which defines a set of pods and how to access them.</p>
-
 <h2 id="practice">Practice</h2>
-
 <h3 id="install-kubectl">Install kubectl</h3>
-
 <p>Install kubectl on macOS:</p>
-
 <pre><code>brew install kubectl
-</code></pre>
-
-<p>Check the installation by using <code>kubectl version</code></p>
-
+</code></pre><p>Check the installation by using <code>kubectl version</code></p>
 <h3 id="use-docker-for-mac-edge">Use docker for Mac edge</h3>
-
 <p>The edge version of docker for mac, provides k8s integration, you need to <a href="https://store.docker.com/editions/community/docker-ce-desktop-mac">download</a> it, and enable the k8s feature.</p>
-
-<p><img src="/static/k8s/enable-k8s-edge.png" alt="enable-k8s-edge" /></p>
-
+<p><img src="/static/k8s/enable-k8s-edge.png" alt="enable-k8s-edge"></p>
 <p>Check kubectl are using docker-for-desktop:</p>
-
 <pre><code>kubectl config current-context
-</code></pre>
-
-<p>If not, switch to it <code>kubectl config use-context docker-for-desktop</code>.</p>
-
+</code></pre><p>If not, switch to it <code>kubectl config use-context docker-for-desktop</code>.</p>
 <p>If you are using docker edge to play with k8s, you could skip the section about <code>minikube</code>.</p>
-
 <h3 id="use-minikube">Use minikube</h3>
-
 <p><a href="(https://kubernetes.io/docs/tasks/tools/install-minikube/)">Minikube</a> is a tool to run k8s locally. I have bad experience when using minikube.</p>
-
 <p>Install minikube:</p>
-
 <pre><code>brew cask install minikube
-</code></pre>
-
-<p>Start cluster in local by using <code>minikube start</code>, or using <code>minikube start --bootstrapper=localkube</code> if there is error happens when using kubeadm bootstrapper.</p>
-
+</code></pre><p>Start cluster in local by using <code>minikube start</code>, or using <code>minikube start --bootstrapper=localkube</code> if there is error happens when using kubeadm bootstrapper.</p>
 <p>If you occurs error in start minikube, try</p>
-
 <pre><code>minikube delete
 rm -rf ~/.minikube
-</code></pre>
-
-<h3 id="common-used-commands">Common used commands</h3>
-
+</code></pre><h3 id="common-used-commands">Common used commands</h3>
 <ul>
-<li><code>kubectl cluster-info</code><br /></li>
-<li><code>kubectl get pods</code><br /></li>
-<li><code>kubectl get nodes</code><br /></li>
+<li><code>kubectl cluster-info</code></li>
+<li><code>kubectl get pods</code></li>
+<li><code>kubectl get nodes</code></li>
 </ul>
-
 <h3 id="access-the-dashboard">Access the dashboard</h3>
-
-<p>First, deploy the dashboard since it&rsquo;s not deployed by default:</p>
-
+<p>First, deploy the dashboard since it's not deployed by default:</p>
 <pre><code>kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
-</code></pre>
-
-<p>Show all the services <code>kubectl get pods --all-namespaces</code>, you should be able see <code>kubernetes-dashboard</code> is <code>running</code>.</p>
-
+</code></pre><p>Show all the services <code>kubectl get pods --all-namespaces</code>, you should be able see <code>kubernetes-dashboard</code> is <code>running</code>.</p>
 <p>Forward to the dashboard pod:</p>
-
 <pre><code>kubectl port-forward kubernetes-dashboard-7d5dcdb6d9-nkrx5 8443:8443 --namespace=kube-system
-</code></pre>
-
-<p>Access <a href="https://localhost:8443">https://localhost:8443</a>, you will see the dashboard UI.
-<img src="/static/k8s/Kubernetes_Dashboard.png" alt="dashboard" /></p>
-
+</code></pre><p>Access <a href="https://localhost:8443">https://localhost:8443</a>, you will see the dashboard UI.
+<img src="/static/k8s/Kubernetes_Dashboard.png" alt="dashboard"></p>
 <h3 id="run-sample-container">Run sample container</h3>
-
 <p>In this section, we are going to setup Nginx container for test purpose.</p>
-
 <p>Create a deployment about the container:</p>
-
 <pre><code>kubectl run hello-nginx --image=nginx --port=80
-</code></pre>
-
-<p>Expose the basic Nginx deployment as a service:</p>
-
+</code></pre><p>Expose the basic Nginx deployment as a service:</p>
 <pre><code>kubectl get deployments
 
 kubectl expose deployment hello-nginx --type=NodePort
-</code></pre>
-
-<p>You should be able to see <code>Service &quot;hello nginx&quot; exposed&quot;</code><br />
-If you switch to the dashboard, you should be able to see the added service in the Services section. Also you could use <code>kubectl get services</code> and <code>kubectl describe service hello-nginx</code>.<br />
+</code></pre><p>You should be able to see <code>Service &quot;hello nginx&quot; exposed&quot;</code> <br>
+If you switch to the dashboard, you should be able to see the added service in the Services section. Also you could use <code>kubectl get services</code> and <code>kubectl describe service hello-nginx</code>. <br>
 Want to access the Nginx? Remember to forward the port first.</p>
-
 <pre><code>kubectl get pods # show all the pods
 kubectl port-forward hello-nginx-6f9f4fc7dd-6wzlp 8080:80 # forward one of the pods
-</code></pre>
-
-<p>Scala the service:</p>
-
+</code></pre><p>Scala the service:</p>
 <pre><code>kubectl scale --replicas=3 deployment/hello-nginx
-</code></pre>
-
-<p>Go to Discovery and load balancing -&gt; Services -&gt; hello-nginx in dashboard, there should be 3 pods.</p>
-
+</code></pre><p>Go to Discovery and load balancing -&gt; Services -&gt; hello-nginx in dashboard, there should be 3 pods.</p>
 <p>Clean up:</p>
-
 <pre><code>kubectl delete service hello-nginx
 kubectl delete deployment hello-nginx
-</code></pre>
-
-<h3 id="pod-definition">Pod definition</h3>
-
+</code></pre><h3 id="pod-definition">Pod definition</h3>
 <pre><code>apiVersion: v1
 kind: Pod                                            
 metadata:
@@ -404,26 +305,20 @@ spec:
       name: sa-frontend                              
       ports:
         - containerPort: 80   
-</code></pre>
-
-<h2 id="using-with-gcp-and-aws">Using with GCP and AWS</h2>
-
+</code></pre><h2 id="using-with-gcp-and-aws">Using with GCP and AWS</h2>
 <p>Google cloud provide GKE.</p>
-
 <p>You can simply start a cluster in AWS with <a href="https://github.com/kubernetes/kops">kops</a></p>
-
 <h2 id="references">References</h2>
-
 <ul>
-<li><a href="https://medium.freecodecamp.org/learn-kubernetes-in-under-3-hours-a-detailed-guide-to-orchestrating-containers-114ff420e882">https://medium.freecodecamp.org/learn-kubernetes-in-under-3-hours-a-detailed-guide-to-orchestrating-containers-114ff420e882</a><br /></li>
-<li><a href="https://github.com/openfaas/faas-netes">https://github.com/openfaas/faas-netes</a><br /></li>
-<li><a href="https://gist.github.com/kevin-smets/b91a34cea662d0c523968472a81788f7">https://gist.github.com/kevin-smets/b91a34cea662d0c523968472a81788f7</a><br /></li>
-<li><a href="https://github.com/denverdino/k8s-for-docker-desktop">https://github.com/denverdino/k8s-for-docker-desktop</a><br /></li>
-<li><a href="https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd">https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd</a><br /></li>
-<li><a href="https://medium.com/google-cloud/kubernetes-110-your-first-deployment-bf123c1d3f8">https://medium.com/google-cloud/kubernetes-110-your-first-deployment-bf123c1d3f8</a><br /></li>
-<li><a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/comparisons.md">https://github.com/kubernetes-incubator/kubespray/blob/master/docs/comparisons.md</a><br /></li>
-<li><a href="https://blog.hasura.io/gke-vs-aks-vs-eks-411f080640dc">https://blog.hasura.io/gke-vs-aks-vs-eks-411f080640dc</a><br /></li>
-<li><a href="https://x-team.com/blog/introduction-kubernetes-architecture/">https://x-team.com/blog/introduction-kubernetes-architecture/</a><br /></li>
+<li><a href="https://medium.freecodecamp.org/learn-kubernetes-in-under-3-hours-a-detailed-guide-to-orchestrating-containers-114ff420e882">https://medium.freecodecamp.org/learn-kubernetes-in-under-3-hours-a-detailed-guide-to-orchestrating-containers-114ff420e882</a></li>
+<li><a href="https://github.com/openfaas/faas-netes">https://github.com/openfaas/faas-netes</a></li>
+<li><a href="https://gist.github.com/kevin-smets/b91a34cea662d0c523968472a81788f7">https://gist.github.com/kevin-smets/b91a34cea662d0c523968472a81788f7</a></li>
+<li><a href="https://github.com/denverdino/k8s-for-docker-desktop">https://github.com/denverdino/k8s-for-docker-desktop</a></li>
+<li><a href="https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd">https://rominirani.com/tutorial-getting-started-with-kubernetes-with-docker-on-mac-7f58467203fd</a></li>
+<li><a href="https://medium.com/google-cloud/kubernetes-110-your-first-deployment-bf123c1d3f8">https://medium.com/google-cloud/kubernetes-110-your-first-deployment-bf123c1d3f8</a></li>
+<li><a href="https://github.com/kubernetes-incubator/kubespray/blob/master/docs/comparisons.md">https://github.com/kubernetes-incubator/kubespray/blob/master/docs/comparisons.md</a></li>
+<li><a href="https://blog.hasura.io/gke-vs-aks-vs-eks-411f080640dc">https://blog.hasura.io/gke-vs-aks-vs-eks-411f080640dc</a></li>
+<li><a href="https://x-team.com/blog/introduction-kubernetes-architecture/">https://x-team.com/blog/introduction-kubernetes-architecture/</a></li>
 </ul>
 
     </section>
@@ -479,6 +374,10 @@ spec:
     
     
         <li>
+            <a href="/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
         </li>
     
@@ -514,10 +413,6 @@ spec:
             <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
-        <li>
-            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
-        </li>
-    
 </ul>
 
 
@@ -544,7 +439,7 @@ spec:
     
     <p class="small">
     
-        © Copyright 2019 Kaichao Sun
+        © Copyright 2020 Kaichao Sun
     
     </p>
 </footer>

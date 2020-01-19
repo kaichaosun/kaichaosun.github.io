@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Whisperd</title>
@@ -6,10 +6,30 @@
     <description>Recent content in Posts on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 03 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Jan 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Substrate存储数据类型概览</title>
+      <link>https://whisperd.tech/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/</link>
+      <pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/</guid>
+      <description>通过本文，你将学会：
+ 区块链应用和传统应用在数据存储层的不同之处； 使用区块链进行数据存储时遇到的约束； Substrate可用的存储数据类型和使用方法。  如果想更好的理解本文的内容，最好有Substrate runtime的开发经验，你可以根据官方的教程（Proof Of Existence 或 Cryptokitties）来实践，也可以参考本专栏的其它文章。需要说明的是Substrate源码正在快速迭代更新中，部分语法可能不适用。遇到任何问题欢迎到相应的渠道来咨询。本文源码位于kaichaosun/play-substrate。
+区块链数据存储的不同 在传统web应用开发领域，数据库相关内容的设计和操作是极为重要的一部分。底层数据库可以分为：
+ 关系型数据库，用来存储关系型数据 非关系型数据库，可以存储非关系型的多种数据形式，如键值对、半结构化数据等。  以关系型数据为例，在开发过程中通常涉及以下几个方面：
+ 数据库选型，常用的有MySQL，PostgreSQL等。 设计表结构，需要符合业务的需要并满足一定的原则（也被称为数据库的范式）。 编写SQL，或者ORM框架提供的DSL，如Rails提供的Active Record，Java生态里的MyBatis。  区块链作为去中心应用最典型的一种形式，被很多开发者所热衷。区块链应用通常有这样几个特点：
+ 发布的代码是开源可审查的。 运行的程序的是对等的，任何人都可以启动并参与到网络中。 数据库是去中心的，它增量地存储数据，就如同记账一样。 通过引入延迟和随机来保证账本同一时间只能有一个节点可以写账本，也就是工作量证明（PoW）或者权益证明（PoS）。  一个已经存在的业务，通过使用区块链的技术、去中心的思想，或许能绽放出新的生命力。
+典型的区块链应用如Bitcoin和Ethereum，它们的客户端软件依赖高效的键值对数据库，比如Bitcoin core 和 Ethereum Go 客户端使用的是LevelDB，Parity Ethereum 和 Substrate 内置的是RocksDB。
+区块链数据存储的约束 现实世界的霸权，导致了区块链应用受到大家的追捧，越来越多的开发者、创业者选择区块链作为自己业务的载体，然而它目前的基础设施还不足以支撑过于复杂的业务场景，以存储为例比如：
+ 大文件如图片、视频直接存储在链上的成本很高，我们需要其它的去中心存储方案来解决它。这就导致一个完整的去中心应用可能由多个不同的链来提供服务，而不同链之间的交互也变的不可或缺。 链式的区块存储结构不利于对历史数据的索引，如查询某个账户特定交易的所有记录，通常需要一个辅助的链外存储系统来帮助实现高效、自定义的查询功能，以满足终端用户灵活的需求。目前可用的方案只能通过传统中心化的数据库。 区块链的共识机制要求所有的节点在运行同一批事务的时候有相同的输出，而浮点数的舍入、计算、比较可能随着不同的编译器、优化程度、计算机架构出现不同的结果，所以区块链应用在进行数值运算时不能使用浮点数。更多内容，请参考Stop using floating point!，The trouble with rounding floating point numbers。  Substrate 存储单元的数据类型 现在转向今天我们关注的主题，当使用Subsrate开发一条应用链的时候，可以用到哪些存储数据类型和它们相应的操作API。
+需要指出的是，存储数据结构的设计需要结合自己的业务进行高度定制。在Substrate的开发过程中不涉及关系表的设计，而是通过它定义的一套标准化接口对数据库中存储的键值对进行增删改查的操作，开发者只需要关注自己的业务，而无需过多地关注与数据库底层的交互，真正地从繁杂的底层开发中解放出来。
+Substrate作为一个通用的区块链开发框架，提供了丰富的数据类型用于在链上存储数据。它是基于Rust语言开发的，所支持的数据类型是Rust原生类型的子集（定义在核心库和alloc库中），以及这些原生类型构成的映射类型，同时要满足一定的编解码条件。我们通常把它们分为以下四种：
+ 单值类型，可用来存储某种单一类型的值，如布尔，数值，枚举，结构体等。 简单映射类型，类型标识为map，可以存储键值对，通过key可以索引到value，并进行相应的修改。 链接映射类型，类型标识为linked_map，和map类型类似，也是用于存储键值对，不同的是linked_map可以对所有的键值对进行遍历操作，而map目前只能对值（value）进行遍历，不能遍历所有的键（key），更多内容参考这个issue: Default keys to something enumerable和之前的PR: Introduce prefixed storage with enumeration。 双键映射类型，类型标识为double_map，顾名思义，两个key，对应一个value，主要目的是通过第一个键（key 1）快速删除任意key 2的记录，也可以遍历key 1对应的所有的值。  单值类型 Rust提供了丰富的基本类型和组合类型，大部分可以在runtime开发中直接使用，并且Substrate还内置了一些独有的类型可以方便地开发去中心应用，部分类型如下表所示：</description>
+    </item>
     
     <item>
       <title>抛硬币游戏(二)：编写测试和UI</title>
@@ -22,8 +42,8 @@
  确保代码的执行符合预期； 增强重构时的信心； 从代码的使用角度，提升代码的设计等。  通常情况下，测试可以分为以下几种：
  单元测试，mock实现代码中的依赖如其它功能模块，仅测试当前函数的功能； 集成测试，不mock实现代码中的依赖，对多个功能模块整体考虑，进行测试； End to End 测试，是面向当前系统与依赖的第三方服务之间的测试。  当我们在使用Substrate进行开发时，主要会使用到单元测试和集成测试的方法，对于不同的场景，可以按需选择。一个最佳实践是，确保自定义的runtime模块有良好的测试覆盖。
 Rust 测试代码 Rust测试代码通常会和实现代码放在同一个文件或相同的目录下，取决于测试代码的数量，更多内容可以参考Rust book。下面是一个简单的测试用例：
-pub fn add_two(a: i32) -&amp;gt; i32 { a + 2 } #[cfg(test)] mod tests { use super::*; #[test] fn test_add_two() { assert_eq!(4, add_two(2)); } }  一些需要注意的点包括：
- 测试代码使用属性#[cfg(test)]进行标识 use super::*用来引入当前模块的功能代码 测试函数通过属性#[test]进行标识 断言方式有：  表达式的值为true：assert!(expression) 表达式的值是期望的值：assert_eq!(expected, expression) 表达式的值不是其它不相关的值：assert_ne!(other, expression) 异常发生：#[should_panic] Substrate提供了自定义的断言： 结果为Ok(())：assert_ok!(expreesion) 结果为Err(error_info)：assert_err!(expression, error_info) 结果为Err(error_info)，并且不修改存储状态：assert_noop!</description>
+pub fn add_two(a: i32) -&amp;gt; i32 { a + 2 } #[cfg(test)] mod tests { use super::*; #[test] fn test_add_two() { assert_eq!(4, add_two(2)); } } 一些需要注意的点包括：
+ 测试代码使用属性#[cfg(test)]进行标识 use super::*用来引入当前模块的功能代码 测试函数通过属性#[test]进行标识 断言方式有：  表达式的值为true：assert!(expression) 表达式的值是期望的值：assert_eq!(expected, expression) 表达式的值不是其它不相关的值：assert_ne!(other, expression) 异常发生：#[should_panic] Substrate提供了自定义的断言：  结果为Ok(())：assert_ok!(expreesion) 结果为Err(error_info)：assert_err!(expression, error_info) 结果为Err(error_info)，并且不修改存储状态：assert_noop!</description>
     </item>
     
     <item>
@@ -32,15 +52,13 @@ pub fn add_two(a: i32) -&amp;gt; i32 { a + 2 } #[cfg(test)] mod tests { use supe
       <pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/substrate_coin_flip/</guid>
-      <description>当我们应用区块链解决生活中问题的时候，它的价值就产生了。如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
-预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：
-curl https://getsubstrate.io -sSf | bash -s -- --fast  更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：
-git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin   创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
+      <description>**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast 更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin 创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
-substrate-node-new demo-node yourname  启动刚刚生成的节点：
-cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内容，证明你的节点创建成功：
+substrate-node-new demo-node yourname 启动刚刚生成的节点：
+cd demo-node ./target/release/demo-node --dev 如果在控制台看到这些内容，证明你的节点创建成功：
 2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &amp;quot;sup&amp;quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&amp;gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127.</description>
     </item>
     
@@ -53,18 +71,17 @@ cd demo-node ./target/release/demo-node --dev  如果在控制台看到这些内
       <description>为什么使用区块链 比特币网络作为最早的区块链网络，已经存在了十年时间。在今天，区块链技术还没有像互联网那样深刻地改变着我们每个人的生活，但是它的优势已经在一些行业和领域展现出来，比如国际支付、金融衍生品交易、预测市场、去中心化自治组织等。
 区块链或者更准确的说是去中心账本，相对于传统互联网行业有其天生的优势，比如：
  永不离线 - 安全的公有链又全球数以万计的计算机节点共同维护，理论上讲只要还有一个节点可供访问，数据就不会丢失。 开源审查 - 绝大部分区块链应用的代码都是开源的，供全世界的开发人员审查，除了能够提升代码质量，开源运动更为深远的意义在于通过分享促进着人类社会的进步。 数据加密 - 密码学技术是去中心账本的基石，保证数据不被篡改，让数据更加安全。 保护隐私 - 每一个用户都是链上的一个账户，而账户的所有信息完全由掌握账户所对应私钥的用户控制着，除非用户自己公开或者交易数据，否则数据不会泄露。 分享权益 - 用户可以通过参与到区块链的安全运转机制中，获取到原本只有中心化的企业才能拿到的权益。  随着区块链技术的不断演进，交易成本、确认时间、能源消耗、安全性、互通性都得到了极大地提升，传统互联网企业在相同的产业领域将面临着具有以上所说优势的区块链企业的挑战。
-现在处在优势地位的传统互联网&amp;rdquo;独角兽&amp;rdquo;，如果依靠区块链技术成功转型，能够确保在未来不会被轻易淘汰；
-处于劣势地位的小企业或者小团队，通过在链上实现业务，可以达到&amp;rdquo;四两拨千斤&amp;rdquo;的竞争优势。
-然而区块链的开发依赖多学科的知识技能，比如密码学、高效点对点网络、软件工程、经济学模型等等，小团队甚至是大企业都很难具备这样的人才资源，对于&amp;rdquo;上链&amp;rdquo;大多数人都是心有余而力不足。Substrate的出现就是为了解决这个问题。
+现在处在优势地位的传统互联网&amp;quot;独角兽&amp;rdquo;，如果依靠区块链技术成功转型，能够确保在未来不会被轻易淘汰；
+处于劣势地位的小企业或者小团队，通过在链上实现业务，可以达到&amp;quot;四两拨千斤&amp;quot;的竞争优势。
+然而区块链的开发依赖多学科的知识技能，比如密码学、高效点对点网络、软件工程、经济学模型等等，小团队甚至是大企业都很难具备这样的人才资源，对于&amp;quot;上链&amp;quot;大多数人都是心有余而力不足。Substrate的出现就是为了解决这个问题。
 什么是Substrate Substrate是由德国Parity公司推出的一个区块链构建框架。它实现了区块链开发领域中所遇到的大部分通用功能，比如点对点网络连接，可配置的共识算法，常用加密算法，数据库存储，交易管理等。通过使用Substrate，使普通的软件开发人员可以在短时间内建立一条属于自己的完整区块链，开发者只需要关注自己的业务逻辑，从底层复杂的技术中解放出来。
 使用Substrate构建的区块链，有一个额外的好处，就是可以轻易地连接到Parity的Polkadot公链网络，这一网络具有很多优势，比如跨链交易、共享安全等。
 Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，具有诸多优势，如内存安全、类型检查、支持编译为WASM、函数式友好、社区资料完善等优点。通过借助Rust的优良特性，也使得Substrate的性能优良、可读性高。
 你也可以参考Substrate官方参考文档来了解更多。
 下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
 搭建区块链 通过这一节，你会学到：
- 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：
-curl https://getsubstrate.io -sSf | bash   如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
-git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate   新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：</description>
+ 如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件  准备环境  Mac OS 或者Linux计算机 Git  创建和编译节点程序 方式一  安装依赖工具，如Rust环境、openssl、cmake、 llvm库：  curl https://getsubstrate.io -sSf | bash 如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate 新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行：  substrate-node-new substrate-demo-node someone 你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。</description>
     </item>
     
     <item>
@@ -74,18 +91,18 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
       
       <guid>https://whisperd.tech/post/why_oo_sucks/</guid>
       <description>原文为英文，由 Joe Armstrong 撰写。我的翻译如下。
-当我第一次接触OOP(Object Oriented Programming, 面向对象编程)概念的时候，就感到十分怀疑，但是又不知道为什么，就是感觉&amp;rdquo;不对&amp;rdquo;。当OOP变得非常流行(下面会解释原因)，批判OOP就像&amp;rdquo;在教堂诅咒&amp;ldquo;一样会被排斥。OO逐渐成为了主流编程语言必须要有的特性。
-随着Erlang变得流行，我们经常被问到&amp;rdquo;Erlang是面向对象的吗？&amp;rdquo;。真正的答案当然是&amp;rdquo;不支持&amp;rdquo;，但是我们并不敢对外这么说，为此我们发明了一系列巧妙的方式来回答这个问题，给大家营造一种Erlang在某种程度上是OO，但又不真的是OO(如果仔细听我们说的，看小字印刷的内容就知道了)。
+当我第一次接触OOP(Object Oriented Programming, 面向对象编程)概念的时候，就感到十分怀疑，但是又不知道为什么，就是感觉&amp;quot;不对&amp;rdquo;。当OOP变得非常流行(下面会解释原因)，批判OOP就像&amp;rdquo;在教堂诅咒&amp;ldquo;一样会被排斥。OO逐渐成为了主流编程语言必须要有的特性。
+随着Erlang变得流行，我们经常被问到&amp;quot;Erlang是面向对象的吗？&amp;quot;。真正的答案当然是&amp;quot;不支持&amp;rdquo;，但是我们并不敢对外这么说，为此我们发明了一系列巧妙的方式来回答这个问题，给大家营造一种Erlang在某种程度上是OO，但又不真的是OO(如果仔细听我们说的，看小字印刷的内容就知道了)。
 这个时候，我想到了 IBM 那时的老板在巴黎第七届IEEE Logic 编程会议时, 被问及IBM Prolog为什么添加了一系列面向对象的扩展，回答是：
  我们的客户希望使用面向对象的Prolog，所以我们就创造了面向对象的Prolog。
- 我当时的想法是&amp;rdquo;这么简单粗暴的回答，没有任何良心上的不安，没有灵魂深处的拷问，也没有想过这是不是正确的事情 …&amp;hellip;&amp;rdquo;
+ 我当时的想法是&amp;quot;这么简单粗暴的回答，没有任何良心上的不安，没有灵魂深处的拷问，也没有想过这是不是正确的事情 …&amp;hellip;&amp;rdquo;
 面向对象为什么糟糕 对面向对象的主要反对理由可以回归到面向对象的基本理念，在这里我会简述其中一些基本理念以及我对它们的反对意见。
 反对1. 数据结构和函数不应该捆绑在一起 对象将数据和函数绑定在了一个不可分割的单元。我认为这是一个根本性的错误，因为函数和数据属于完全不同的两个世界。为什么这么说呢？
- 函数的作用是处理一些事情。它们有输入和输出。输入和输出是数据，数据可以被函数所改变。在大多数编程语言里，函数由一系列指令所构建：&amp;rdquo;先干这个，之后再干那个……&amp;rdquo;。为了理解函数，你必须理解这些事情以何种顺序完成。(在支持延迟计算的函数式编程语言中，这个限制并不严格。) 而数据就静静的待在那里。它们什么都不做。它们本身是声明性的。&amp;rdquo;理解&amp;rdquo;数据远比&amp;rdquo;理解&amp;rdquo;函数简单的多。  为了便于理解，函数通常被当作&amp;rdquo;黑盒&amp;rdquo;处理，用来把输入转换成输出。如果我理解了输入和输出，那么我就理解了这个函数。但这不意味着我可以写出这个函数。
-通常可以认为函数是计算系统的一些&amp;rdquo;部件&amp;rdquo;，它们的职责是从一种数据结构转换成另一种数据结构。
-函数和数据是完全不同的两类&amp;rdquo;动物&amp;rdquo;，强行把它们锁在同一个&amp;rdquo;笼子&amp;rdquo;里，本身就是不正确的。
-反对2. 一切事物都必须是一个对象 想想&amp;ldquo;时间&amp;rdquo;，在面向对象编程语言中，&amp;rdquo;时间&amp;rdquo;必须是一个对象。(在Smalltalk中，甚至&amp;rdquo;3&amp;rdquo;都是一个对象)。但是在非面向对象的语言中，&amp;rdquo;时间&amp;rdquo;只是某种数据类型的实例。例如，在Erlang中，存在各种各样的时间表示形式，通过使用类型声明可以清晰明确地进行指定，如：
--deftype day() = 1..31. -deftype month() = 1..12. -deftype year() = int(). -deftype hour() = 1..24. -deftype minute() = 1..60. -deftype second() = 1..60. -deftype abstime() = {abstime,year(),month(),day(),hour(),min(),sec()}. -deftype hms() = {hms,hour(),min(),sec()}. …  注意：上面的定义不属于任意特定的对象。它们是通用的，系统中的任意的函数（译者：这里的函数并不指代已有签名的那些函数，而是对函数的概指）都可以处理以上数据结构所表示的时间。</description>
+ 函数的作用是处理一些事情。它们有输入和输出。输入和输出是数据，数据可以被函数所改变。在大多数编程语言里，函数由一系列指令所构建：&amp;ldquo;先干这个，之后再干那个……&amp;quot;。为了理解函数，你必须理解这些事情以何种顺序完成。(在支持延迟计算的函数式编程语言中，这个限制并不严格。) 而数据就静静的待在那里。它们什么都不做。它们本身是声明性的。&amp;ldquo;理解&amp;quot;数据远比&amp;quot;理解&amp;quot;函数简单的多。  为了便于理解，函数通常被当作&amp;quot;黑盒&amp;quot;处理，用来把输入转换成输出。如果我理解了输入和输出，那么我就理解了这个函数。但这不意味着我可以写出这个函数。
+通常可以认为函数是计算系统的一些&amp;quot;部件&amp;rdquo;，它们的职责是从一种数据结构转换成另一种数据结构。
+函数和数据是完全不同的两类&amp;quot;动物&amp;rdquo;，强行把它们锁在同一个&amp;quot;笼子&amp;quot;里，本身就是不正确的。
+反对2. 一切事物都必须是一个对象 想想**&amp;ldquo;时间&amp;rdquo;**，在面向对象编程语言中，&amp;ldquo;时间&amp;quot;必须是一个对象。(在Smalltalk中，甚至&amp;quot;3&amp;quot;都是一个对象)。但是在非面向对象的语言中，&amp;ldquo;时间&amp;quot;只是某种数据类型的实例。例如，在Erlang中，存在各种各样的时间表示形式，通过使用类型声明可以清晰明确地进行指定，如：
+-deftype day() = 1..31. -deftype month() = 1..12. -deftype year() = int(). -deftype hour() = 1..24. -deftype minute() = 1..60. -deftype second() = 1..60. -deftype abstime() = {abstime,year(),month(),day(),hour(),min(),sec()}. -deftype hms() = {hms,hour(),min(),sec()}. … 注意：上面的定义不属于任意特定的对象。它们是通用的，系统中的任意的函数（译者：这里的函数并不指代已有签名的那些函数，而是对函数的概指）都可以处理以上数据结构所表示的时间。</description>
     </item>
     
     <item>
@@ -104,12 +121,12 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
 智能合约的作用也是同样的，只不过合约的形式发生了改变，不再是纸质签名，而是存储在分布式账本中的代码。
 为什么要选择智能合约而不是传统合约形式呢？原因我总结大致有以下几个：
  去中心化的合约形式，摆脱了对代理人的依赖，解决了对于代理人的信任问题。 分布式账本这个跨越一切国家和地区的技术，使得自由的全球化经济更进一步发展，智能合约能够方便快速地满足多种行业全球化经济的需要。 智能合约以开源代码的形式展示，使得合约更加可信、透明。 新的组织、文化、工作形式，如远程协作办公，开源社团，需要一个更加灵活地协作方式，这里应用智能合约恰到好处。 正是由于代码运行在公共的分布式账本上，满足条件的合约可以随时执行，永不离线。  合约解决了现实生活中的协作问题，智能合约则将协作的广度和深度推向了另一个高度。
-以太坊和Solidity 以太坊 分布式账本和智能合约的结合，创造了一种新的协作方式。以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。
+以太坊和Solidity 以太坊 **分布式账本和智能合约的结合，创造了一种新的协作方式。**以太坊作为一个公共的分布式账本，提供了一个可复制的虚拟机环境，用来执行智能合约代码，保证了每个节点执行相同的代码和交易请求会得到相同的结果。
 当应用程序的功能由智能合约来提供时，也常被认为是去中心化应用 (DAPP)。DApp前端依然是传统的HTML、CSS、JavaScript “三剑客”，通过发送请求到以太坊节点，上传数据到链上，响应链上的事件如智能合约代码的执行结果。对于DApp的后端，从传统中心化的服务器转变为链上可执行的智能合约，通过执行链上的交易请求完成用户账户或者合约账户状态的改变。
 越来越多的领域采用DApp的解决方案，例如：
  知识产权保护 金融衍生品交易 去中心化的自治组织  Solidity编程语言 所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过交互式编程环境熟悉Solidity的基本用法
 基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
-    举例 解释 操作     bool true / false  !, &amp;amp;&amp;amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {</description>
+    举例 解释 操作     bool true / false  !, &amp;amp;&amp;amp;, ||, ==, !=   int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作   address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call   contract contract MyContract {&amp;hellip;} 合约类，是对函数和数据的封装 new   bytes(1~32) &amp;ldquo;foo&amp;rdquo; 定长字节数组    bytes &amp;ldquo;bar&amp;rdquo; 变长字节数组    string &amp;ldquo;this is a string&amp;rdquo; UTF-8字符串     枚举类型 例如：</description>
     </item>
     
     <item>
@@ -118,7 +135,7 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
       <pubDate>Sat, 30 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/shell-cheatsheet/</guid>
-      <description>Variables NAME=&amp;quot;John&amp;quot; echo $NAME echo &amp;quot;$NAME&amp;quot; echo &amp;quot;${NAME}!&amp;quot;  String NAME=&amp;quot;John&amp;quot; echo &amp;quot;Hi $NAME&amp;quot; #=&amp;gt; Hi John echo &#39;Hi $NAME&#39; #=&amp;gt; Hi $NAME  Array Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;) Fruits[0]=&amp;quot;Apple&amp;quot; Fruits[1]=&amp;quot;Banana&amp;quot; Fruits[2]=&amp;quot;Orange&amp;quot;  And / Or git commit &amp;amp;&amp;amp; git push git commit || echo &amp;quot;Commit failed&amp;quot;  Function get_name() { echo &amp;quot;John&amp;quot; } echo &amp;quot;You are $(get_name)&amp;quot; myfunc() { echo &amp;quot;hello $1&amp;quot; } # Same as above (alternate syntax) function myfunc() { echo &amp;quot;hello $1&amp;quot; } myfunc &amp;quot;John&amp;quot;  If else if [[ -z ${APP_ENV} ]]; then echo &amp;quot;The APP_ENV should be set to prod or staging, got: $0&amp;quot; exit -1 fi if [[ -z &amp;quot;$string&amp;quot; ]]; then echo &amp;quot;String is empty&amp;quot; elif [[ -n &amp;quot;$string&amp;quot; ]]; then echo &amp;quot;String is not empty&amp;quot; fi  Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !</description>
+      <description>Variables NAME=&amp;#34;John&amp;#34; echo $NAME echo &amp;#34;$NAME&amp;#34; echo &amp;#34;${NAME}!&amp;#34; String NAME=&amp;#34;John&amp;#34; echo &amp;#34;Hi $NAME&amp;#34; #=&amp;gt; Hi John echo &amp;#39;Hi $NAME&amp;#39; #=&amp;gt; Hi $NAME Array Fruits=(&amp;#39;Apple&amp;#39; &amp;#39;Banana&amp;#39; &amp;#39;Orange&amp;#39;) Fruits[0]=&amp;#34;Apple&amp;#34; Fruits[1]=&amp;#34;Banana&amp;#34; Fruits[2]=&amp;#34;Orange&amp;#34; And / Or git commit &amp;amp;&amp;amp; git push git commit || echo &amp;#34;Commit failed&amp;#34; Function get_name() { echo &amp;#34;John&amp;#34; } echo &amp;#34;You are $(get_name)&amp;#34; myfunc() { echo &amp;#34;hello $1&amp;#34; } # Same as above (alternate syntax) function myfunc() { echo &amp;#34;hello $1&amp;#34; } myfunc &amp;#34;John&amp;#34; If else if [[ -z ${APP_ENV} ]]; then echo &amp;#34;The APP_ENV should be set to prod or staging, got: $0&amp;#34; exit -1 fi if [[ -z &amp;#34;$string&amp;#34; ]]; then echo &amp;#34;String is empty&amp;#34; elif [[ -n &amp;#34;$string&amp;#34; ]]; then echo &amp;#34;String is not empty&amp;#34; fi Condition [[ -z STRING ]]	# Empty string [[ -n STRING ]]	# Not empty string [[ STRING == STRING ]]	# Equal [[ STRING !</description>
     </item>
     
     <item>
@@ -129,10 +146,9 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
       <guid>https://whisperd.tech/post/master_linux_os/</guid>
       <description>[TOC]
 Install Manjaro Linux Burn image to usb stick: Steps:
- Download mankato - GNOME here
- Check the hash and compare with the hash provided on the site:
-shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso  Burn the iso file to USB stick on Linux
-diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m   On windows, use rufus with dd mode.
+  Download mankato - GNOME here
+  Check the hash and compare with the hash provided on the site:
+  shasum ./manjaro-gnome-18.0.2-stable-x86_64.iso  Burn the iso file to USB stick on Linux  diskutil list sudo umount /dev/disk2s4 sudo dd if=/path/image.iso of=/dev/rdisk2s4 bs=1m On windows, use rufus with dd mode.
 Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be disable，F10 save and exit Press F12 select start using USB.</description>
     </item>
     
@@ -161,7 +177,7 @@ Bios set  Insert USB stick Restart pc with F2 into bios，set secure boot to be 
       <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/dependency_injection_in_scala/</guid>
-      <description>What&amp;rsquo;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
+      <description>What&#39;s Dependency Injection Dependency Injection is also known as DI for short. It is all about the way to integrate code between provider and consumer.
 Usually, the provider provides functionalities that encapsulated in a function or an object. The consumer, in the opposite it needs to have a provider to do some work.
 Then we say that the consumer dependent on the specific provider. There are two options that we can get this provider:</description>
     </item>
@@ -172,7 +188,7 @@ Then we say that the consumer dependent on the specific provider. There are two 
       <pubDate>Thu, 17 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/error_handling_in_scala/</guid>
-      <description>What&amp;rsquo;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
+      <description>What&#39;s Exception Exception are objects that defined in Java to represent error scenarios. Unhandled exceptions could terminate the program or show default message from http server.
 Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth library without much effort. It still worth to know the exception hirarachy originated in Java. It will help us deal with error scenarios.
  Throwable is the root of exception hirarchy. Exception subclasses represent errors that the program can recover from.</description>
     </item>
@@ -183,7 +199,7 @@ Excpetion hirarchy Since Scala is designed to reuse Java standard or thirdparth 
       <pubDate>Wed, 02 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://whisperd.tech/post/common-cli-cheatsheet/</guid>
-      <description>Curl Post JSON curl -i -d &#39;{&amp;quot;id&amp;quot;: &amp;quot;111111&amp;quot;,&amp;quot;date&amp;quot;: &amp;quot;2018-04-27T00:00:00+10:00&amp;quot;,&amp;quot;des&amp;quot;: &amp;quot;test&amp;quot;}]&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint curl -i -d &#39;{&amp;quot;a&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;b&amp;quot;:&amp;quot;2&amp;quot;}&#39; -H &amp;quot;Content-Type: application/json&amp;quot; -X POST https://endpoint  Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP();  MongoDB mongod --dbpath ~/data/mongodb  Zip / tar zip filename.zip file1 file2  tar -czvf name-of-archive.tar.gz /path/to/directory-or-file   -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode.</description>
+      <description>Curl Post JSON curl -i -d &amp;#39;{&amp;#34;id&amp;#34;: &amp;#34;111111&amp;#34;,&amp;#34;date&amp;#34;: &amp;#34;2018-04-27T00:00:00+10:00&amp;#34;,&amp;#34;des&amp;#34;: &amp;#34;test&amp;#34;}]&amp;#39; -H &amp;#34;Content-Type: application/json&amp;#34; -X POST https://endpoint curl -i -d &amp;#39;{&amp;#34;a&amp;#34;:&amp;#34;1&amp;#34;,&amp;#34;b&amp;#34;:&amp;#34;2&amp;#34;}&amp;#39; -H &amp;#34;Content-Type: application/json&amp;#34; -X POST https://endpoint Database MySQL SHOW VARIABLES; SELECT FROM_UNIXTIME(1510289234); SELECT NOW(); SELECT UNIX_TIMESTAMP(); MongoDB mongod --dbpath ~/data/mongodb Zip / tar zip filename.zip file1 file2 tar -czvf name-of-archive.tar.gz /path/to/directory-or-file  -c: Create an archive. -z: Compress the archive with gzip. -v: Display progress in the terminal while creating the archive, also known as “verbose” mode.</description>
     </item>
     
     <item>
@@ -203,7 +219,7 @@ If there is one rule in software development, i think that must be no silver bul
       
       <guid>https://whisperd.tech/post/kubernetes-basics/</guid>
       <description>Background &amp;amp; why kubernetes Micro services Usually we build a single &amp;ldquo;monolith&amp;rdquo; application at first time. As the business grows, the app becomes &amp;ldquo;heavy&amp;rdquo; and hard to maintain:
- Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &amp;hellip;  So we need to make big application to be small different services depends on a few principles, that&amp;rsquo;s micro services.</description>
+ Improved cost to communicate within different teams; Long enough time to finish the CI pipeline(run the test cases, packages, deployment); Hard to scale; &amp;hellip;  So we need to make big application to be small different services depends on a few principles, that&#39;s micro services.</description>
     </item>
     
     <item>
@@ -217,17 +233,15 @@ If there is one rule in software development, i think that must be no silver bul
 本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。
 部署 IRI headless 全节点 服务器选择 目前国内的服务器提供商包括阿里云，华为，青云等， 国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。
 运行 IRI 全节点配置至少是:
- 1vCPU
- 4G 内存
- 1M 带宽
- 硬盘40G目前是足够的，可以按需添加数据盘
- ECS 实例规格应为独享
-  操作系统选择适合自己的Linux发行版，建议使用每种发行版的最新版本，如Ubuntu 16.04。
+ 1vCPU 4G 内存 1M 带宽 硬盘40G目前是足够的，可以按需添加数据盘 ECS 实例规格应为独享  操作系统选择适合自己的Linux发行版，建议使用每种发行版的最新版本，如Ubuntu 16.04。
 本文所使用配置，如下图： 服务器的基础环境准备 1.安装Git，在IRI搭建时并没有用到，之后tangle网络生成snapshot时需要：
-sudo apt-get update sudo apt-get install git  2.安装screen，管理服务器终端产生的session
-sudo apt-get install screen  3.安装Java， Oracle JDK，添加Oracle的包管理仓库并更新，
-sudo add-apt-repository ppa:webupd8team/java sudo apt-get update  安装JDK8，
-sudo apt-get install oracle-java8-installer  查看安装，</description>
+sudo apt-get update sudo apt-get install git 2.安装screen，管理服务器终端产生的session
+sudo apt-get install screen 3.安装Java， Oracle JDK，添加Oracle的包管理仓库并更新，
+sudo add-apt-repository ppa:webupd8team/java sudo apt-get update 安装JDK8，
+sudo apt-get install oracle-java8-installer 查看安装，
+java -version 下载并运行IRI 1.IRI的Github release链接：https://github.com/iotaledger/iri/releases
+下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。
+2.添加配置内容，保存至本地iri.config：</description>
     </item>
     
     <item>
@@ -239,17 +253,18 @@ sudo apt-get install oracle-java8-installer  查看安装，</description>
       <description>concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
 在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
 计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
+![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)
 Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提供goroutine和channel来实现并发编程模式。
-Goroutine Goroutine由Go运行时创建和管理，是用于调度CPU资源的“最小单元”，和OS的线程相比更轻量[2]:
- 内存消耗更低只需2kB初始栈空间，而线程初始要1Mb的空间； 由golang的运行时环境创建和销毁，更加廉价，不支持手动管理； 切换效率更高等。 Goroutine和线程的关系如下图所示：  我们可以轻松地创建成百上千的goroutine，而不会降低程序的执行效率。
+ Goroutine Goroutine由Go运行时创建和管理，是用于调度CPU资源的“最小单元”，和OS的线程相比更轻量[2]:
+ 内存消耗更低只需2kB初始栈空间，而线程初始要1Mb的空间； 由golang的运行时环境创建和销毁，更加廉价，不支持手动管理； 切换效率更高等。 Goroutine和线程的关系如下图所示：  ![goroutine vs thread](/static/go-channel/goroutine vs thread.png)
+我们可以轻松地创建成百上千的goroutine，而不会降低程序的执行效率。
 通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上go关键字，方便地创建一个goroutine。
 main函数本身也是一个goroutine[3]。
 举例如下：
-package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;begin main goroutine&amp;quot;) go hello() fmt.Println(&amp;quot;end main goroutine&amp;quot;) } func hello() { fmt.Println(&amp;quot;begin hello goroutine&amp;quot;) }  输出：
-begin main goroutine end main goroutine  上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
+package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;begin main goroutine&amp;quot;) go hello() fmt.Println(&amp;quot;end main goroutine&amp;quot;) } func hello() { fmt.Println(&amp;quot;begin hello goroutine&amp;quot;) } 输出：
+begin main goroutine end main goroutine 上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
 可以在go hello()后面添加：
-time.Sleep(1 * time.Second)  就可以正常输出begin hello goroutine。
-channel Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。</description>
+time.Sleep(1 * time.</description>
     </item>
     
     <item>
@@ -260,7 +275,7 @@ channel Go提供了一种机制能够使goroutine之间进行通信和同步，�
       <guid>https://whisperd.tech/post/golang-docker-ci/</guid>
       <description>背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
-Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &amp;hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
+ Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &amp;hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github.</description>
     </item>
     
@@ -274,9 +289,9 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 Javascript 运行时概念  栈(Stack)  和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
   单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件    堆(Heap)  堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
  事件队列(event queue)  当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等, 会添加callback函数到event queue。
- Event loop  Event loop将event queue中按照&amp;rdquo;FIFO&amp;rdquo;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
+ Event loop  Event loop将event queue中按照&amp;quot;FIFO&amp;quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
 MDN提供的伪代码实现如下:
-while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&amp;rdquo;一等公民&amp;rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
+while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&amp;quot;一等公民&amp;rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
 function bar(cb) { setTimeout(cb,2000); } function foo() { console.</description>
     </item>
     
@@ -287,13 +302,12 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console.</description
       
       <guid>https://whisperd.tech/post/hackday/</guid>
       <description>加入 Thoughtworks 之后，经历了REA (realestate.com.au) 三次 Hackday，感受很多，我觉得有必要和大家分享一下这么优秀的想法和活动。
-什么是 hackday？ Hackday，有时也被叫做 Hackathon，是IT行业一个类似于“百米冲刺”的活动，主要目的在于围绕一个主题，进行软件设计和开发，持续时间不等，可以是一天，也可以是一周，以2~3天为多数。活动范围有企业内部、社区等。
-REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂，每个季度会举办一次hackday，为期三天，除非有相当紧急的线上问题需要处理，一般来说，大部分人都是能够参与其中的。很难想象一个公司所有人三天里都在搞“飞机”，不干“正事”，但是这不也正体现了一个企业的文化、魄力和产品的稳定性吗？ hackday 流程大致是这样的，
- 团队内部 brain storm，收集 idea； 投票选出意向参与的项目，分配资源； 公司范围的 Stand up，阐述 idea，并找到目标资源（UX，前端Dev，后端Dev，等等） 团队内部 Kick off，划分 story MVP 功能开发（结对编程），一般为 1.5~2天 制作 Showcase 海报 公司范围 Showcase 拉票，投票 根据项目的情况，少数会进入产品，多数会成为工作生活的小助手，解决工作生活中的痛点。  我参与的 hackday 项目 印象比较深刻的是4个:
+ 什么是 hackday？ Hackday，有时也被叫做 Hackathon，是IT行业一个类似于“百米冲刺”的活动，主要目的在于围绕一个主题，进行软件设计和开发，持续时间不等，可以是一天，也可以是一周，以2~3天为多数。活动范围有企业内部、社区等。
+ REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂，每个季度会举办一次hackday，为期三天，除非有相当紧急的线上问题需要处理，一般来说，大部分人都是能够参与其中的。很难想象一个公司所有人三天里都在搞“飞机”，不干“正事”，但是这不也正体现了一个企业的文化、魄力和产品的稳定性吗？ hackday 流程大致是这样的，
+ 团队内部 brain storm，收集 idea； 投票选出意向参与的项目，分配资源； 公司范围的 Stand up，阐述 idea，并找到目标资源（UX，前端Dev，后端Dev，等等） 团队内部 Kick off，划分 story MVP 功能开发（结对编程），一般为 1.5~2天 制作 Showcase 海报 公司范围 Showcase 拉票，投票 根据项目的情况，少数会进入产品，多数会成为工作生活的小助手，解决工作生活中的痛点。   我参与的 hackday 项目 印象比较深刻的是4个:
  CI 监控  REA很多CI跑在 Bamboo 和 Buildkite上，每个平台提供的监控数据和展示层不能整合，其中一次hackday，我们就自己动手去整合两个平台的数据，外加一个数据展示的web页面，加上炫酷的动画，完美~ 并且成功的在最近一次hackday前“卖”给了别的team。
  Slack robot  监控红了，build 挂了，总得人来修吧，但是这个人呢，太忙，又或者不知道是自己在值班，怎么办呢，我们就让一个robot定时去拉build的状态，一旦红了，去slack上@他，叫醒他，“嘿，哥们，你不修，你好意思吗?”
- 奔跑吧，会员卡  每当我走进xx超市、xx火锅，结账那一刻，我是拒绝的，尼玛这么点东西，怎么这么贵？现在好了， 我们搞了VIP会员卡共享的公众号，可以注册登记每个人的会员卡，可以供大家查询使用。虽然还有很多功能需要完善，但是我们已经迈出了一大步，对吗？PS: 公众号还在公司内测，一旦公开第一时间跟大家分享。
- Gulugulu  用过 Bilibili 吧，弹幕啊，吐槽啊，段子手啊，想象一下大家一起吐槽百度主站的情形， 一个字形容，爽。Gulugulu就有这样的功能，只要引入一个Javascript文件，done。具体请参考Github gulugulu和gulugulu-chrome。</description>
+ 奔跑吧，会员卡  每当我走进xx超市、xx火锅，结账那一刻，我是拒绝的，尼玛这么点东西，怎么这么贵？现在好了， 我们搞了VIP会员卡共享的公众号，可以注册登记每个人的会员卡，可以供大家查询使用。虽然还有很多功能需要完善，但是我们已经迈出了一大步，对吗？PS: 公众号还在公司内测，一旦公开第一时间跟大家分享。</description>
     </item>
     
     <item>
@@ -304,10 +318,10 @@ REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂
       <guid>https://whisperd.tech/post/hexo/</guid>
       <description>Note: 已经使用Hugo创建博客。
 Hexo 是一个博客框架,支持Markdown,通过命令行可以快速部署, 有大量的主题和插件,让你的blog飞起来&amp;hellip;
-安装 Hexo sudo npm install -g hexo-cli hexo -v  创建 Github blog project 个人习惯将source和deploy分开,在github上创建一个blog项目(保存源文件)和 xxx.github.io项目(用于部署Github个人主页,xxx为用户名,具体参考Github Pages)
-hexo init blog cd blog npm install  Run server $ hexo s  More info: Server
+安装 Hexo sudo npm install -g hexo-cli hexo -v 创建 Github blog project 个人习惯将source和deploy分开,在github上创建一个blog项目(保存源文件)和 xxx.github.io项目(用于部署Github个人主页,xxx为用户名,具体参考Github Pages)
+hexo init blog cd blog npm install Run server $ hexo s More info: Server
 设置博客页个人信息 我的配置文件 _config.yml
-# Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.</description>
+# Site title: Whisperd subtitle: description: make a difference author: kaichao language: timezone: Asia/Shanghai # URL ## If your site is put in a subdirectory, set url as &#39;http://yoursite.com/child&#39; and root as &#39;/child/&#39; url: https://kaichaosun.</description>
     </item>
     
   </channel>

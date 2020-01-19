@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.58.3" />
+<meta name="generator" content="Hugo 0.62.2" />
 <title>Golang web 开发</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -24,7 +24,7 @@
 <meta property="og:title" content="Golang web 开发" />
 <meta property="og:description" content="背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
-Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
+ Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/golang-docker-ci/" />
@@ -35,23 +35,20 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 <meta itemprop="name" content="Golang web 开发">
 <meta itemprop="description" content="背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
-Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
+ Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github.">
-
-
 <meta itemprop="datePublished" content="2017-07-05T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-07-05T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="376">
+<meta itemprop="wordCount" content="375">
 
 
 
 <meta itemprop="keywords" content="" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Golang web 开发"/>
 <meta name="twitter:description" content="背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
  Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR  本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
-Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
+ Why Go?  性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &hellip;  Golang第三方框架选择  Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具:    GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能    数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger  Dockerize 开发环境 发布应用 base image Dockerfile如下:
 FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github."/>
 <meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
@@ -91,55 +88,46 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 
     <aside>
         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#背景">背景</a></li>
-<li><a href="#why-go">Why Go?</a></li>
-<li><a href="#golang第三方框架选择">Golang第三方框架选择</a></li>
-<li><a href="#dockerize-开发环境">Dockerize 开发环境</a>
-<ul>
-<li><a href="#发布应用-base-image">发布应用 base image</a></li>
-<li><a href="#发布数据库-base-image">发布数据库 base image</a></li>
-<li><a href="#启动服务">启动服务</a></li>
-</ul></li>
-<li><a href="#业务实现">业务实现</a>
-<ul>
-<li><a href="#router">Router</a></li>
-<li><a href="#handler">handler</a></li>
-<li><a href="#model">model</a></li>
-<li><a href="#建立db连接">建立DB连接</a></li>
-<li><a href="#view">View</a></li>
-<li><a href="#测试">测试</a></li>
-</ul></li>
-<li><a href="#总结">总结</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#why-go">Why Go?</a></li>
+    <li><a href="#golang第三方框架选择">Golang第三方框架选择</a></li>
+    <li><a href="#dockerize-开发环境">Dockerize 开发环境</a>
+      <ul>
+        <li><a href="#发布应用-base-image">发布应用 base image</a></li>
+        <li><a href="#发布数据库-base-image">发布数据库 base image</a></li>
+        <li><a href="#启动服务">启动服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#业务实现">业务实现</a>
+      <ul>
+        <li><a href="#router">Router</a></li>
+        <li><a href="#handler">handler</a></li>
+        <li><a href="#model">model</a></li>
+        <li><a href="#建立db连接">建立DB连接</a></li>
+        <li><a href="#view">View</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
 </nav>
     </aside>
     
 
     <section id="post-body">
-        
-
-<h2 id="背景">背景</h2>
-
+        <h2 id="背景">背景</h2>
 <p>Web应用长期以来是Ruby、Java、PHP等开发语言的战场。</p>
-
 <ul>
 <li>Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难；</li>
 <li>Java 20多年的发展历程，各种第三方库、框架健全，运行效率高，
 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。</li>
 <li>PHP，TL;DR</li>
 </ul>
-
 <p>本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境，
 使用Posgres持久化数据，源代码请参考<a href="https://github.com/kaichaosun/golang-web-starter">这里</a></p>
-
-<hr />
-
+<hr>
 <h2 id="why-go">Why Go?</h2>
-
 <ul>
 <li>性能优越</li>
 <li>部署简单，只需要将打包好的二进制文件部署到服务器上</li>
@@ -150,34 +138,26 @@ FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热
 <li>函数作为“一等公民”</li>
 <li>&hellip;</li>
 </ul>
-
 <h2 id="golang第三方框架选择">Golang第三方框架选择</h2>
-
 <ul>
 <li>Web框架: <a href="https://github.com/gin-gonic/gin">Gin</a>，性能卓越，API友好，功能完善</li>
 <li>ORM: <a href="https://github.com/jinzhu/gorm">GORM</a>,支持多种主流数据库方言，文档清晰</li>
 <li>包管理工具: <a href="https://github.com/Masterminds/glide">Glide</a>,类似于Ruby的bundler或者NodeJS中的npm</li>
 <li>测试工具:</li>
 </ul>
-
 <blockquote>
 <ul>
 <li><a href="https://github.com/smartystreets/goconvey">GoConvey</a>,符合BDD测试风格,支持浏览器测试结果的可视化</li>
 <li><a href="https://github.com/stretchr/testify">Testify</a>,提供丰富的断言和Mock功能</li>
 </ul>
 </blockquote>
-
 <ul>
 <li>数据库migration: <a href="github.com/mattes/migrate">migrate</a></li>
 <li>日志工具: <a href="https://github.com/Sirupsen/logrus">Logrus</a>,结构化日志输出，完全兼容标准库的logger</li>
 </ul>
-
 <h2 id="dockerize-开发环境">Dockerize 开发环境</h2>
-
 <h3 id="发布应用-base-image">发布应用 base image</h3>
-
 <p>Dockerfile如下:</p>
-
 <pre><code>FROM golang:1.8
 
 # 包管理工具
@@ -189,24 +169,18 @@ RUN go get github.com/codegangsta/gin
 # 数据库migration工具
 RUN go get -u -d github.com/mattes/migrate/cli github.com/lib/pq
 RUN go build -tags 'postgres' -o /usr/local/bin/migrate github.com/mattes/migrate/cli
-</code></pre>
-
-<h3 id="发布数据库-base-image">发布数据库 base image</h3>
-
+</code></pre><h3 id="发布数据库-base-image">发布数据库 base image</h3>
 <p>Dockerfile如下：</p>
-
 <pre><code>FROM postgres:9.6
 
 # 初始化数据库配置
 COPY ./init-user-db.sh /docker-entrypoint-initdb.d/init-user-db.sh
-</code></pre>
-
-<h3 id="启动服务">启动服务</h3>
-
-<p>运行<code>auto/dev</code>即可启动，具体的配置如下。
-* docker-compose.yml：</p>
-
-<pre><code class="language-bash">version: &quot;3&quot;
+</code></pre><h3 id="启动服务">启动服务</h3>
+<p>运行<code>auto/dev</code>即可启动，具体的配置如下。</p>
+<ul>
+<li>docker-compose.yml：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">version: <span style="color:#e6db74">&#34;3&#34;</span>
 
 services:
   dev:
@@ -214,15 +188,15 @@ services:
       - db
     image: 415148673/golang-web-base-image@sha256:18de5eb058a54b64f32d58b57a1eb3009b9ed49d90bd53056b95c5c8d5894cd6
     environment:
-      - PORT=8080
-      - DB_USER=docker
-      - DB_HOST=db
-      - DB_NAME=webstarter
+      - PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">8080</span>
+      - DB_USER<span style="color:#f92672">=</span>docker
+      - DB_HOST<span style="color:#f92672">=</span>db
+      - DB_NAME<span style="color:#f92672">=</span>webstarter
     volumes:
       - .:/go/src/golang-web-starter
     working_dir: /go/src/golang-web-starter
     ports:
-      - &quot;3000:3000&quot;
+      - <span style="color:#e6db74">&#34;3000:3000&#34;</span>
     command: gin
 
   db:
@@ -232,146 +206,114 @@ services:
 
 volumes:
   go-web-starter-db-cache:
-</code></pre>
-
-<ul>
-<li><p>安装第三方依赖所需的glide配置文件，通过在容器内运行<code>glide install</code>进行安装：</p>
-
+</code></pre></div><ul>
+<li>安装第三方依赖所需的glide配置文件，通过在容器内运行<code>glide install</code>进行安装：</li>
+</ul>
 <pre><code>package: golang-web-starter
 import:
 - package: github.com/gin-gonic/gin
-version: ^1.1.4
+  version: ^1.1.4
 - package: github.com/jinzhu/gorm
-version: ^1.0.0
+  version: ^1.0.0
 - package: github.com/mattes/migrate
-version: ^3.0.1
+  version: ^3.0.1
 - package: github.com/lib/pq
 - package: github.com/stretchr/testify
-version: ^1.1.4
+  version: ^1.1.4
 - package: github.com/smartystreets/goconvey
-version: ^1.6.2
-</code></pre></li>
-
-<li><p>数据库migration的脚本：</p>
-
-<pre><code>migrate -source file://migrations -database &quot;postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:5432/$DB_NAME?sslmode=disable&quot; up
-</code></pre></li>
+  version: ^1.6.2
+</code></pre><ul>
+<li>数据库migration的脚本：</li>
 </ul>
-
-<hr />
-
+<pre><code>migrate -source file://migrations -database &quot;postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:5432/$DB_NAME?sslmode=disable&quot; up
+</code></pre><hr>
 <h2 id="业务实现">业务实现</h2>
-
 <h3 id="router">Router</h3>
-
-<pre><code class="language-go">router := gin.Default()
-router.GET(&quot;/&quot;, handler.ShowIndexPage)        // 显示主页面
-router.GET(&quot;/book/:book_id&quot;, handler.GetBook) // 通过id查询书籍
-router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
-</code></pre>
-
-<h3 id="handler">handler</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">router</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Default</span>()
+<span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/&#34;</span>, <span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">ShowIndexPage</span>)        <span style="color:#75715e">// 显示主页面
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">GET</span>(<span style="color:#e6db74">&#34;/book/:book_id&#34;</span>, <span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">GetBook</span>) <span style="color:#75715e">// 通过id查询书籍
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">router</span>.<span style="color:#a6e22e">POST</span>(<span style="color:#e6db74">&#34;/book&#34;</span>, <span style="color:#a6e22e">handler</span>.<span style="color:#a6e22e">SaveBook</span>)        <span style="color:#75715e">// 保存书籍
+</span></code></pre></div><h3 id="handler">handler</h3>
 <p>以保存书籍为例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaveBook</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">Context</span>)  {
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">book</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Book</span>
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Bind</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">book</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#75715e">// 调用model的保存方法
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">book</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">SaveBook</span>(<span style="color:#a6e22e">book</span>)   
 
-<pre><code class="language-go">func SaveBook(c *gin.Context)  {
-	var book models.Book
-	if err := c.Bind(&amp;book); err == nil {
-    // 调用model的保存方法
-		book := models.SaveBook(book)   
-
-    // 绑定前端页面所需数据
-		utility.Render(
-			c,
-			gin.H{
-				&quot;title&quot;: &quot;Save&quot;,
-				&quot;payload&quot;: book,
+    <span style="color:#75715e">// 绑定前端页面所需数据
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">utility</span>.<span style="color:#a6e22e">Render</span>(
+			<span style="color:#a6e22e">c</span>,
+			<span style="color:#a6e22e">gin</span>.<span style="color:#a6e22e">H</span>{
+				<span style="color:#e6db74">&#34;title&#34;</span>: <span style="color:#e6db74">&#34;Save&#34;</span>,
+				<span style="color:#e6db74">&#34;payload&#34;</span>: <span style="color:#a6e22e">book</span>,
 			},
-			&quot;success.html&quot;,
+			<span style="color:#e6db74">&#34;success.html&#34;</span>,
 		)
-	} else {
-    // 异常处理
-		c.AbortWithError(http.StatusBadRequest, err)
+	} <span style="color:#66d9ef">else</span> {
+    <span style="color:#75715e">// 异常处理
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">AbortWithError</span>(<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>, <span style="color:#a6e22e">err</span>)
 	}
 }
-</code></pre>
-
-<h3 id="model">model</h3>
-
-<pre><code class="language-go">func SaveBook(book Book) Book {
-  // 持久化数据
-	utility.DB().Create(&amp;book)
-	return book;
+</code></pre></div><h3 id="model">model</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SaveBook</span>(<span style="color:#a6e22e">book</span> <span style="color:#a6e22e">Book</span>) <span style="color:#a6e22e">Book</span> {
+  <span style="color:#75715e">// 持久化数据
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">utility</span>.<span style="color:#a6e22e">DB</span>().<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">book</span>)
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">book</span>;
 }
-</code></pre>
-
-<h3 id="建立db连接">建立DB连接</h3>
-
-<pre><code class="language-go">func DB() *gorm.DB {
-	dbInfo := fmt.Sprintf(
-		&quot;host=%s user=%s dbname=%s sslmode=disable password=%s&quot;,
-		os.Getenv(&quot;DB_HOST&quot;),
-		os.Getenv(&quot;DB_USER&quot;),
-		os.Getenv(&quot;DB_NAME&quot;),
-		os.Getenv(&quot;DB_PASSWORD&quot;),
+</code></pre></div><h3 id="建立db连接">建立DB连接</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">DB</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span> {
+	<span style="color:#a6e22e">dbInfo</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(
+		<span style="color:#e6db74">&#34;host=%s user=%s dbname=%s sslmode=disable password=%s&#34;</span>,
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;DB_HOST&#34;</span>),
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;DB_USER&#34;</span>),
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;DB_NAME&#34;</span>),
+		<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;DB_PASSWORD&#34;</span>),
 	)
-	db, err := gorm.Open(&quot;postgres&quot;, dbInfo)
-	if err != nil {
-		log.Fatal(err)
+	<span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#e6db74">&#34;postgres&#34;</span>, <span style="color:#a6e22e">dbInfo</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
 	}
-	return db
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>
 }
-</code></pre>
+</code></pre></div><h3 id="view">View</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">body</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;container&#34;</span>&gt;
+		{{ template &#34;menu.html&#34; . }}
+		&lt;<span style="color:#f92672">label</span>&gt;保存成功&lt;/<span style="color:#f92672">label</span>&gt;
+		&lt;<span style="color:#f92672">h1</span>&gt;{{.payload.Title}}&lt;/<span style="color:#f92672">h1</span>&gt;
+		&lt;<span style="color:#f92672">p</span>&gt;{{.payload.Author}}&lt;/<span style="color:#f92672">p</span>&gt;
+		{{ template &#34;footer.html&#34; .}}
+&lt;/<span style="color:#f92672">body</span>&gt;
+</code></pre></div><h3 id="测试">测试</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">TestSaveBook</span>(<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">T</span>) {
+	<span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">utility</span>.<span style="color:#a6e22e">GetRouter</span>(<span style="color:#66d9ef">true</span>)
+	<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">POST</span>(<span style="color:#e6db74">&#34;/book&#34;</span>, <span style="color:#a6e22e">SaveBook</span>)
 
-<h3 id="view">View</h3>
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;The params can not convert to model book&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#e6db74">&#34;/book&#34;</span>, <span style="color:#66d9ef">nil</span>)
+		<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>)
 
-<pre><code class="language-html">&lt;body class=&quot;container&quot;&gt;
-		{{ template &quot;menu.html&quot; . }}
-		&lt;label&gt;保存成功&lt;/label&gt;
-		&lt;h1&gt;{{.payload.Title}}&lt;/h1&gt;
-		&lt;p&gt;{{.payload.Author}}&lt;/p&gt;
-		{{ template &quot;footer.html&quot; .}}
-&lt;/body&gt;
-</code></pre>
-
-<h3 id="测试">测试</h3>
-
-<pre><code class="language-go">func TestSaveBook(t *testing.T) {
-	r := utility.GetRouter(true)
-	r.POST(&quot;/book&quot;, SaveBook)
-
-	Convey(&quot;The params can not convert to model book&quot;, t, func() {
-		req, _ := http.NewRequest(&quot;POST&quot;, &quot;/book&quot;, nil)
-		req.Header.Set(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;)
-
-		utility.TestHTTPResponse(r, req, func(w *httptest.ResponseRecorder) {
-			So(w.Code, ShouldEqual, http.StatusBadRequest)
+		<span style="color:#a6e22e">utility</span>.<span style="color:#a6e22e">TestHTTPResponse</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">req</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">ResponseRecorder</span>) {
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Code</span>, <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusBadRequest</span>)
 		})
 	})
 
-	Convey(&quot;The params can convert to model book&quot;, t, func() {
-		req, _ := http.NewRequest(&quot;POST&quot;, &quot;/book&quot;, strings.NewReader(&quot;title=Hello world&amp;author=will&quot;))
-		req.Header.Set(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;)
-		utility.TestHTTPResponse(r, req, func(w *httptest.ResponseRecorder) {
-			p, _ := ioutil.ReadAll(w.Body)
-			So(w.Code, ShouldEqual, http.StatusOK)
-			So(string(p), ShouldContainSubstring, &quot;保存成功&quot;)
+	<span style="color:#a6e22e">Convey</span>(<span style="color:#e6db74">&#34;The params can convert to model book&#34;</span>, <span style="color:#a6e22e">t</span>, <span style="color:#66d9ef">func</span>() {
+		<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">NewRequest</span>(<span style="color:#e6db74">&#34;POST&#34;</span>, <span style="color:#e6db74">&#34;/book&#34;</span>, <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#e6db74">&#34;title=Hello world&amp;author=will&#34;</span>))
+		<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">Header</span>.<span style="color:#a6e22e">Set</span>(<span style="color:#e6db74">&#34;Content-Type&#34;</span>, <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>)
+		<span style="color:#a6e22e">utility</span>.<span style="color:#a6e22e">TestHTTPResponse</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">req</span>, <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">httptest</span>.<span style="color:#a6e22e">ResponseRecorder</span>) {
+			<span style="color:#a6e22e">p</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">ioutil</span>.<span style="color:#a6e22e">ReadAll</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Body</span>)
+			<span style="color:#a6e22e">So</span>(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Code</span>, <span style="color:#a6e22e">ShouldEqual</span>, <span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">StatusOK</span>)
+			<span style="color:#a6e22e">So</span>(string(<span style="color:#a6e22e">p</span>), <span style="color:#a6e22e">ShouldContainSubstring</span>, <span style="color:#e6db74">&#34;保存成功&#34;</span>)
 		})
 	})
 }
-</code></pre>
-
-<h2 id="总结">总结</h2>
-
+</code></pre></div><h2 id="总结">总结</h2>
 <p>Go生态之活跃令我大开眼界,著名的应用如ocker, Ethereum都是使用Go编写的。</p>
-
 <p>使用Go进行web开发的过程，感觉和搭积木一样，一个合适的第三方库需要在多个候选库中精心筛选,
 众多的开源作者共同构建了一个“模块”王国。在这样的环境中, 编程变成了一件很自由的事情。</p>
-
 <p>由于Go的标准库提供了很多内置的实用命令如<code>go fmt</code>,<code>go test</code>,让编程变得异常轻松,简直是强迫型程序员的“天堂”。</p>
-
 <p>当然Go语言还处在发展过程中,也有许多不完善的地方,比如</p>
-
 <ul>
 <li>缺少标准的依赖管理工具（正在开发的<code>dep</code>）</li>
 <li>非中心化的依赖仓库会出现由于某个依赖被删除导致应用不可用等。</li>
@@ -430,6 +372,10 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
     
     
         <li>
+            <a href="/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
         </li>
     
@@ -465,10 +411,6 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
             <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
-        <li>
-            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
-        </li>
-    
 </ul>
 
 
@@ -495,7 +437,7 @@ router.POST(&quot;/book&quot;, handler.SaveBook)        // 保存书籍
     
     <p class="small">
     
-        © Copyright 2019 Kaichao Sun
+        © Copyright 2020 Kaichao Sun
     
     </p>
 </footer>

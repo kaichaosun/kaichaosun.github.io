@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.58.3" />
+<meta name="generator" content="Hugo 0.62.2" />
 <title>Understand Monad in Functional Programming</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -33,8 +33,6 @@ If there is one rule in software development, i think that must be no silver bul
 <meta itemprop="name" content="Understand Monad in Functional Programming">
 <meta itemprop="description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
 If there is one rule in software development, i think that must be no silver bullet.">
-
-
 <meta itemprop="datePublished" content="2018-10-13T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-10-13T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1791">
@@ -42,7 +40,6 @@ If there is one rule in software development, i think that must be no silver bul
 
 
 <meta itemprop="keywords" content="" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Understand Monad in Functional Programming"/>
 <meta name="twitter:description" content="Why Functional Programming? The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have procedure-oriented programming. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with OOP with the SOLID principles to guide the daily dev work.
@@ -85,51 +82,47 @@ If there is one rule in software development, i think that must be no silver bul
 
     <aside>
         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#why-functional-programming">Why Functional Programming?</a></li>
-<li><a href="#pure-function">Pure Function</a></li>
-<li><a href="#function-composition">Function Composition</a></li>
-<li><a href="#monad">Monad</a>
-<ul>
-<li><a href="#define-a-monad">Define a Monad</a></li>
-<li><a href="#monad-laws">Monad Laws</a></li>
-</ul></li>
-<li><a href="#free-monad">Free Monad</a>
-<ul>
-<li><a href="#why-need-it">Why need it</a></li>
-<li><a href="#how-to-use">How to use</a></li>
-<li><a href="#what-s-the-implementation">What&rsquo;s the implementation</a></li>
-</ul></li>
-<li><a href="#monad-transformer">Monad transformer</a>
-<ul>
-<li><a href="#why-need-it-1">Why need it</a></li>
-<li><a href="#how-to-use-1">How to use</a></li>
-<li><a href="#what-s-the-implementation-1">What&rsquo;s the implementation</a></li>
-</ul></li>
-<li><a href="#extensible-effect">Extensible Effect</a>
-<ul>
-<li><a href="#why-need-it-2">Why need it</a></li>
-<li><a href="#how-to-use-2">How to use</a></li>
-<li><a href="#what-s-the-implementation-2">What&rsquo;s the implementation</a></li>
-</ul></li>
-<li><a href="#reference">Reference</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#why-functional-programming">Why Functional Programming?</a></li>
+    <li><a href="#pure-function">Pure Function</a></li>
+    <li><a href="#function-composition">Function Composition</a></li>
+    <li><a href="#monad">Monad</a>
+      <ul>
+        <li><a href="#define-a-monad">Define a Monad</a></li>
+        <li><a href="#monad-laws">Monad Laws</a></li>
+      </ul>
+    </li>
+    <li><a href="#free-monad">Free Monad</a>
+      <ul>
+        <li><a href="#why-need-it">Why need it</a></li>
+        <li><a href="#how-to-use">How to use</a></li>
+        <li><a href="#whats-the-implementation">What's the implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#monad-transformer">Monad transformer</a>
+      <ul>
+        <li><a href="#why-need-it-1">Why need it</a></li>
+        <li><a href="#how-to-use-1">How to use</a></li>
+        <li><a href="#whats-the-implementation-1">What's the implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#extensible-effect">Extensible Effect</a>
+      <ul>
+        <li><a href="#why-need-it-2">Why need it</a></li>
+        <li><a href="#how-to-use-2">How to use</a></li>
+        <li><a href="#whats-the-implementation-2">What's the implementation</a></li>
+      </ul>
+    </li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
 </nav>
     </aside>
     
 
     <section id="post-body">
-        
-
-<h2 id="why-functional-programming">Why Functional Programming?</h2>
-
+        <h2 id="why-functional-programming">Why Functional Programming?</h2>
 <p>The facination of doing programming is to solve the exist problems. Revisit the history of software development, at first place we have <strong>procedure-oriented programming</strong>. As the system becomes bigger, the codebase is so hard to maintain and adding new features. Then a few genius comes out the idea with <strong>OOP</strong> with the <strong>SOLID</strong> principles to guide the daily dev work.</p>
-
 <p>If there is one rule in software development, i think that must be <code>no silver bullet</code>. The OOP has ruled the system development for more that 20 years (The number comes from JAVA becomes popularity). More and more devs find object-oriented programming sucks:</p>
-
 <ul>
 <li>Mutable state of instances, variables</li>
 <li>Hard to conform with SOLID when business logic becomes messy</li>
@@ -137,370 +130,265 @@ If there is one rule in software development, i think that must be no silver bul
 <li>So many lines of code</li>
 <li>Boring &hellip;</li>
 </ul>
-
 <p>Now people are thinking how to solve them:</p>
-
 <ul>
 <li>There is no mutable variables</li>
 <li>The functionality should be encapsulated</li>
-<li>I don&rsquo;t want exception, the compute unit (AKA function) should be pure</li>
+<li>I don't want exception, the compute unit (AKA function) should be pure</li>
 <li>The code should be clean</li>
 <li>Easy to test</li>
 <li>Parallelism</li>
 <li>Make me happy &hellip;</li>
 </ul>
-
-<p>That&rsquo;s what the FP try to implemented. What&rsquo;s the design principle for FP? Category theory. It&rsquo;s simple as its name. As the saying goes, there is no silver bullet.</p>
-
+<p>That's what the FP try to implemented. What's the design principle for FP? Category theory. It's simple as its name. As the saying goes, there is no silver bullet.</p>
 <p>What sucks in FP?</p>
-
 <ul>
 <li>Learning curve</li>
 <li>Too young</li>
 <li>The world is not perfect</li>
 <li><em>Please add more</em> &hellip;</li>
 </ul>
-
 <h2 id="pure-function">Pure Function</h2>
-
 <p>A function can be pure or impure. Usually we use pure function in FP as much as we can. There are a few conditions for pure function:</p>
-
 <ol>
 <li>Give the same input argument to the function, it should always return same output.</li>
 <li>The function should only depends on the return value to change the whole &ldquo;world&rdquo;, which means no side effects. The side effects can be an exception, mutate an object, IO operation, etc.</li>
 </ol>
-
 <p>I will give one example to understand pure function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#75715e">// pure function
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> add<span style="color:#f92672">(</span>i<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">,</span> y<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">=</span>
+  i <span style="color:#f92672">+</span> y
 
-<pre><code class="language-scala">// pure function
-def add(i: Int, y: Int) =
-  i + y
-
-// impure function
-def addAndPrint(i: Int, y: Int) = {
-  val result = i + y
-  println(s&quot;The result is ${result}&quot;)
+<span style="color:#75715e">// impure function
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> addAndPrint<span style="color:#f92672">(</span>i<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">,</span> y<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Int</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">val</span> result <span style="color:#66d9ef">=</span> i <span style="color:#f92672">+</span> y
+  println<span style="color:#f92672">(</span><span style="color:#e6db74">s&#34;</span><span style="color:#e6db74">The result is </span><span style="color:#e6db74">${</span>result<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
   result
-}
-</code></pre>
-
-<p>A short summary is:</p>
-
+<span style="color:#f92672">}</span>
+</code></pre></div><p>A short summary is:</p>
 <ul>
 <li>Output depends only on input.</li>
 <li>No side effects</li>
 </ul>
-
-<p>With pure function, it&rsquo;s possible to make sure our program is <strong>referential transparency</strong> which means that an expression always evaluate to the same result in any piece of code. Referential transparency makes the code easier to reason about.</p>
-
-<p>What can be done if we don&rsquo;t read any inputs and write any outputs?</p>
-
+<p>With pure function, it's possible to make sure our program is <strong>referential transparency</strong> which means that an expression always evaluate to the same result in any piece of code. Referential transparency makes the code easier to reason about.</p>
+<p>What can be done if we don't read any inputs and write any outputs?</p>
 <p>Usually, we can refactor impure function to be pure by adding a proper <strong>context</strong> (here a context is what a value wrapped in.) like <strong>Option</strong>, <strong>cats.effect.IO</strong> or <strong>monix.eval.Task</strong> to the function return type. Some cases are:</p>
-
 <ul>
 <li>Use <strong>Either</strong> to represent exception</li>
 <li>Use <strong>IO</strong> or <strong>Task</strong> to delay the I/O operation</li>
 </ul>
-
 <h2 id="function-composition">Function Composition</h2>
-
 <p>Basicly, FP is about fucntion composition. That means:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#75715e">// A, B, C are types
+</span><span style="color:#75715e"></span>f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#66d9ef">-&gt;</span> <span style="color:#66d9ef">B</span><span style="color:#f92672">,</span> 
+g<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">B</span> <span style="color:#66d9ef">-&gt;</span> <span style="color:#66d9ef">C</span><span style="color:#f92672">,</span> 
+g compose f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#66d9ef">-&gt;</span> <span style="color:#66d9ef">C</span>
+</code></pre></div><p>But how should we deal with the values wrapped in context like Option or IO? There could be lots of scheleton code if we still use simple function composition in this case. Then, there comes <strong>monad</strong>, it opens the context and keeps the context same in the following computation. Usually we use for comprehension to simplise the control flow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">val</span> result <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+  a <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">.</span>apply<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#75715e">// this is equal to Some(1)
+</span><span style="color:#75715e"></span>  b <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">.</span>apply<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> a <span style="color:#f92672">+</span> b
 
-<pre><code class="language-scala">// A, B, C are types
-f: A -&gt; B, 
-g: B -&gt; C, 
-g compose f: A -&gt; C
-</code></pre>
-
-<p>But how should we deal with the values wrapped in context like Option or IO? There could be lots of scheleton code if we still use simple function composition in this case. Then, there comes <strong>monad</strong>, it opens the context and keeps the context same in the following computation. Usually we use for comprehension to simplise the control flow:</p>
-
-<pre><code class="language-scala">val result = for {
-  a &lt;- Option.apply(1) // this is equal to Some(1)
-  b &lt;- Option.apply(2)
-} yield a + b
-
-// result is: Some(3)
-</code></pre>
-
-<h2 id="monad">Monad</h2>
-
+<span style="color:#75715e">// result is: Some(3)
+</span></code></pre></div><h2 id="monad">Monad</h2>
 <h3 id="define-a-monad">Define a Monad</h3>
-
 <p>In this section, we will implement an &lsquo;ugly&rsquo; Option monad, without considering any variance in type marameter:</p>
-
-<pre><code class="language-scala">sealed trait Option[+A] {
-  def flatMap[B](func: A =&gt; Option[B]): Option[B] =
-    this match {
-      case None =&gt; None
-      case Some(a) =&gt; func(a)
-    }
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">+</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">def</span> flatMap<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>func<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#66d9ef">this</span> <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">None</span> <span style="color:#66d9ef">=&gt;</span> <span style="color:#a6e22e">None</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Some</span><span style="color:#f92672">(</span>a<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span> func<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>
+    <span style="color:#f92672">}</span>
   
-  def map[B](func: A =&gt; B): Option[B] =
-    this match {
-      case None =&gt; None
-      case Some(a) =&gt; Some(func(a))
-    }
-}
-case object None extends Option[Nothing]
-case class Some[T](value: T) extends Option[T]
-</code></pre>
-
-<p>The usage of this either monad:</p>
-
-<pre><code class="language-scala">val finalEither = for {
-    a &lt;- Right[String, Int](1)
-    b &lt;- Right[String, Int](2)
-  } yield (a + b)
-</code></pre>
-
-<h3 id="monad-laws">Monad Laws</h3>
-
+  <span style="color:#66d9ef">def</span> map<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>func<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> B<span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#66d9ef">this</span> <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">None</span> <span style="color:#66d9ef">=&gt;</span> <span style="color:#a6e22e">None</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Some</span><span style="color:#f92672">(</span>a<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span> <span style="color:#a6e22e">Some</span><span style="color:#f92672">(</span>func<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">object</span> <span style="color:#a6e22e">None</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Nothing</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Some</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>value<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">T</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span>
+</code></pre></div><p>The usage of this either monad:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">val</span> finalEither <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+    a <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">Right</span><span style="color:#f92672">[</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
+    b <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">Right</span><span style="color:#f92672">[</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> <span style="color:#f92672">(</span>a <span style="color:#f92672">+</span> b<span style="color:#f92672">)</span>
+</code></pre></div><h3 id="monad-laws">Monad Laws</h3>
 <p>When defining monad, it should follow a few laws, these laws maintain the basics of a category.</p>
-
 <p>Identity law:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> unit<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">def</span> f<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
 
-<pre><code class="language-scala">def unit[A](a: A): F[A]
-def f[A](a: A): F[A]
-
-// With same a, the following equation should be met.
-f(a).flatMap(unit) == f(a)
-unit(a).flatMap(f) == f(a)
-</code></pre>
-
-<p>Associative law:</p>
-
-<pre><code class="language-scala">// x is a F[A]
-x.flatMap(f).flatMap(g) == x.flatMap(a =&gt; f(a).flatMap(g))
-</code></pre>
-
-<h2 id="free-monad">Free Monad</h2>
-
+<span style="color:#75715e">// With same a, the following equation should be met.
+</span><span style="color:#75715e"></span>f<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>unit<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> f<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>
+unit<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>f<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> f<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>
+</code></pre></div><p>Associative law:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#75715e">// x is a F[A]
+</span><span style="color:#75715e"></span>x<span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>f<span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>g<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> x<span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>a <span style="color:#66d9ef">=&gt;</span> f<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>g<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+</code></pre></div><h2 id="free-monad">Free Monad</h2>
 <h3 id="why-need-it">Why need it</h3>
-
 <p>There is developers want to decomose data from the interpreter, which means there can be multiple interpretation for the same piece of computation. It would be helpful if we want to invoke different computation in different place. In this case, we need to wrap such computation in a context which can be composed with the computation in same context. This is a special monad which is called free. Typically ADT is common used to represent the data.</p>
-
 <h3 id="how-to-use">How to use</h3>
-
 <p>In practice, we can view <strong>Free</strong> as a clever way of forming <strong>Monad</strong> with providing <strong>Functor</strong>.</p>
-
 <p>Following steps show the way to use free monad provides by cats library (need to add <code>cats-free</code> dependency):</p>
-
 <p>1. Create custome ADT to represent the operation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">KVStoreA</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
 
-<pre><code class="language-scala">   sealed trait KVStoreA[A]
+<span style="color:#a6e22e">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Put</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> value<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">T</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">KVStoreA</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Get</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">KVStoreA</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Delete</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">KVStoreA</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span>
+</code></pre></div><p>2. Define free monad with Free for above ADT:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">import</span> cats.free.Free
+
+<span style="color:#75715e">// We haven&#39;t define Functor, but use CoYoneda[F, _] is functor for any F.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">KVStoreA</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
+</code></pre></div><p>3. Using <strong>liftF</strong> Create DSL related functions which return above free monad:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">import</span> cats.free.Free.liftF
    
-   case class Put[T](key: String, value: T) extends KVStoreA[Unit]
-   case class Get[T](key: String) extends KVStoreA[Option[T]]
-   case class Delete(key: String) extends KVStoreA[Unit]
-</code></pre>
-
-<p>2. Define free monad with Free for above ADT:</p>
-
-<pre><code class="language-scala">   import cats.free.Free
+<span style="color:#75715e">// Put returns nothing (i.e. Unit).
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> put<span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> value<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">T</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  liftF<span style="color:#f92672">[</span><span style="color:#66d9ef">KVStoreA</span>, <span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#a6e22e">Put</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
    
-   // We haven't define Functor, but use CoYoneda[F, _] is functor for any F.
-   type KVStore[A] = Free[KVStoreA, A]
-</code></pre>
-
-<p>3. Using <strong>liftF</strong> Create DSL related functions which return above free monad:</p>
-
-<pre><code class="language-scala">   import cats.free.Free.liftF
-      
-   // Put returns nothing (i.e. Unit).
-   def put[T](key: String, value: T): KVStore[Unit] =
-     liftF[KVStoreA, Unit](Put[T](key, value))
-      
-   // Get returns a T value.
-   def get[T](key: String): KVStore[Option[T]] =
-     liftF[KVStoreA, Option[T]](Get[T](key))
-      
-   // Delete returns nothing (i.e. Unit).
-   def delete(key: String): KVStore[Unit] =
-     liftF(Delete(key))
-      
-   // Update composes get and set, and returns nothing.
-   def update[T](key: String, f: T =&gt; T): KVStore[Unit] =
-     for {
-       vMaybe &lt;- get[T](key)
-        _ &lt;- vMaybe.map(v =&gt; put[T](key, f(v))).getOrElse(Free.pure(()))
-     } yield ()
-</code></pre>
-
-<p>4. Build a program with constructed function:</p>
-
-<pre><code class="language-scala">   def program: KVStore[Option[Int]] =
-     for {
-       _ &lt;- put(&quot;cats&quot;, 2)
-       _ &lt;- update[Int](&quot;cats&quot;, (_ + 12))
-       n &lt;- get[Int](&quot;cats&quot;)
-       _ &lt;- delete(&quot;cats&quot;)
-     } yield n
-</code></pre>
-
-<p>5. Implement the interpreter which is a natural transformation to interpret each operation:</p>
-
-<pre><code class="language-scala">   import cats.{Id, ~&gt;}
-   import scala.collection.mutable
+<span style="color:#75715e">// Get returns a T value.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> get<span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  liftF<span style="color:#f92672">[</span><span style="color:#66d9ef">KVStoreA</span>, <span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#a6e22e">Get</span><span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
    
-   def impureCompiler: KVStoreA ~&gt; Id  =
-     new (KVStoreA ~&gt; Id) {
+<span style="color:#75715e">// Delete returns nothing (i.e. Unit).
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> delete<span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  liftF<span style="color:#f92672">(</span><span style="color:#a6e22e">Delete</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
    
-       // a very simple (and imprecise) key-value store
-       val kvs = mutable.Map.empty[String, Any]
-   
-       def apply[A](fa: KVStoreA[A]): Id[A] =
-         fa match {
-           case Put(key, value) =&gt;
-             println(s&quot;put($key, $value)&quot;)
-             kvs(key) = value
-             ()
-           case Get(key) =&gt;
-             println(s&quot;get($key)&quot;)
-             kvs.get(key).map(_.asInstanceOf[A])
-           case Delete(key) =&gt;
-             println(s&quot;delete($key)&quot;)
-             kvs.remove(key)
-             ()
-         }
-     }
-</code></pre>
+<span style="color:#75715e">// Update composes get and set, and returns nothing.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">def</span> update<span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">String</span><span style="color:#f92672">,</span> f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">T</span> <span style="color:#f92672">=&gt;</span> T<span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Unit</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+    vMaybe <span style="color:#66d9ef">&lt;-</span> get<span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span>
+     <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">&lt;-</span> vMaybe<span style="color:#f92672">.</span>map<span style="color:#f92672">(</span>v <span style="color:#66d9ef">=&gt;</span> put<span style="color:#f92672">[</span><span style="color:#66d9ef">T</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> f<span style="color:#f92672">(</span>v<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span>getOrElse<span style="color:#f92672">(</span><span style="color:#a6e22e">Free</span><span style="color:#f92672">.</span>pure<span style="color:#f92672">(</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> <span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+</code></pre></div><p>4. Build a program with constructed function:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> program<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStore</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">&lt;-</span> put<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cats&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">&lt;-</span> update<span style="color:#f92672">[</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cats&#34;</span><span style="color:#f92672">,</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">_</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">12</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+    n <span style="color:#66d9ef">&lt;-</span> get<span style="color:#f92672">[</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cats&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">_</span> <span style="color:#66d9ef">&lt;-</span> delete<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cats&#34;</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> n
+</code></pre></div><p>5. Implement the interpreter which is a natural transformation to interpret each operation:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">import</span> cats.<span style="color:#f92672">{</span><span style="color:#a6e22e">Id</span><span style="color:#f92672">,</span> <span style="color:#f92672">~&gt;</span><span style="color:#f92672">}</span>
+<span style="color:#66d9ef">import</span> scala.collection.mutable
 
-<p>6. Run the program with defined interpreter:</p>
+<span style="color:#66d9ef">def</span> impureCompiler<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStoreA</span> <span style="color:#66d9ef">~&gt;</span> <span style="color:#66d9ef">Id</span>  <span style="color:#f92672">=</span>
+  <span style="color:#66d9ef">new</span> <span style="color:#f92672">(</span><span style="color:#a6e22e">KVStoreA</span> <span style="color:#f92672">~&gt;</span> <span style="color:#a6e22e">Id</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
 
-<pre><code class="language-scala">   // Free[_] is just a recursive structure, which similar to List.
-   val result: Option[Int] = program.foldMap(impureCompiler)
-</code></pre>
+    <span style="color:#75715e">// a very simple (and imprecise) key-value store
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">val</span> kvs <span style="color:#66d9ef">=</span> mutable<span style="color:#f92672">.</span><span style="color:#a6e22e">Map</span><span style="color:#f92672">.</span>empty<span style="color:#f92672">[</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">Any</span><span style="color:#f92672">]</span>
 
-<h3 id="what-s-the-implementation">What&rsquo;s the implementation</h3>
-
+    <span style="color:#66d9ef">def</span> apply<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>fa<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">KVStoreA</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Id</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+      fa <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Put</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span>
+          println<span style="color:#f92672">(</span><span style="color:#e6db74">s&#34;</span><span style="color:#e6db74">put(</span><span style="color:#e6db74">$key</span><span style="color:#e6db74">, </span><span style="color:#e6db74">$value</span><span style="color:#e6db74">)</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
+          kvs<span style="color:#f92672">(</span>key<span style="color:#f92672">)</span> <span style="color:#66d9ef">=</span> value
+          <span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Get</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span>
+          println<span style="color:#f92672">(</span><span style="color:#e6db74">s&#34;</span><span style="color:#e6db74">get(</span><span style="color:#e6db74">$key</span><span style="color:#e6db74">)</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
+          kvs<span style="color:#f92672">.</span>get<span style="color:#f92672">(</span>key<span style="color:#f92672">)</span><span style="color:#f92672">.</span>map<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>asInstanceOf<span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Delete</span><span style="color:#f92672">(</span>key<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span>
+          println<span style="color:#f92672">(</span><span style="color:#e6db74">s&#34;</span><span style="color:#e6db74">delete(</span><span style="color:#e6db74">$key</span><span style="color:#e6db74">)</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
+          kvs<span style="color:#f92672">.</span>remove<span style="color:#f92672">(</span>key<span style="color:#f92672">)</span>
+          <span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">}</span>
+  <span style="color:#f92672">}</span>
+</code></pre></div><p>6. Run the program with defined interpreter:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#75715e">// Free[_] is just a recursive structure, which similar to List.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">val</span> result<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Int</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> program<span style="color:#f92672">.</span>foldMap<span style="color:#f92672">(</span>impureCompiler<span style="color:#f92672">)</span>
+</code></pre></div><h3 id="whats-the-implementation">What's the implementation</h3>
 <p>The implementation of free monad, details go to this <a href="https://underscore.io/blog/posts/2015/04/23/deriving-the-free-monad.html">post</a>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">sealed</span> <span style="color:#66d9ef">trait</span> <span style="color:#a6e22e">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">def</span> flatMap<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">(</span><span style="color:#66d9ef">implicit</span> functor<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Functor</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#66d9ef">this</span> <span style="color:#66d9ef">match</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Return</span><span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>  <span style="color:#66d9ef">=&gt;</span> f<span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>
+      <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Suspend</span><span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span> <span style="color:#a6e22e">Suspend</span><span style="color:#f92672">(</span>s map <span style="color:#f92672">(</span><span style="color:#66d9ef">_</span> flatMap f<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
 
-<pre><code class="language-scala">sealed trait Free[F[_], A] {
-  def flatMap[B](f: A =&gt; Free[F, B])(implicit functor: Functor[F]): Free[F, B] =
-    this match {
-      case Return(a)  =&gt; f(a)
-      case Suspend(s) =&gt; Suspend(s map (_ flatMap f))
-    }
-}
+<span style="color:#66d9ef">final</span> <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Return</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">final</span> <span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Suspend</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>s<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
 
-final case class Return[F[_], A](a: A) extends Free[F, A]
-final case class Suspend[F[_], A](s: F[Free[F, A]]) extends Free[F, A]
-
-object Free {
-  def point[F[_]](a: A): Free[F, A] = Return[F, A](a)
-}
-</code></pre>
-
-<p>Usually, we will have a lot of ADTs in the code, but unrelated monad do not compose. Cats has given an option to chain the different ADT by using <strong>coproduct</strong> type. We are not going to discuss the detail here, but worth to dig it more <a href="https://www.47deg.com/blog/fp-for-the-average-joe-part3-free-monads/">here</a> if you are interested.</p>
-
+<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">Free</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">def</span> point<span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Free</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">Return</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Usually, we will have a lot of ADTs in the code, but unrelated monad do not compose. Cats has given an option to chain the different ADT by using <strong>coproduct</strong> type. We are not going to discuss the detail here, but worth to dig it more <a href="https://www.47deg.com/blog/fp-for-the-average-joe-part3-free-monads/">here</a> if you are interested.</p>
 <h2 id="monad-transformer">Monad transformer</h2>
-
 <h3 id="why-need-it-1">Why need it</h3>
-
 <p>Imagine there is a piece of code to fetch the address of a user by its id:</p>
-
-<pre><code class="language-scala">def findUserById(id: Long): Future[User] = ???
-def findAddressByUser(user: User): Future[Address] = ???
-</code></pre>
-
-<p>We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in <code>flatMap</code>.</p>
-
-<pre><code class="language-scala">def findAddressByUserId(id: Long): Future[Address] =
-  for {
-    user    &lt;- findUserById(id)
-    address &lt;- findAddressByUser(user)
-  } yield address
-</code></pre>
-
-<p>There is a situation that we can&rsquo;t find a user if the id is not exist, event the address can be optional for a user.</p>
-
-<pre><code class="language-scala">def findUserById(id: Long): Future[Option[User]] = ???
-def findAddressByUser(user: User): Future[Option[Address]] = ???
-</code></pre>
-
-<p>Then the workflow need to be changed:</p>
-
-<pre><code class="language-scala">def findAddressByUserId(id: Long): Future[Option[Address]] =
-  findUserById(id).flatMap {
-    case Some(user) =&gt; findAddressByUser(user)
-    case None       =&gt; Future.successful(None)
-  }
-</code></pre>
-
-<p>It&rsquo;s working but not as beautiful as previous. Now we comes to monad transformers.</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> findUserById<span style="color:#f92672">(</span>id<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">User</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">???</span>
+<span style="color:#66d9ef">def</span> findAddressByUser<span style="color:#f92672">(</span>user<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">User</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Address</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">???</span>
+</code></pre></div><p>We can use for-comprehension to control the workflow since they share the same context Future and Future has a build-in <code>flatMap</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> findAddressByUserId<span style="color:#f92672">(</span>id<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Address</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+    user    <span style="color:#66d9ef">&lt;-</span> findUserById<span style="color:#f92672">(</span>id<span style="color:#f92672">)</span>
+    address <span style="color:#66d9ef">&lt;-</span> findAddressByUser<span style="color:#f92672">(</span>user<span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> address
+</code></pre></div><p>There is a situation that we can't find a user if the id is not exist, event the address can be optional for a user.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> findUserById<span style="color:#f92672">(</span>id<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">User</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">???</span>
+<span style="color:#66d9ef">def</span> findAddressByUser<span style="color:#f92672">(</span>user<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">User</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Address</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#f92672">???</span>
+</code></pre></div><p>Then the workflow need to be changed:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> findAddressByUserId<span style="color:#f92672">(</span>id<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Future</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Address</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  findUserById<span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">.</span>flatMap <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">Some</span><span style="color:#f92672">(</span>user<span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span> findAddressByUser<span style="color:#f92672">(</span>user<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">None</span>       <span style="color:#66d9ef">=&gt;</span> <span style="color:#a6e22e">Future</span><span style="color:#f92672">.</span>successful<span style="color:#f92672">(</span><span style="color:#a6e22e">None</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span>
+</code></pre></div><p>It's working but not as beautiful as previous. Now we comes to monad transformers.</p>
 <h3 id="how-to-use-1">How to use</h3>
-
 <p>Use <strong>OptionT</strong> provided by cats in for-comprehension:</p>
-
-<pre><code class="language-scala">def findAddressByUserIdOptionT(id: Long): OptionT[Future, Address] =
-  for {
-    user &lt;- OptionT(findUserById(id))
-    address &lt;- OptionT(findAddressByUser(user))
-  } yield address
-</code></pre>
-
-<h3 id="what-s-the-implementation-1">What&rsquo;s the implementation</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">def</span> findAddressByUserIdOptionT<span style="color:#f92672">(</span>id<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Long</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Future</span>, <span style="color:#66d9ef">Address</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+  <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+    user <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">(</span>findUserById<span style="color:#f92672">(</span>id<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+    address <span style="color:#66d9ef">&lt;-</span> <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">(</span>findAddressByUser<span style="color:#f92672">(</span>user<span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+  <span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> address
+</code></pre></div><h3 id="whats-the-implementation-1">What's the implementation</h3>
 <p>The brief definition of OptionT:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">case</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>value<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">def</span> map<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> B<span style="color:#f92672">)</span><span style="color:#f92672">(</span><span style="color:#66d9ef">implicit</span> F<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Functor</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">(</span>value<span style="color:#f92672">.</span>map<span style="color:#f92672">(</span><span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>map<span style="color:#f92672">(</span>f<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
 
-<pre><code class="language-scala">case class OptionT[F[_], A](value: F[Option[A]]) {
-  def map[B](f: A =&gt; B)(implicit F: Functor[F]): OptionT[F, B] =
-    OptionT(value.map(_.map(f)))
-
-  def flatMap[B](f: A =&gt; OptionT[F, B])(implicit F: Monad[F]): OptionT[F, B] =
-    OptionT(value.flatMap(
-      _.fold(Option.empty[B].pure[F])(
-        f andThen ((fa: OptionT[F, B]) =&gt; fa.value))))
-}
-object OptionT {
-  def pure[F[_]: Applicative, A](a: A): OptionT[F, A] =
-    OptionT(a.pure[Option].pure[F])
-}
-</code></pre>
-
-<p>One thing need to mention is that many monad transformers could be stack unsafe, like <code>StateT</code> .</p>
-
+  <span style="color:#66d9ef">def</span> flatMap<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>f<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span> <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">(</span><span style="color:#66d9ef">implicit</span> F<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Monad</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">(</span>value<span style="color:#f92672">.</span>flatMap<span style="color:#f92672">(</span>
+      <span style="color:#66d9ef">_</span><span style="color:#f92672">.</span>fold<span style="color:#f92672">(</span><span style="color:#a6e22e">Option</span><span style="color:#f92672">.</span>empty<span style="color:#f92672">[</span><span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">.</span>pure<span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span><span style="color:#f92672">(</span>
+        f andThen <span style="color:#f92672">(</span><span style="color:#f92672">(</span>fa<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">B</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">=&gt;</span> fa<span style="color:#f92672">.</span>value<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span>
+<span style="color:#66d9ef">object</span> <span style="color:#a6e22e">OptionT</span> <span style="color:#f92672">{</span>
+  <span style="color:#66d9ef">def</span> pure<span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span><span style="color:#f92672">]</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">Applicative</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span><span style="color:#f92672">(</span>a<span style="color:#66d9ef">:</span> <span style="color:#66d9ef">A</span><span style="color:#f92672">)</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">OptionT</span><span style="color:#f92672">[</span><span style="color:#66d9ef">F</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span>
+    <span style="color:#a6e22e">OptionT</span><span style="color:#f92672">(</span>a<span style="color:#f92672">.</span>pure<span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span><span style="color:#f92672">]</span><span style="color:#f92672">.</span>pure<span style="color:#f92672">[</span><span style="color:#66d9ef">F</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>One thing need to mention is that many monad transformers could be stack unsafe, like <code>StateT</code> .</p>
 <h2 id="extensible-effect">Extensible Effect</h2>
-
 <h3 id="why-need-it-2">Why need it</h3>
-
 <p>Monad transformers has a limited nest layers, also must keep the order same in different computation. What if we have some super way to rule all the monads? In this case we can walk through the control flow without worring the different monad. Finally it will free us from assembling different manads.</p>
-
 <p>The principle ideas to understand effects are:</p>
-
 <blockquote>
 <ul>
 <li>An effect is most easily understood as an interaction between a sub-expression and a central authority that administers the global resources of a program.</li>
 <li>An effect can be viewed as a message to the central authority plus enough information to resume the suspended calculation.</li>
 </ul>
 </blockquote>
-
 <h3 id="how-to-use-2">How to use</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-scala" data-lang="scala"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">Stack</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Fx</span><span style="color:#f92672">.</span>fx2<span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span>, <span style="color:#66d9ef">StringEither</span><span style="color:#f92672">]</span>
 
-<pre><code class="language-scala">type Stack = Fx.fx2[Option, StringEither]
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">HasOption</span><span style="color:#f92672">[</span><span style="color:#66d9ef">R</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">MemberIn</span><span style="color:#f92672">[</span><span style="color:#66d9ef">Option</span>, <span style="color:#66d9ef">R</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">StringEither</span><span style="color:#f92672">[</span><span style="color:#66d9ef">A</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">Either</span><span style="color:#f92672">[</span><span style="color:#66d9ef">String</span>, <span style="color:#66d9ef">A</span><span style="color:#f92672">]</span>
+<span style="color:#66d9ef">type</span> <span style="color:#66d9ef">HasEither</span><span style="color:#f92672">[</span><span style="color:#66d9ef">R</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#a6e22e">MemberIn</span><span style="color:#f92672">[</span><span style="color:#66d9ef">StringEither</span>, <span style="color:#66d9ef">R</span><span style="color:#f92672">]</span>
 
-type HasOption[R] = MemberIn[Option, R]
-type StringEither[A] = Either[String, A]
-type HasEither[R] = MemberIn[StringEither, R]
+<span style="color:#66d9ef">def</span> program<span style="color:#f92672">[</span><span style="color:#66d9ef">R</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">HasOption</span><span style="color:#66d9ef">:</span> <span style="color:#66d9ef">HasEither</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">=</span> <span style="color:#66d9ef">for</span> <span style="color:#f92672">{</span>
+  a <span style="color:#66d9ef">&lt;-</span> fromOption<span style="color:#f92672">(</span><span style="color:#a6e22e">Some</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+  b <span style="color:#66d9ef">&lt;-</span> fromEither<span style="color:#f92672">(</span><span style="color:#a6e22e">Right</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">yield</span> a <span style="color:#f92672">+</span> b
 
-def program[R: HasOption: HasEither] = for {
-  a &lt;- fromOption(Some(1))
-  b &lt;- fromEither(Right(2))
-} yield a + b
+println<span style="color:#f92672">(</span>program<span style="color:#f92672">[</span><span style="color:#66d9ef">Stack</span><span style="color:#f92672">]</span><span style="color:#f92672">)</span>
+println<span style="color:#f92672">(</span>program<span style="color:#f92672">[</span><span style="color:#66d9ef">Stack</span><span style="color:#f92672">]</span><span style="color:#f92672">.</span>asInstanceOf<span style="color:#f92672">[</span><span style="color:#66d9ef">ImpureAp</span><span style="color:#f92672">[</span><span style="color:#66d9ef">_</span>, <span style="color:#66d9ef">_</span>, <span style="color:#66d9ef">_</span><span style="color:#f92672">]</span><span style="color:#f92672">]</span><span style="color:#f92672">.</span>continuation<span style="color:#f92672">.</span>functions<span style="color:#f92672">)</span>
 
-println(program[Stack])
-println(program[Stack].asInstanceOf[ImpureAp[_, _, _]].continuation.functions)
-
-val result = program[Stack].runOption.runEither.run // Right(Some(3))
-</code></pre>
-
-<h3 id="what-s-the-implementation-2">What&rsquo;s the implementation</h3>
-
+<span style="color:#66d9ef">val</span> result <span style="color:#66d9ef">=</span> program<span style="color:#f92672">[</span><span style="color:#66d9ef">Stack</span><span style="color:#f92672">]</span><span style="color:#f92672">.</span>runOption<span style="color:#f92672">.</span>runEither<span style="color:#f92672">.</span>run <span style="color:#75715e">// Right(Some(3))
+</span></code></pre></div><h3 id="whats-the-implementation-2">What's the implementation</h3>
 <p>The core of Eff library is Eff monad and the open union. Defining effects and their interactions is done by the user. There are some common effects provided by the library like ReaderEffect, IOEffect etc for convenience.</p>
-
 <h2 id="reference">Reference</h2>
-
 <ul>
 <li><a href="http://okmij.org/ftp/Computation/free-monad.html">Free and Freer Monads: Putting Monads Back into Closet</a></li>
 <li><a href="https://alvinalexander.com/scala/fp-book/pure-functions-and-io-input-output">Pure Functions and I/O</a></li>
@@ -575,6 +463,10 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
     
     
         <li>
+            <a href="/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
         </li>
     
@@ -610,10 +502,6 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
             <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
-        <li>
-            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
-        </li>
-    
 </ul>
 
 
@@ -640,7 +528,7 @@ val result = program[Stack].runOption.runEither.run // Right(Some(3))
     
     <p class="small">
     
-        © Copyright 2019 Kaichao Sun
+        © Copyright 2020 Kaichao Sun
     
     </p>
 </footer>

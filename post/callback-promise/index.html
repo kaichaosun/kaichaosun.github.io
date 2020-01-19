@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.58.3" />
+<meta name="generator" content="Hugo 0.62.2" />
 <title>理解 Javascript 的几种异步模式</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
@@ -26,9 +26,9 @@
 Javascript 运行时概念  栈(Stack)  和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
   单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件    堆(Heap)  堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
  事件队列(event queue)  当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等, 会添加callback函数到event queue。
- Event loop  Event loop将event queue中按照&rdquo;FIFO&rdquo;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
+ Event loop  Event loop将event queue中按照&quot;FIFO&quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
 MDN提供的伪代码实现如下:
-while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&rdquo;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
+while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&quot;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
 function bar(cb) { setTimeout(cb,2000); } function foo() { console." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://whisperd.tech/post/callback-promise/" />
@@ -41,12 +41,10 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console." />
 Javascript 运行时概念  栈(Stack)  和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
   单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件    堆(Heap)  堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
  事件队列(event queue)  当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等, 会添加callback函数到event queue。
- Event loop  Event loop将event queue中按照&rdquo;FIFO&rdquo;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
+ Event loop  Event loop将event queue中按照&quot;FIFO&quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
 MDN提供的伪代码实现如下:
-while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&rdquo;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
+while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&quot;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
 function bar(cb) { setTimeout(cb,2000); } function foo() { console.">
-
-
 <meta itemprop="datePublished" content="2017-04-05T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-04-05T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="957">
@@ -54,16 +52,15 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console.">
 
 
 <meta itemprop="keywords" content="" />
-
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="理解 Javascript 的几种异步模式"/>
 <meta name="twitter:description" content="Javacript 提供了基于回调的异步编程模式，如回调函数，Promise对象，Async Function 等。下面是我在学习过程中总结的 一些特性和使用方式。
 Javascript 运行时概念  栈(Stack)  和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
   单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件    堆(Heap)  堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
  事件队列(event queue)  当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等, 会添加callback函数到event queue。
- Event loop  Event loop将event queue中按照&rdquo;FIFO&rdquo;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
+ Event loop  Event loop将event queue中按照&quot;FIFO&quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
 MDN提供的伪代码实现如下:
-while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&rdquo;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
+while(queue.waitForMessage()) { queue.processNextMessage(); }  Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&quot;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
 function bar(cb) { setTimeout(cb,2000); } function foo() { console."/>
 <meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
 
@@ -103,68 +100,49 @@ function bar(cb) { setTimeout(cb,2000); } function foo() { console."/>
 
     <aside>
         <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#javascript-运行时概念">Javascript 运行时概念</a></li>
-<li><a href="#callback">Callback</a>
-<ul>
-<li><a href="#callback函数">Callback函数</a></li>
-<li><a href="#callback-hell">Callback hell</a></li>
-</ul></li>
-<li><a href="#promise">Promise</a>
-<ul>
-<li><a href="#什么是promise">什么是Promise</a></li>
-<li><a href="#promise-api">Promise API</a>
-<ul>
-<li><a href="#promise状态">Promise状态</a></li>
-<li><a href="#promise方法">Promise方法</a></li>
-</ul></li>
-<li><a href="#simple-example">Simple Example</a>
-<ul>
-<li><a href="#构造一个-promise-通过-then-函数取值">构造一个 Promise, 通过 <code>then</code> 函数取值:</a></li>
-<li><a href="#then-的回调函数有返回值时-返回一个-relove-该值的-promise"><code>then</code> 的回调函数有返回值时,返回一个 relove 该值的 Promise:</a></li>
-<li><a href="#then-的回调函数中没有返回值-调用-then-函数返回一个promise-其relove的值为-undefined"><code>then</code>的回调函数中没有返回值,调用<code>then</code>函数返回一个Promise,其relove的值为<code>undefined</code></a></li>
-<li><a href="#同一个promise被多次使用时-执行顺序为-then-调用的先后顺序">同一个Promise被多次使用时,执行顺序为<code>then</code>调用的先后顺序:</a></li>
-<li><a href="#promise-all-异步执行">Promise.all (异步执行)</a></li>
-<li><a href="#promise-race-异步执行">Promise.race (异步执行)</a></li>
-</ul></li>
-<li><a href="#promise-实现">Promise 实现</a></li>
-</ul></li>
-<li><a href="#generator">Generator</a>
-<ul>
-<li><a href="#simple-example-1">Simple example</a></li>
-<li><a href="#理解双向消息传递">理解双向消息传递</a></li>
-<li><a href="#其他api">其他API</a></li>
-<li><a href="#generator结合promise实现异步控制流">Generator结合Promise实现异步控制流</a></li>
-</ul></li>
-<li><a href="#async-function-es7">Async Function (ES7)</a></li>
-<li><a href="#总结">总结</a></li>
-<li><a href="#reference">Reference</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#javascript-运行时概念">Javascript 运行时概念</a></li>
+    <li><a href="#callback">Callback</a>
+      <ul>
+        <li><a href="#callback函数">Callback函数</a></li>
+        <li><a href="#callback-hell">Callback hell</a></li>
+      </ul>
+    </li>
+    <li><a href="#promise">Promise</a>
+      <ul>
+        <li><a href="#什么是promise">什么是Promise</a></li>
+        <li><a href="#promise-api">Promise API</a></li>
+        <li><a href="#simple-example">Simple Example</a></li>
+        <li><a href="#promise-实现">Promise 实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#generator">Generator</a>
+      <ul>
+        <li><a href="#simple-example-1">Simple example</a></li>
+        <li><a href="#理解双向消息传递">理解双向消息传递</a></li>
+        <li><a href="#其他api">其他API</a></li>
+        <li><a href="#generator结合promise实现异步控制流">Generator结合Promise实现异步控制流</a></li>
+      </ul>
+    </li>
+    <li><a href="#async-function-es7">Async Function (ES7)</a></li>
+    <li><a href="#总结">总结</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
 </nav>
     </aside>
     
 
     <section id="post-body">
-        
-
-<p>Javacript 提供了基于回调的异步编程模式，如回调函数，Promise对象，Async Function 等。下面是我在学习过程中总结的
+        <p>Javacript 提供了基于回调的异步编程模式，如回调函数，Promise对象，Async Function 等。下面是我在学习过程中总结的
 一些特性和使用方式。</p>
-
 <h2 id="javascript-运行时概念">Javascript 运行时概念</h2>
-
-<p><img src="/static/callback-promise/js-runtime-concept.svg" alt="js runtime" /></p>
-
+<p><img src="/static/callback-promise/js-runtime-concept.svg" alt="js runtime"></p>
 <ul>
 <li>栈(Stack)</li>
 </ul>
-
 <p>和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数,
 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。
 JS调用栈有三个特点:</p>
-
 <blockquote>
 <ol>
 <li>单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码;</li>
@@ -172,560 +150,423 @@ JS调用栈有三个特点:</p>
 <li>非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件</li>
 </ol>
 </blockquote>
-
 <ul>
 <li>堆(Heap)</li>
 </ul>
-
 <p>堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。</p>
-
 <ul>
 <li>事件队列(event queue)</li>
 </ul>
-
 <p>当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等,
 会添加callback函数到event queue。</p>
-
 <ul>
 <li>Event loop</li>
 </ul>
-
-<p>Event loop将event queue中按照&rdquo;FIFO&rdquo;的顺序将callback取出,放入栈中,callback函数返回,清空栈,
+<p>Event loop将event queue中按照&quot;FIFO&quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈,
 循环执行上述步骤。</p>
-
 <p>MDN提供的伪代码实现如下:</p>
-
 <pre><code>while(queue.waitForMessage()) {
 	queue.processNextMessage();
 }
-</code></pre>
-
-<hr />
-
+</code></pre><hr>
 <h2 id="callback">Callback</h2>
-
 <h3 id="callback函数">Callback函数</h3>
-
 <p>和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(<code>Function instanceof Object</code>返回为<code>true</code>)。
-函数是JS的&rdquo;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。</p>
-
-<pre><code class="language-javascript">function bar(cb) {
-	setTimeout(cb,2000);
+函数是JS的&quot;一等公民&rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">bar</span>(<span style="color:#a6e22e">cb</span>) {
+	<span style="color:#a6e22e">setTimeout</span>(<span style="color:#a6e22e">cb</span>,<span style="color:#ae81ff">2000</span>);
 }
 
-function foo() {
-	console.log(&quot;hehe&quot;)
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">foo</span>() {
+	<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;hehe&#34;</span>)
 }
 
-bar(foo)
-</code></pre>
-
-<p>上面的代码中,foo就是callback函数,上述代码的执行过程大致如下图所示:</p>
-
-<p><img src="/static/callback-promise/event-queue.svg" alt="event queue" /></p>
-
+<span style="color:#a6e22e">bar</span>(<span style="color:#a6e22e">foo</span>)
+</code></pre></div><p>上面的代码中,foo就是callback函数,上述代码的执行过程大致如下图所示:</p>
+<p><img src="/static/callback-promise/event-queue.svg" alt="event queue"></p>
 <h3 id="callback-hell">Callback hell</h3>
-
 <p>思考如下代码:</p>
-
-<pre><code class="language-javascript">listen( &quot;click&quot;, function handler(evt){
-	setTimeout( function request(){
-		ajax( &quot;http://some.url.1&quot;, function response(text){
-			if (text == &quot;hello&quot;) {
-				handler();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">listen</span>( <span style="color:#e6db74">&#34;click&#34;</span>, <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handler</span>(<span style="color:#a6e22e">evt</span>){
+	<span style="color:#a6e22e">setTimeout</span>( <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">request</span>(){
+		<span style="color:#a6e22e">ajax</span>( <span style="color:#e6db74">&#34;http://some.url.1&#34;</span>, <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">response</span>(<span style="color:#a6e22e">text</span>){
+			<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">text</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;hello&#34;</span>) {
+				<span style="color:#a6e22e">handler</span>();
 			}
-			else if (text == &quot;world&quot;) {
-				request();
+			<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">text</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;world&#34;</span>) {
+				<span style="color:#a6e22e">request</span>();
 			}
 		} );
-	}, 2000) ;
+	}, <span style="color:#ae81ff">2000</span>) ;
 } );
-</code></pre>
-
-<p>这样的代码常常被称作&rdquo;callback hell&rdquo;,也被称为&rdquo;倒金字塔&rdquo;。
+</code></pre></div><p>这样的代码常常被称作&quot;callback hell&rdquo;,也被称为&quot;倒金字塔&rdquo;。
 但是callback hell,不止看上去的缩进/嵌套问题。代码层面的问题,
 可以通过重构,将回调函数作为参数传递解决:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// step 1
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">listen</span>( <span style="color:#e6db74">&#34;click&#34;</span>, <span style="color:#a6e22e">handler</span> );
 
-<pre><code class="language-javascript">// step 1
-listen( &quot;click&quot;, handler );
-
-// step 2
-function handler() {
-	setTimeout( request, 500 );
+<span style="color:#75715e">// step 2
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">handler</span>() {
+	<span style="color:#a6e22e">setTimeout</span>( <span style="color:#a6e22e">request</span>, <span style="color:#ae81ff">500</span> );
 }
 
-// step 3
-function request(){
-	ajax( &quot;http://some.url.1&quot;, response );
+<span style="color:#75715e">// step 3
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">request</span>(){
+	<span style="color:#a6e22e">ajax</span>( <span style="color:#e6db74">&#34;http://some.url.1&#34;</span>, <span style="color:#a6e22e">response</span> );
 }
 
-// step 4
-function response(text){
-	if (text == &quot;hello&quot;) {
-		handler();
+<span style="color:#75715e">// step 4
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">response</span>(<span style="color:#a6e22e">text</span>){
+	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">text</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;hello&#34;</span>) {
+		<span style="color:#a6e22e">handler</span>();
 	}
-	else if (text == &quot;world&quot;) {
-		request();
+	<span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">text</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;world&#34;</span>) {
+		<span style="color:#a6e22e">request</span>();
 	}
 }
-</code></pre>
-
-<p>这样做的结果很明显,没有了大段的嵌套代码,但依然有很多问题没有解决:</p>
-
+</code></pre></div><p>这样做的结果很明显,没有了大段的嵌套代码,但依然有很多问题没有解决:</p>
 <ol>
 <li>数据流出现在多个函数之间,需要跳转多个函数才能看清楚,
 当代码结构变得复杂,清晰的数据流更难以获取;</li>
 <li>各个步骤之间通过hard code进行连接,无法复用;</li>
 <li>在每个步骤都要对异常进行处理,产生逻辑重复的代码等;</li>
 </ol>
-
 <p><strong>Last but most important</strong>, callback 将控制权交给了第三方,由此产生一系列的信任问题,
 大部分情况下,我们不需要过多的考虑信任问题(如过早/过晚回调、多次回调等),但是也只是还没有出现问题而已。</p>
-
-<hr />
-
+<hr>
 <h2 id="promise">Promise</h2>
-
 <h3 id="什么是promise">什么是Promise</h3>
-
 <p>Promise并不是Javascript独有的,在多种编程语言中都存在类似的概念如Java/Scala中的Future,
 在1976年前后已经陆续提出了这些概念。</p>
-
 <p>MDN的描述:</p>
-
 <blockquote>
 <p>A Promise is a proxy for a value not necessarily known when the promise is created</p>
 </blockquote>
-
 <p>Promise/A+:</p>
-
 <blockquote>
 <p>A promise represents the eventual result of an asynchronous operation.</p>
 </blockquote>
-
 <p>我的理解:</p>
-
 <blockquote>
 <p>Promise对异步/同步操作进行动态代理, 并通过规定的 <code>then</code> 函数访问异步/同步操作的结果, 访问的过程是异步(通过回调函数)的。
 由于 chainable、immutable、规范化的异常处理等特点, 使异步代码符合人的思考方式, 弥补了回调函数的一些不足(如 callback hell, 多次回调等)。
 但是从实现来看, Promise 的根本还是回调, 只是通过巧妙标准的API简化了整个流程。</p>
 </blockquote>
-
 <h3 id="promise-api">Promise API</h3>
-
 <p>Promise API流程如下:</p>
-
-<p><img src="/static/callback-promise/promise.png" alt="Promise API flow" /></p>
-
+<p><img src="/static/callback-promise/promise.png" alt="Promise API flow"></p>
 <h4 id="promise状态">Promise状态</h4>
-
 <ul>
 <li>pending: 初始状态</li>
 <li>fulfilled: 成功状态</li>
 <li>rejected: 失败状态</li>
 </ul>
-
 <h4 id="promise方法">Promise方法</h4>
-
-<pre><code class="language-javascript">Promise.all([promise1, promise2, …]);
-Promise.race([promise1, promise2, …]);
-Promise.reject(value);
-Promise.resolve(value);
-Promise.catch(onRejection);
-Promise.then(onFulFillment, onRejection);
-</code></pre>
-
-<h3 id="simple-example">Simple Example</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript">Promise.<span style="color:#a6e22e">all</span>([<span style="color:#a6e22e">promise1</span>, <span style="color:#a6e22e">promise2</span>, <span style="color:#960050;background-color:#1e0010">…</span>]);
+Promise.<span style="color:#a6e22e">race</span>([<span style="color:#a6e22e">promise1</span>, <span style="color:#a6e22e">promise2</span>, <span style="color:#960050;background-color:#1e0010">…</span>]);
+Promise.<span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">value</span>);
+Promise.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">value</span>);
+Promise.<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">onRejection</span>);
+Promise.<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">onFulFillment</span>, <span style="color:#a6e22e">onRejection</span>);
+</code></pre></div><h3 id="simple-example">Simple Example</h3>
 <h4 id="构造一个-promise-通过-then-函数取值">构造一个 Promise, 通过 <code>then</code> 函数取值:</h4>
-
-<pre><code class="language-javascript">var myPromise = new Promise((resolve, reject) =&gt; {
-    setTimeout(function() {
-        resolve(&quot;success&quot;);
-    }, 3000);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
+    }, <span style="color:#ae81ff">3000</span>);
 });
 
-myPromise.then((msg) =&gt; {
-   console.log(&quot;Yay, &quot; + msg);
+<span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+   <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Yay, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 });
 
-console.log(&quot;i am not promise&quot;);
-</code></pre>
-
-<p>Console输出:</p>
-
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;i am not promise&#34;</span>);
+</code></pre></div><p>Console输出:</p>
 <pre><code>i am not promise
 Yay, success
-</code></pre>
-
-<h4 id="then-的回调函数有返回值时-返回一个-relove-该值的-promise"><code>then</code> 的回调函数有返回值时,返回一个 relove 该值的 Promise:</h4>
-
-<pre><code class="language-javascript">var myPromise = new Promise((resolve, reject) =&gt; {
-    setTimeout(function() {
-        resolve(&quot;success&quot;);
-    }, 3000);
+</code></pre><h4 id="then-的回调函数有返回值时返回一个-relove-该值的-promise"><code>then</code> 的回调函数有返回值时,返回一个 relove 该值的 Promise:</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
+    }, <span style="color:#ae81ff">3000</span>);
 });
 
-var myPromise2 = myPromise.then((msg) =&gt; {
-   console.log(&quot;Yay, &quot; + msg);
-   return &quot;success 2&quot;;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+   <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Yay, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
+   <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;success 2&#34;</span>;
 });
 
-myPromise2.then((msg) =&gt; {
-    console.log(&quot;Hey, &quot; + msg);
+<span style="color:#a6e22e">myPromise2</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Hey, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 });
 
-console.log(&quot;i am not promise&quot;);
-</code></pre>
-
-<p>Console输出:</p>
-
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;i am not promise&#34;</span>);
+</code></pre></div><p>Console输出:</p>
 <pre><code>i am not promise
 Yay, success
 Hey, success 2
-</code></pre>
-
-<h4 id="then-的回调函数中没有返回值-调用-then-函数返回一个promise-其relove的值为-undefined"><code>then</code>的回调函数中没有返回值,调用<code>then</code>函数返回一个Promise,其relove的值为<code>undefined</code></h4>
-
-<pre><code class="language-javascript">var myPromise = new Promise((resolve, reject) =&gt; {
-    setTimeout(function() {
-        resolve(&quot;success&quot;);
-    }, 3000);
+</code></pre><h4 id="then的回调函数中没有返回值调用then函数返回一个promise其relove的值为undefined"><code>then</code>的回调函数中没有返回值,调用<code>then</code>函数返回一个Promise,其relove的值为<code>undefined</code></h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
+    }, <span style="color:#ae81ff">3000</span>);
 });
 
-var myPromise2 = myPromise.then((msg) =&gt; {
-   console.log(&quot;Yay, &quot; + msg);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+   <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Yay, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 });
 
-myPromise2.then((msg) =&gt; {
-    console.log(&quot;Hey, &quot; + msg);
+<span style="color:#a6e22e">myPromise2</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Hey, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 });
 
-console.log(&quot;i am not promise&quot;);
-</code></pre>
-
-<p>Console输出:</p>
-
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;i am not promise&#34;</span>);
+</code></pre></div><p>Console输出:</p>
 <pre><code>i am not promise
 Yay, success
 Hey, undefined
-</code></pre>
-
-<h4 id="同一个promise被多次使用时-执行顺序为-then-调用的先后顺序">同一个Promise被多次使用时,执行顺序为<code>then</code>调用的先后顺序:</h4>
-
-<pre><code class="language-javascript">var myPromise = new Promise((resolve, reject) =&gt; {
-    setTimeout(function() {
-        resolve(&quot;success&quot;);
-    }, 3000);
+</code></pre><h4 id="同一个promise被多次使用时执行顺序为then调用的先后顺序">同一个Promise被多次使用时,执行顺序为<code>then</code>调用的先后顺序:</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myPromise</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; {
+    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>() {
+        <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#34;success&#34;</span>);
+    }, <span style="color:#ae81ff">3000</span>);
 });
 
-myPromise.then((msg) =&gt; {
-   console.log(&quot;Yay, &quot; + msg);
+<span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+   <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Yay, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 });
 
-myPromise.then((msg) =&gt; {
-    console.log(&quot;Hey, &quot; + msg);
+<span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;Hey, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 })
 
-myPromise.then((msg) =&gt; {
-    console.log(&quot;bazhahei, &quot; + msg);
+<span style="color:#a6e22e">myPromise</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>) =&gt; {
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;bazhahei, &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">msg</span>);
 })
-console.log(&quot;i am not promise&quot;);
-</code></pre>
-
-<p>Console输出</p>
-
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;i am not promise&#34;</span>);
+</code></pre></div><p>Console输出</p>
 <pre><code>i am not promise
 Yay, success
 Hey, success
 bazhahei, success
-</code></pre>
+</code></pre><h4 id="promiseall-异步执行">Promise.all (异步执行)</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p1</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;haha&#39;</span>);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p2</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;heheda&#39;</span>);
 
-<h4 id="promise-all-异步执行">Promise.all (异步执行)</h4>
-
-<pre><code class="language-javascript">var p1 = Promise.resolve('haha');
-var p2 = Promise.resolve('heheda');
-
-var p3 = Promise.all([p1,p2]);
-p3.then((msg)=&gt;{
-    console.log(p3);
-    console.log(msg);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p3</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">all</span>([<span style="color:#a6e22e">p1</span>,<span style="color:#a6e22e">p2</span>]);
+<span style="color:#a6e22e">p3</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>)=&gt;{
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">p3</span>);
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">msg</span>);
 });
-console.log(p3)
-var p2_reject = Promise.reject('err');
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">p3</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p2_reject</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">reject</span>(<span style="color:#e6db74">&#39;err&#39;</span>);
 
-var p4 = Promise.all([p1,p2_reject]);
-p4.then(null,(msg)=&gt;console.log(msg));
-</code></pre>
-
-<p>Console输出</p>
-
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p4</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">all</span>([<span style="color:#a6e22e">p1</span>,<span style="color:#a6e22e">p2_reject</span>]);
+<span style="color:#a6e22e">p4</span>.<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">null</span>,(<span style="color:#a6e22e">msg</span>)=&gt;<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">msg</span>));
+</code></pre></div><p>Console输出</p>
 <pre><code>Promise {[[PromiseStatus]]: &quot;pending&quot;, [[PromiseValue]]: undefined}
 Promise {[[PromiseStatus]]: &quot;resolved&quot;, [[PromiseValue]]: Array[2]}
 [&quot;haha&quot;, &quot;heheda&quot;]
 err
-</code></pre>
-
-<h4 id="promise-race-异步执行">Promise.race (异步执行)</h4>
-
-<pre><code class="language-javascript">var p1= Promise.reject('haha')
-console.log(&quot;didi&quot;)
-var p2 = Promise.resolve('heheda')
-var p3 = Promise.race([p1,p2]).then(
-    (msg)=&gt;console.log(msg), (reason)=&gt;console.log(reason)
+</code></pre><h4 id="promiserace-异步执行">Promise.race (异步执行)</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p1</span><span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">reject</span>(<span style="color:#e6db74">&#39;haha&#39;</span>)
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;didi&#34;</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p2</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;heheda&#39;</span>)
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p3</span> <span style="color:#f92672">=</span> Promise.<span style="color:#a6e22e">race</span>([<span style="color:#a6e22e">p1</span>,<span style="color:#a6e22e">p2</span>]).<span style="color:#a6e22e">then</span>(
+    (<span style="color:#a6e22e">msg</span>)=&gt;<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">msg</span>), (<span style="color:#a6e22e">reason</span>)=&gt;<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">reason</span>)
 )
 
-console.log(p3)
-console.log(&quot;over&quot;)
-</code></pre>
-
-<p>Console输出</p>
-
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">p3</span>)
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;over&#34;</span>)
+</code></pre></div><p>Console输出</p>
 <pre><code>Promise {[[PromiseStatus]]: &quot;pending&quot;, [[PromiseValue]]: undefined}
 over
 haha
-</code></pre>
-
-<h3 id="promise-实现">Promise 实现</h3>
-
+</code></pre><h3 id="promise-实现">Promise 实现</h3>
 <ol>
 <li>一个简易的Promise的实现参考<a href="https://gist.github.com/unscriptable/814052">这里</a></li>
 <li><a href="http://www.mattgreer.org/articles/promises-in-wicked-detail/">http://www.mattgreer.org/articles/promises-in-wicked-detail/</a></li>
 <li><a href="https://github.com/cujojs/when">cujojs/when</a></li>
 </ol>
-
-<hr />
-
+<hr>
 <h2 id="generator">Generator</h2>
-
 <p>Generator函数是一种特殊的函数,它不是 <code>run to completion</code> 的,而是可以多次分段执行,
 通过双向消息传递(2-way messsage passing)实现状态机、异步流程控制等多种功能。</p>
-
 <p>调用generator函数可以返回一个generator对象（既是iterator也是iterable）。
 注：</p>
-
 <blockquote>
 <p>Iterator: 一个实现了next函数的对象，next返回返回值为<code>{value: xxx, done: true/false}</code>
-  Iterable: 一个含有属性为<code>Symbol.iterator</code>的对象，<code>Symbol.iterator</code>是一个可以返回上述Iterator对象的函数。</p>
+Iterable: 一个含有属性为<code>Symbol.iterator</code>的对象，<code>Symbol.iterator</code>是一个可以返回上述Iterator对象的函数。</p>
 </blockquote>
-
 <h3 id="simple-example-1">Simple example</h3>
-
 <p><code>yield</code> 使用：</p>
-
-<pre><code class="language-javascript">function* generator() {
-  yield 1;
-  yield 2;
-  yield 3;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">generator</span>() {
+  <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">2</span>;
+  <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">3</span>;
 }
-var g1 = generator()
-console.log(g1.next())
-console.log(g1.next())
-console.log(g1.next())
-console.log(g1.next())
-</code></pre>
-
-<p>console 输出</p>
-
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">g1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">generator</span>()
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g1</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g1</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g1</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g1</span>.<span style="color:#a6e22e">next</span>())
+</code></pre></div><p>console 输出</p>
 <pre><code>{value: 1, done: false}
 {value: 2, done: false}
 {value: 3, done: false}
 {value: undefined, done: true}
-</code></pre>
-
-<p><code>yield*</code>使用,将控制权交给另外一个Iterable对象：</p>
-
-<pre><code class="language-javascript">function* generator() {
-  yield 1;
-  yield* [2.1,2.2,2.3];
-  yield 3;
+</code></pre><p><code>yield*</code>使用,将控制权交给另外一个Iterable对象：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">generator</span>() {
+  <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">yield</span><span style="color:#f92672">*</span> [<span style="color:#ae81ff">2.1</span>,<span style="color:#ae81ff">2.2</span>,<span style="color:#ae81ff">2.3</span>];
+  <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">3</span>;
 }
-var g2 = generator()
-console.log(g2.next())
-console.log(g2.next())
-console.log(g2.next())
-console.log(g2.next())
-console.log(g2.next())
-console.log(g2.next())
-</code></pre>
-
-<p>输出：</p>
-
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">g2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">generator</span>()
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g2</span>.<span style="color:#a6e22e">next</span>())
+</code></pre></div><p>输出：</p>
 <pre><code>{value: 1, done: false}
 {value: 2.1, done: false}
 {value: 2.2, done: false}
 {value: 2.3, done: false}
 {value: 3, done: false}
 {value: undefined, done: true}
-</code></pre>
-
-<p>上面两个例子，只用到了单向消息传递，即只关注<code>next()</code>的返回值，下面让我举一个双向消息传递的栗子：</p>
-
-<pre><code class="language-javascript">function* twoWayMessagePassing() {
-  let a = yield 1;
-  let b = yield 2;
-  return a + b;
+</code></pre><p>上面两个例子，只用到了单向消息传递，即只关注<code>next()</code>的返回值，下面让我举一个双向消息传递的栗子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">twoWayMessagePassing</span>() {
+  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">1</span>;
+  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">b</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#ae81ff">2</span>;
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">a</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">b</span>;
 }
 
-var g3 = twoWayMessagePassing()
-console.log(g3.next());
-console.log(g3.next(3));
-console.log(g3.next(4));
-</code></pre>
-
-<p>输出：</p>
-
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">g3</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">twoWayMessagePassing</span>()
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g3</span>.<span style="color:#a6e22e">next</span>());
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g3</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">3</span>));
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">g3</span>.<span style="color:#a6e22e">next</span>(<span style="color:#ae81ff">4</span>));
+</code></pre></div><p>输出：</p>
 <pre><code>{value: 1, done: false}
 {value: 2, done: false}
 {value: 7, done: true}
-</code></pre>
-
-<h3 id="理解双向消息传递">理解双向消息传递</h3>
-
+</code></pre><h3 id="理解双向消息传递">理解双向消息传递</h3>
 <p>根据上述第三个例子，画图如下,
 每一次<code>next</code>函数执行一段代码块时，将参数赋给代码块开始处的yield表达式(如果有的话)，并将代码块结束处的yield/return表达式的值作为<code>next</code>函数的返回值。</p>
-
-<p><img src="/static/callback-promise/two-way-message-passing.svg" alt="two-way-message-passing" /></p>
-
+<p><img src="/static/callback-promise/two-way-message-passing.svg" alt="two-way-message-passing"></p>
 <h3 id="其他api">其他API</h3>
-
-<pre><code class="language-javascript">Generator.prototype.return()
-Generator.prototype.throw()
-</code></pre>
-
-<h3 id="generator结合promise实现异步控制流">Generator结合Promise实现异步控制流</h3>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">Generator</span>.<span style="color:#a6e22e">prototype</span>.<span style="color:#66d9ef">return</span>()
+<span style="color:#a6e22e">Generator</span>.<span style="color:#a6e22e">prototype</span>.<span style="color:#66d9ef">throw</span>()
+</code></pre></div><h3 id="generator结合promise实现异步控制流">Generator结合Promise实现异步控制流</h3>
 <p>一个简易的控制方法如下，需要 <strong>手动迭代</strong>：</p>
-
-<pre><code class="language-javascript">function foo(a,b) {
-    return new Promise((resolve)=&gt;{
-        setTimeout(()=&gt;{
-            resolve(a+b);
-        },2000);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">foo</span>(<span style="color:#a6e22e">a</span>,<span style="color:#a6e22e">b</span>) {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>)=&gt;{
+        <span style="color:#a6e22e">setTimeout</span>(()=&gt;{
+            <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>);
+        },<span style="color:#ae81ff">2000</span>);
     })
 }
 
-function* gen() {
-    try {
-        var sum1 = yield foo(3, 6);
-        var sum2 = yield foo(7, 9);
-        return sum1 + sum2;
-    } catch (err) {
-        console.log(err);
+<span style="color:#66d9ef">function</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">gen</span>() {
+    <span style="color:#66d9ef">try</span> {
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>);
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>);
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">sum2</span>;
+    } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+        <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">err</span>);
     }
 }
 
-var it = gen();
-var p = it.next().value
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">it</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">gen</span>();
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">it</span>.<span style="color:#a6e22e">next</span>().<span style="color:#a6e22e">value</span>
 
-p.then((msg)=&gt;{
-    return it.next(msg).value
-}).then((msg)=&gt;{
-    return it.next(msg).value
-}).then((msg)=&gt;{
-    console.log(msg)
+<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>)=&gt;{
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">it</span>.<span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">msg</span>).<span style="color:#a6e22e">value</span>
+}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>)=&gt;{
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">it</span>.<span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">msg</span>).<span style="color:#a6e22e">value</span>
+}).<span style="color:#a6e22e">then</span>((<span style="color:#a6e22e">msg</span>)=&gt;{
+    <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">msg</span>)
 })
-</code></pre>
-
-<p>输出：<code>25</code>。</p>
-
+</code></pre></div><p>输出：<code>25</code>。</p>
 <p>修改上述过程实现 <strong>自动迭代</strong>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">isPromise</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">obj</span>) =&gt; <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">obj</span> <span style="color:#f92672">!==</span> <span style="color:#e6db74">&#39;undefined&#39;</span> <span style="color:#f92672">&amp;&amp;</span>
+  <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">obj</span>.<span style="color:#a6e22e">then</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;function&#39;</span>;
 
-<pre><code class="language-javascript">var isPromise = (obj) =&gt; typeof obj !== 'undefined' &amp;&amp;
-  typeof obj.then === 'function';
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">next</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">iter</span>, <span style="color:#a6e22e">callback</span>, <span style="color:#a6e22e">prev</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>) =&gt; {
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">item</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">iter</span>.<span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">prev</span>);
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">value</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">value</span>;
 
-var next = (iter, callback, prev = undefined) =&gt; {
-  const item = iter.next(prev);
-  const value = item.value;
+  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">item</span>.<span style="color:#a6e22e">done</span>) <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">callback</span>(<span style="color:#a6e22e">prev</span>);
 
-  if (item.done) return callback(prev);
-
-  if (isPromise(value)) {
-    value.then(val =&gt; {
-      setTimeout(() =&gt; next(iter, callback, val),0);
+  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isPromise</span>(<span style="color:#a6e22e">value</span>)) {
+    <span style="color:#a6e22e">value</span>.<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">val</span> =&gt; {
+      <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">iter</span>, <span style="color:#a6e22e">callback</span>, <span style="color:#a6e22e">val</span>),<span style="color:#ae81ff">0</span>);
     });
-  } else {
-    setTimeout(() =&gt; next(iter, callback, value),0);
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">iter</span>, <span style="color:#a6e22e">callback</span>, <span style="color:#a6e22e">value</span>),<span style="color:#ae81ff">0</span>);
   }
 };
 
-var gensync = (fn) =&gt; {
-  return (...args) =&gt;  {
-    return new Promise(resolve =&gt; {
-      next(fn(...args), val =&gt; resolve(val));
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">gensync</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">fn</span>) =&gt; {
+  <span style="color:#66d9ef">return</span> (...<span style="color:#a6e22e">args</span>) =&gt;  {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise(<span style="color:#a6e22e">resolve</span> =&gt; {
+      <span style="color:#a6e22e">next</span>(<span style="color:#a6e22e">fn</span>(...<span style="color:#a6e22e">args</span>), <span style="color:#a6e22e">val</span> =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">val</span>));
     })
   }
 };
 
-var foo = (a, b) =&gt; new Promise((resolve) =&gt; {
-  setTimeout(()=&gt;{
-      resolve(a+b);
-  },2000);
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">foo</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>) =&gt; <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>) =&gt; {
+  <span style="color:#a6e22e">setTimeout</span>(()=&gt;{
+      <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>);
+  },<span style="color:#ae81ff">2000</span>);
 });
 
-var asyncFunc = gensync(function* () {
-  var result1 = yield foo(3, 6); // returns promise
-  var result2 = yield foo(7, 9) // returns another promise
-  // waits for promise and uses promise result
-  yield result1 + result2;
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">asyncFunc</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">gensync</span>(<span style="color:#66d9ef">function</span><span style="color:#f92672">*</span> () {
+  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>); <span style="color:#75715e">// returns promise
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">result2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">yield</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>) <span style="color:#75715e">// returns another promise
+</span><span style="color:#75715e"></span>  <span style="color:#75715e">// waits for promise and uses promise result
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">yield</span> <span style="color:#a6e22e">result1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">result2</span>;
 });
 
-asyncFunc()
-  .then(val =&gt; console.log(val));
-</code></pre>
-
-<p>输出：<code>25</code>。</p>
-
-<hr />
-
+<span style="color:#a6e22e">asyncFunc</span>()
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">val</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">val</span>));
+</code></pre></div><p>输出：<code>25</code>。</p>
+<hr>
 <h2 id="async-function-es7">Async Function (ES7)</h2>
-
 <p>Async Function可以将异步流程以顺序执行的方式来描述，增强了可读性，其实就是上述Generator和Promise结合的 <em>语法糖</em>
 上述代码可以写成以下形式：</p>
-
-<pre><code class="language-javascript">function foo(a,b) {
-    return new Promise((resolve)=&gt;{
-        setTimeout(()=&gt;{
-            resolve(a+b);
-        }, 2000);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">foo</span>(<span style="color:#a6e22e">a</span>,<span style="color:#a6e22e">b</span>) {
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>)=&gt;{
+        <span style="color:#a6e22e">setTimeout</span>(()=&gt;{
+            <span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">a</span><span style="color:#f92672">+</span><span style="color:#a6e22e">b</span>);
+        }, <span style="color:#ae81ff">2000</span>);
     })
 }
 
-async function sum() {
-    var sum1 = await foo(3, 6);
-    var sum2 = await foo(7, 9);
-    return sum1 + sum2;
+<span style="color:#a6e22e">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sum</span>() {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">await</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>);
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">await</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>);
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">sum2</span>;
 }
 
-sum().then(v =&gt; {console.log(v)})
-</code></pre>
-
-<p>输出: <code>25</code>。</p>
-
-<p><code>await</code> 表达式&rdquo;暂停&rdquo;了async函数的执行，等待某个Promise变为fulfilled/rejected的状态，
+<span style="color:#a6e22e">sum</span>().<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">v</span> =&gt; {<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">v</span>)})
+</code></pre></div><p>输出: <code>25</code>。</p>
+<p><code>await</code> 表达式&quot;暂停&quot;了async函数的执行，等待某个Promise变为fulfilled/rejected的状态，
 此时，再继续执行async函数后面的代码块，最终返回一个Promise对象。</p>
-
 <p>由此，上述async函数<code>sum</code>可以优化为：</p>
-
-<pre><code class="language-javascript">async function sum() {
-    var sum1 = foo(3, 6);
-    var sum2 = foo(7, 9);
-    return await sum1 + await sum2;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">sum</span>() {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>);
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">sum2</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">foo</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">9</span>);
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">await</span> <span style="color:#a6e22e">sum1</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">await</span> <span style="color:#a6e22e">sum2</span>;
 }
-</code></pre>
-
-<h2 id="总结">总结</h2>
-
+</code></pre></div><h2 id="总结">总结</h2>
 <p>Javascript越来越广泛的应用于Web前后端的开发工作之中，合理使用JS的异步编程模式，可以提高程序的性能，增加代码的可维护性和可读性。</p>
-
 <h2 id="reference">Reference</h2>
-
-<p>[1] <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/EventLoop">https://developer.mozilla.org/en/docs/Web/JavaScript/EventLoop</a><br />
-[2] <a href="http://www.sohamkamani.com/blog/2016/03/14/wrapping-your-head-around-async-programming/">How is javascript asynchronous AND single threaded?</a><br />
-[3] <a href="https://github.com/getify/You-Dont-Know-JS">You-Dont-Know-JS</a><br />
-[4] <a href="https://tc39.github.io/ecma262/">ECMAScript® 2017 Language Specification</a><br />
-[5] <a href="http://www.mattgreer.org/articles/promises-in-wicked-detail/">http://www.mattgreer.org/articles/promises-in-wicked-detail/</a><br />
-[6] <a href="https://promisesaplus.com">Promise/A+</a><br />
+<p>[1] <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/EventLoop">https://developer.mozilla.org/en/docs/Web/JavaScript/EventLoop</a><br>
+[2] <a href="http://www.sohamkamani.com/blog/2016/03/14/wrapping-your-head-around-async-programming/">How is javascript asynchronous AND single threaded?</a><br>
+[3] <a href="https://github.com/getify/You-Dont-Know-JS">You-Dont-Know-JS</a><br>
+[4] <a href="https://tc39.github.io/ecma262/">ECMAScript® 2017 Language Specification</a><br>
+[5] <a href="http://www.mattgreer.org/articles/promises-in-wicked-detail/">http://www.mattgreer.org/articles/promises-in-wicked-detail/</a><br>
+[6] <a href="https://promisesaplus.com">Promise/A+</a><br>
 [7] <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols">Iteration protocol</a></p>
 
     </section>
@@ -781,6 +622,10 @@ sum().then(v =&gt; {console.log(v)})
     
     
         <li>
+            <a href="/post/substrate%E5%AD%98%E5%82%A8%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E6%A6%82%E8%A7%88/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
         </li>
     
@@ -816,10 +661,6 @@ sum().then(v =&gt; {console.log(v)})
             <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
-        <li>
-            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
-        </li>
-    
 </ul>
 
 
@@ -846,7 +687,7 @@ sum().then(v =&gt; {console.log(v)})
     
     <p class="small">
     
-        © Copyright 2019 Kaichao Sun
+        © Copyright 2020 Kaichao Sun
     
     </p>
 </footer>
