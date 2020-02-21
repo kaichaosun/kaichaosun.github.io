@@ -4,16 +4,21 @@
   
   <url>
     <loc>https://whisperd.tech/post/</loc>
-    <lastmod>2020-01-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-02-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://whisperd.tech/post/substrate_storage_data_type/</loc>
-    <lastmod>2020-01-19T00:00:00+00:00</lastmod>
+    <loc>https://whisperd.tech/post/substrate_transaction_weight_and_fees/</loc>
+    <lastmod>2020-02-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://whisperd.tech/</loc>
+    <lastmod>2020-02-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://whisperd.tech/post/substrate_storage_data_type/</loc>
     <lastmod>2020-01-19T00:00:00+00:00</lastmod>
   </url>
   

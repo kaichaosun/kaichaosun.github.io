@@ -190,7 +190,7 @@ Substrate作为一个通用的区块链开发框架，提供了丰富的数据�
 </thead>
 <tbody>
 <tr>
-<td>整数类型，如u8,i8,u32,i32,u64,i64,u128,i128,U256</td>
+<td>整数类型，如u8,i8,u32,i32,u64,i64,u128,i128</td>
 <td><code>MyUnsignedNumber get(unsigned_number): u8;</code></td>
 <td>0</td>
 <td>增：<code>MyUnsignedNumber::put(number);</code><!-- raw HTML omitted -->查：<code>let my_unsigned_num = MyUnsignedNumber::get();</code><!-- raw HTML omitted -->改：<code>MyUnsignedNumber::mutate(|v| v + 1</code><!-- raw HTML omitted -->删：<code>MyUnsignedNumber::kill();</code></td>
@@ -472,6 +472,10 @@ MyMap::mutate(key, |old_value| old_value+1);
     
     
         <li>
+            <a href="/post/substrate_transaction_weight_and_fees/">Substrate 区块链应用的交易费用设计<aside class="dates">Feb 21 2020</aside></a>
+        </li>
+    
+        <li>
             <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
         </li>
     
@@ -505,10 +509,6 @@ MyMap::mutate(key, |old_value| old_value+1);
     
         <li>
             <a href="/post/dependency_injection_in_scala/">Dependency Injection in Scala<aside class="dates">Jan 17 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/error_handling_in_scala/">Understand Error Handling in Scala<aside class="dates">Jan 17 2019</aside></a>
         </li>
     
 </ul>
