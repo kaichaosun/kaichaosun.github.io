@@ -6,10 +6,26 @@
     <description>Recent content on Whisperd</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 17 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://whisperd.tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Substrate数据存储的底层实现 Trie</title>
+      <link>https://whisperd.tech/post/trie/</link>
+      <pubDate>Tue, 17 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://whisperd.tech/post/trie/</guid>
+      <description>[TOC]
+通过本文，你会了解到：
+ 区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。  Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
+ 将数据通过哈希之后放置在叶子节点之中； 将相邻两个数据的哈希值组合在一起，得出一个新的哈希值； 依次类推，直到只有一个节点也就是根节点； 在验证另外的计算机拥有和本机相同的数据时，只需验证其提供的根节点和自己的根节点一致即可。  Merke Tree使用了加密哈希算法来快速验证数据一致性，常用的加密哈希算法有SHA-256，SHA-3，Blake2等，它们可以做到，
+ 相同的输入有相同的输出； 对任意数据可以实现快速计算； 从哈希值无法推断出原信息； 不会碰撞（即不同输入对应相同输出）； 输入即使只有很小的改变，输出也会有极大不同。  在区块链应用Bitcoin网络中，存储的数据为转移Bitcoin的交易，如“Alice发送给Bob 5个比特币”，通过使用Merkle Tree，除了上面提到的验证各个节点之间的数据一致性，还可以用来快速验证一个交易是否属于某个区块。轻节点只需要下载很少的数据就可以验证交易的有效性，例如下图所示，用户要验证交易T(D)在某个区块之中，需要依赖的数据仅仅是HC, HAB, HEFGH, 和 merkle root即HABCDEFGH。
+Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，也称为Prefix Tree，Radix Tree，或者简称为Trie，最早来源于英文单词 retrieve，可以发音为try，常用的使用场景包括：
+ 搜索引擎的自动补全功能； IP路由等。  Trie的特点是，某节点的key是从根节点到该节点的路径，即不同的key有相同前缀时，它们共享前缀所对应的路径。这种数据结构，可用于快速查找前缀相同的数据，内存开销较少。如以下数据及对应的trie表示为：
+   key value     to 7   tea 3   ted 4   ten 12   A 15   i 11   in 5   inn 9    Substrate使用base-16，即每个节点最多有16个子节点：</description>
+    </item>
     
     <item>
       <title>Substrate 区块链应用的交易费用设计</title>
@@ -36,22 +52,6 @@
 字节费用 在处理区块大小的限制时，Substrate引入了最大区块长度和字节费用，system模块定义了最大区块长度（MaximumBlockLength），transaction-payment模块定义了每字节的费用（TransactionByteFee），总的字节费用为：
 字节费用 = 每字节费用 * 字节数 和基本费用相同的是，每字节费用也是配置在可升级的runtime代码中。字节数的计算是按照交易的结构体通过SCALE编码之后的长度，应用开发者无需过多的关注。以Kusama网络为例，相关的设置如下：
  最大区块长度：5MB 每字节费用：0.</description>
-    </item>
-    
-    <item>
-      <title>Substrate数据存储的底层实现 Trie</title>
-      <link>https://whisperd.tech/post/trie/</link>
-      <pubDate>Mon, 17 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://whisperd.tech/post/trie/</guid>
-      <description>[TOC]
-通过本文，你会了解到：
- 区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。  Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
- 将数据通过哈希之后放置在叶子节点之中； 将相邻两个数据的哈希值组合在一起，得出一个新的哈希值； 依次类推，直到只有一个节点也就是根节点； 在验证另外的计算机拥有和本机相同的数据时，只需验证其提供的根节点和自己的根节点一致即可。  Merke Tree使用了加密哈希算法来快速验证数据一致性，常用的加密哈希算法有SHA-256，SHA-3，Blake2等，它们可以做到，
- 相同的输入有相同的输出； 对任意数据可以实现快速计算； 从哈希值无法推断出原信息； 不会碰撞（即不同输入对应相同输出）； 输入即使只有很小的改变，输出也会有极大不同。  在区块链应用Bitcoin网络中，存储的数据为转移Bitcoin的交易，如“Alice发送给Bob 5个比特币”，通过使用Merkle Tree，除了上面提到的验证各个节点之间的数据一致性，还可以用来快速验证一个交易是否属于某个区块。轻节点只需要下载很少的数据就可以验证交易的有效性，例如下图所示，用户要验证交易T(D)在某个区块之中，需要依赖的数据仅仅是HC, HAB, HEFGH, 和 merkle root即HABCDEFGH。
-Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，也称为Prefix Tree，Radix Tree，或者简称为Trie，最早来源于英文单词 retrieve，可以发音为try，常用的使用场景包括：
- 搜索引擎的自动补全功能； IP路由等。  Trie的特点是，某节点的key是从根节点到该节点的路径，即不同的key有相同前缀时，它们共享前缀所对应的路径。这种数据结构，可用于快速查找前缀相同的数据，内存开销较少。如以下数据及对应的trie表示为：
-   key value     to 7   tea 3   ted 4   ten 12   A 15   i 11   in 5   inn 9    Substrate使用base-16，即每个节点最多有16个子节点：</description>
     </item>
     
     <item>
