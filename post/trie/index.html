@@ -7,7 +7,7 @@
 <meta name="author" content="Kaichao Sun">
 <meta name="description" content="kaichao&#39;s blog">
 <meta name="generator" content="Hugo 0.62.2" />
-<title>Substrate数据存储的底层实现 Trie</title>
+<title>理解Substrate数据存储的底层实现Merkle Patricia Trie</title>
 <link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
 <link rel="stylesheet" href="https://whisperd.tech/css/style.css">
 <link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
@@ -21,7 +21,7 @@
 <link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
 
 
-<meta property="og:title" content="Substrate数据存储的底层实现 Trie" />
+<meta property="og:title" content="理解Substrate数据存储的底层实现Merkle Patricia Trie" />
 <meta property="og:description" content="[TOC]
 通过本文，你会了解到：
  区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。  Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
@@ -36,7 +36,7 @@ Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，�
 <meta property="article:modified_time" content="2020-03-17T00:00:00+00:00" />
 
 
-<meta itemprop="name" content="Substrate数据存储的底层实现 Trie">
+<meta itemprop="name" content="理解Substrate数据存储的底层实现Merkle Patricia Trie">
 <meta itemprop="description" content="[TOC]
 通过本文，你会了解到：
  区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。  Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
@@ -53,7 +53,7 @@ Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，�
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Substrate数据存储的底层实现 Trie"/>
+<meta name="twitter:title" content="理解Substrate数据存储的底层实现Merkle Patricia Trie"/>
 <meta name="twitter:description" content="[TOC]
 通过本文，你会了解到：
  区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。  Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
@@ -89,7 +89,7 @@ Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，�
 
 <article class="post">
     <header>
-        <h1>Substrate数据存储的底层实现 Trie</h1>
+        <h1>理解Substrate数据存储的底层实现Merkle Patricia Trie</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
         March 17, 2020
@@ -297,7 +297,7 @@ Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，�
     </div>
     </a>
     <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2ftrie%2f - Substrate%e6%95%b0%e6%8d%ae%e5%ad%98%e5%82%a8%e7%9a%84%e5%ba%95%e5%b1%82%e5%ae%9e%e7%8e%b0%20Trie by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2ftrie%2f - %e7%90%86%e8%a7%a3Substrate%e6%95%b0%e6%8d%ae%e5%ad%98%e5%82%a8%e7%9a%84%e5%ba%95%e5%b1%82%e5%ae%9e%e7%8e%b0Merkle%20Patricia%20Trie by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
