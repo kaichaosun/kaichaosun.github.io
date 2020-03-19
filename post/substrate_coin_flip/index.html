@@ -1,158 +1,35 @@
-<!DOCTYPE html>
-<html lang="en-us">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Kaichao Sun">
-<meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.62.2" />
-<title>Substrate应用 - 抛硬币游戏(一)</title>
-<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
-<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
-<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
-
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-
-
-
-<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
-
-
-<meta property="og:title" content="Substrate应用 - 抛硬币游戏(一)" />
-<meta property="og:description" content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Kaichao Sun"><meta name=description content="kaichao's blog"><meta name=generator content="Hugo 0.62.2"><title>Substrate应用 - 抛硬币游戏(一)</title><link rel="shortcut icon" href=https://kaichaosun.github.io/images/favicon.ico><link rel=stylesheet href=https://kaichaosun.github.io/css/style.css><link rel=stylesheet href=https://kaichaosun.github.io/css/highlight.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css><link href=https://kaichaosun.github.io/index.xml rel=alternate type=application/rss+xml title=Whisperd><meta property="og:title" content="Substrate应用 - 抛硬币游戏(一)"><meta property="og:description" content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast 更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin 创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname 启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev 如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/substrate_coin_flip/" />
-<meta property="article:published_time" content="2019-08-05T00:00:00+00:00" />
-<meta property="article:modified_time" content="2019-08-05T00:00:00+00:00" />
-
-
-<meta itemprop="name" content="Substrate应用 - 抛硬币游戏(一)">
-<meta itemprop="description" content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &#34;sup&#34; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p => Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127."><meta property="og:type" content="article"><meta property="og:url" content="https://kaichaosun.github.io/post/substrate_coin_flip/"><meta property="article:published_time" content="2019-08-05T00:00:00+00:00"><meta property="article:modified_time" content="2019-08-05T00:00:00+00:00"><meta itemprop=name content="Substrate应用 - 抛硬币游戏(一)"><meta itemprop=description content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast 更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin 创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname 启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev 如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127.">
-<meta itemprop="datePublished" content="2019-08-05T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2019-08-05T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1009">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Substrate应用 - 抛硬币游戏(一)"/>
-<meta name="twitter:description" content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &#34;sup&#34; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p => Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127."><meta itemprop=datePublished content="2019-08-05T00:00:00+00:00"><meta itemprop=dateModified content="2019-08-05T00:00:00+00:00"><meta itemprop=wordCount content="1009"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="Substrate应用 - 抛硬币游戏(一)"><meta name=twitter:description content="**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
 预备  快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》：  curl https://getsubstrate.io -sSf | bash -s -- --fast 更新substrate-up脚本，它提供了初始化节点、创建新模块等功能：  git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin 创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
  Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。   这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
  本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
 初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
 substrate-node-new demo-node yourname 启动刚刚生成的节点：
 cd demo-node ./target/release/demo-node --dev 如果在控制台看到这些内容，证明你的节点创建成功：
-2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &quot;sup&quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127."/>
-<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
-
-
-    </head>
-<body>
-    <nav class="main-nav">
-	
-		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
-	
-
-	
- 		<a href='/about/'>About</a>
-  	
-
-	
-
-	
-		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
-	
-</nav>
-
-    <section id="wrapper">
-        
-        
-
-<article class="post">
-    <header>
-        <h1>Substrate应用 - 抛硬币游戏(一)</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        August 5, 2019
-        <br>
-        
-        </h2>
-    </header>
-
-    <aside>
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#预备">预备</a></li>
-    <li><a href="#创建区块链节点">创建区块链节点</a>
-      <ul>
-        <li><a href="#初始化节点">初始化节点</a></li>
-        <li><a href="#节点交互">节点交互</a></li>
-      </ul>
-    </li>
-    <li><a href="#添加功能模块">添加功能模块</a>
-      <ul>
-        <li><a href="#创建新模块">创建新模块</a></li>
-        <li><a href="#添加业务功能">添加业务功能</a></li>
-      </ul>
-    </li>
-    <li><a href="#总结">总结</a></li>
-    <li><a href="#reference">Reference</a></li>
-  </ul>
-</nav>
-    </aside>
-    
-
-    <section id="post-body">
-        <p>**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程<a href="https://zhuanlan.zhihu.com/p/67580341">《使用Substrate搭建你的第一条区块链》</a>来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。</p>
-<h2 id="预备">预备</h2>
-<ol>
-<li>快速安装Substrate依赖，详细内容参考开发者中心文档<a href="https://substrate.dev/docs/en/getting-started/installing-substrate#fast-installation">《Installing Substrate》</a>：</li>
-</ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://getsubstrate.io -sSf | bash -s -- --fast
-</code></pre></div><ol start="2">
-<li>更新<a href="https://github.com/paritytech/substrate-up">substrate-up</a>脚本，它提供了初始化节点、创建新模块等功能：</li>
-</ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/paritytech/substrate-up
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &#34;sup&#34; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p => Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127."><meta name=twitter:site content="@https://twitter.com/kaichaosun"></head><body><nav class=main-nav><a href=https://kaichaosun.github.io/><span class=arrow>←</span>Home</a>
+<a href=/about/>About</a>
+<a class=cta href=https://kaichaosun.github.io/index.xml>Subscribe</a></nav><section id=wrapper><article class=post><header><h1>Substrate应用 - 抛硬币游戏(一)</h1><h2 class=subtitle></h2><h2 class=headline>August 5, 2019<br></h2></header><aside><nav id=TableOfContents><ul><li><a href=#预备>预备</a></li><li><a href=#创建区块链节点>创建区块链节点</a><ul><li><a href=#初始化节点>初始化节点</a></li><li><a href=#节点交互>节点交互</a></li></ul></li><li><a href=#添加功能模块>添加功能模块</a><ul><li><a href=#创建新模块>创建新模块</a></li><li><a href=#添加业务功能>添加业务功能</a></li></ul></li><li><a href=#总结>总结</a></li><li><a href=#reference>Reference</a></li></ul></nav></aside><section id=post-body><p>**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程<a href=https://zhuanlan.zhihu.com/p/67580341>《使用Substrate搭建你的第一条区块链》</a>来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。</p><h2 id=预备>预备</h2><ol><li>快速安装Substrate依赖，详细内容参考开发者中心文档<a href=https://substrate.dev/docs/en/getting-started/installing-substrate#fast-installation>《Installing Substrate》</a>：</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>curl https://getsubstrate.io -sSf | bash -s -- --fast
+</code></pre></div><ol start=2><li>更新<a href=https://github.com/paritytech/substrate-up>substrate-up</a>脚本，它提供了初始化节点、创建新模块等功能：</li></ol><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>git clone https://github.com/paritytech/substrate-up
 cd substrate-up
 cp -a substrate-* ~/.cargo/bin
 cp -a polkadot-* ~/.cargo/bin
-</code></pre></div><h2 id="创建区块链节点">创建区块链节点</h2>
-<p>作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，<strong>开发者要做的只是将需要的组件组装起来</strong>。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：</p>
-<ul>
-<li><a href="https://github.com/paritytech/substrate/tree/v1.0/node-template">Template Node</a>: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。</li>
-<li><a href="https://github.com/paritytech/substrate/tree/v1.0/node">Node</a>: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。</li>
-</ul>
-<blockquote>
-<p>这里所说的<strong>节点</strong>通常也被称为<strong>点对点节点</strong>或者<strong>全节点</strong>，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。</p>
-</blockquote>
-<p>本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。</p>
-<h3 id="初始化节点">初始化节点</h3>
-<p><code>substrate-up</code>脚本提供的初始化节点命令是<code>substrate-node-new</code>，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换<code>demo-node</code>为你自己的节点名，替换<code>yourname</code>为你的团队或个人名字：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">substrate-node-new demo-node yourname
-</code></pre></div><p>启动刚刚生成的节点：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd demo-node
+</code></pre></div><h2 id=创建区块链节点>创建区块链节点</h2><p>作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，<strong>开发者要做的只是将需要的组件组装起来</strong>。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：</p><ul><li><a href=https://github.com/paritytech/substrate/tree/v1.0/node-template>Template Node</a>: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。</li><li><a href=https://github.com/paritytech/substrate/tree/v1.0/node>Node</a>: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。</li></ul><blockquote><p>这里所说的<strong>节点</strong>通常也被称为<strong>点对点节点</strong>或者<strong>全节点</strong>，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。</p></blockquote><p>本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。</p><h3 id=初始化节点>初始化节点</h3><p><code>substrate-up</code>脚本提供的初始化节点命令是<code>substrate-node-new</code>，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换<code>demo-node</code>为你自己的节点名，替换<code>yourname</code>为你的团队或个人名字：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>substrate-node-new demo-node yourname
+</code></pre></div><p>启动刚刚生成的节点：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cd demo-node
 ./target/release/demo-node --dev
-</code></pre></div><p>如果在控制台看到这些内容，证明你的节点创建成功：</p>
-<pre><code>2019-07-27 18:03:45 Substrate Node
+</code></pre></div><p>如果在控制台看到这些内容，证明你的节点创建成功：</p><pre><code>2019-07-27 18:03:45 Substrate Node
 2019-07-27 18:03:45   version 1.0.0-2857a44-x86_64-macos
 2019-07-27 18:03:45   by demo-author, 2017, 2018
 2019-07-27 18:03:45 Chain specification: Development
@@ -175,423 +52,166 @@ sh: 0xacb5…bb17; extrinsics: [0xb1d4…9362]]
 ously 0x2d84be81477309b475af22c457f850174c498d1b0d19032f18fe7f7656233dad.
 2019-07-27 18:03:50 Imported #1 (0x1d70…5302)
 2019-07-27 18:03:50 Idle (0 peers), best: #1 (0x1d70…5302), finalized #0 (0xacb5…bb17), ⬇ 0 ⬆ 0
-</code></pre><p>以上输出的内容包含了一些有价值的信息如：</p>
-<ul>
-<li>Chain specification: <code>Development</code> ，表明我们使用的是内置开发模式的chain spec。</li>
-<li>Node identity: <code>QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV</code>, 节点ID。</li>
-<li>Authority key: <code>5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu</code>, 验证人的公钥。</li>
-<li>WebSocket RPC 的 IP 和端口: <code>127.0.0.1:9944</code>。</li>
-<li>Current block: <code>best: #1 (0x1d70…5302)</code>.</li>
-<li>Current finalized block: <code>finalized #0 (0xacb5…bb17)</code>。一直显示 <code>0</code> 是由于 <strong>Template Node</strong> 并没有引入最终性模块 <a href="https://wiki.polkadot.network/en/latest/polkadot/learn/consensus/#what-is-grandpababe">GRANDPA finality gadget</a>。</li>
-</ul>
-<blockquote>
-<p>Substrate 默认的共识机制是基于BABE和GRANDPA的混合共识，详细信息参考<a href="https://wiki.polkadot.network/en/latest/polkadot/learn/consensus/">Polkadot Consensus</a>。</p>
-</blockquote>
-<p>启动之后，你就拥有了一个由单个节点维护的&quot;区块链&quot;网络。下面我们通过UI与刚创建的节点进行交互。</p>
-<h3 id="节点交互">节点交互</h3>
-<p>Substrate生态里提供了一个UI工具 <a href="https://github.com/polkadot-js/apps">Polkadot/Substrate UI</a> 来帮助开发者与Substrate编写的区块链进行交互。你可以根据项目README的指示在本地运行，或者访问官方host的网页应用，链接为：https://polkadot.js.org/apps。</p>
-<p>在 <strong>Settings</strong>页面，配置<code>remote node</code>为之前所说的WebSocket端口<code>127.0.0.1:9944</code>。保存配置后，会有更多的功能在侧边栏出现，供大家使用。</p>
-<p>转到<code>Extrinsics</code>页：</p>
-<ul>
-<li>使用内置的<code>ALICE</code>用户，</li>
-<li>配置 <strong>submit the following extrinsic</strong> 为 <code>template</code> <code>doSomething(something)</code>,</li>
-<li>配置 <strong>something</strong> 为任意整数,</li>
-<li>点击提交 <strong>Submit Transaction</strong>. 几秒钟之后，你将会看到交易成功的提示信息。</li>
-</ul>
-<p>接着，转到 <strong>Chain state</strong> 页面:</p>
-<ul>
-<li>配置 <strong>selected state query</strong> 为 <code>template</code> <code>something(): Option&lt;u32&gt;</code></li>
-<li>点击➕按钮，你会看到刚刚输进入的数字。</li>
-</ul>
-<p>以上就是我们与节点程序的基本交互操作。如果你还不熟悉UI的其它功能，可以多多练习，有助于后面的操作和理解。</p>
-<h2 id="添加功能模块">添加功能模块</h2>
-<p>使用Substrate编写区块链应用，数据存储、可调用函数和事件都被封装在自定义的Runtime模块中。以刚刚创建的节点程序为例，预先定义的template模块，代码位于<code>runtime/src/template.rs</code>, 内容包含：</p>
-<ul>
-<li>数据存储（Storage）: <code>Something get(something): Option&lt;u32&gt;</code></li>
-<li>可调用函数（Callable Function）:
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">do_something</span>(origin, something: <span style="color:#66d9ef">u32</span>) -&gt; Result {
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>}
-</code></pre></div></li>
-<li>事件（Event）: <code>SomethingStored(u32, AccountId)</code></li>
-</ul>
-<p>下面我们在编写自定义的功能模块时会逐一对上面的内容进行介绍。</p>
-<h3 id="创建新模块">创建新模块</h3>
-<p><code>substrate-up</code>提供了命令<code>substrate-module-new</code>来帮助我们创建一个template模块，里面包含了一些基本的依赖引入，以及上面提到的数据存储项、可调用函数、事件等示例代码，其中的一些注释可以很好地帮助初学者理解Substrate runtime模块的构成。在节点程序目录下执行如下命令（替换<code>mymodule</code>为你自己的模块名）：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd runtime/src
+</code></pre><p>以上输出的内容包含了一些有价值的信息如：</p><ul><li>Chain specification: <code>Development</code> ，表明我们使用的是内置开发模式的chain spec。</li><li>Node identity: <code>QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV</code>, 节点ID。</li><li>Authority key: <code>5FA9nQDVg267DEd8m1ZypXLBnvN7SFxYwV7ndqSYGiN9TTpu</code>, 验证人的公钥。</li><li>WebSocket RPC 的 IP 和端口: <code>127.0.0.1:9944</code>。</li><li>Current block: <code>best: #1 (0x1d70…5302)</code>.</li><li>Current finalized block: <code>finalized #0 (0xacb5…bb17)</code>。一直显示 <code>0</code> 是由于 <strong>Template Node</strong> 并没有引入最终性模块 <a href=https://wiki.polkadot.network/en/latest/polkadot/learn/consensus/#what-is-grandpababe>GRANDPA finality gadget</a>。</li></ul><blockquote><p>Substrate 默认的共识机制是基于BABE和GRANDPA的混合共识，详细信息参考<a href=https://wiki.polkadot.network/en/latest/polkadot/learn/consensus/>Polkadot Consensus</a>。</p></blockquote><p>启动之后，你就拥有了一个由单个节点维护的"区块链"网络。下面我们通过UI与刚创建的节点进行交互。</p><h3 id=节点交互>节点交互</h3><p>Substrate生态里提供了一个UI工具 <a href=https://github.com/polkadot-js/apps>Polkadot/Substrate UI</a> 来帮助开发者与Substrate编写的区块链进行交互。你可以根据项目README的指示在本地运行，或者访问官方host的网页应用，链接为：https://polkadot.js.org/apps。</p><p>在 <strong>Settings</strong>页面，配置<code>remote node</code>为之前所说的WebSocket端口<code>127.0.0.1:9944</code>。保存配置后，会有更多的功能在侧边栏出现，供大家使用。</p><p>转到<code>Extrinsics</code>页：</p><ul><li>使用内置的<code>ALICE</code>用户，</li><li>配置 <strong>submit the following extrinsic</strong> 为 <code>template</code> <code>doSomething(something)</code>,</li><li>配置 <strong>something</strong> 为任意整数,</li><li>点击提交 <strong>Submit Transaction</strong>. 几秒钟之后，你将会看到交易成功的提示信息。</li></ul><p>接着，转到 <strong>Chain state</strong> 页面:</p><ul><li>配置 <strong>selected state query</strong> 为 <code>template</code> <code>something(): Option&lt;u32></code></li><li>点击➕按钮，你会看到刚刚输进入的数字。</li></ul><p>以上就是我们与节点程序的基本交互操作。如果你还不熟悉UI的其它功能，可以多多练习，有助于后面的操作和理解。</p><h2 id=添加功能模块>添加功能模块</h2><p>使用Substrate编写区块链应用，数据存储、可调用函数和事件都被封装在自定义的Runtime模块中。以刚刚创建的节点程序为例，预先定义的template模块，代码位于<code>runtime/src/template.rs</code>, 内容包含：</p><ul><li>数据存储（Storage）: <code>Something get(something): Option&lt;u32></code></li><li>可调用函数（Callable Function）:<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>do_something</span>(origin, something: <span style=color:#66d9ef>u32</span>) -&gt; Result {
+    <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>}
+</code></pre></div></li><li>事件（Event）: <code>SomethingStored(u32, AccountId)</code></li></ul><p>下面我们在编写自定义的功能模块时会逐一对上面的内容进行介绍。</p><h3 id=创建新模块>创建新模块</h3><p><code>substrate-up</code>提供了命令<code>substrate-module-new</code>来帮助我们创建一个template模块，里面包含了一些基本的依赖引入，以及上面提到的数据存储项、可调用函数、事件等示例代码，其中的一些注释可以很好地帮助初学者理解Substrate runtime模块的构成。在节点程序目录下执行如下命令（替换<code>mymodule</code>为你自己的模块名）：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>cd runtime/src
 substrate-module-new mymodule
-</code></pre></div><p>执行完成后，你会看到一个新生成的<code>mymodule.rs</code>文件，这就是你的模块程序文件。为了使用这一模块，我们还需要修改当前目录下的<code>lib.rs</code>：</p>
-<ul>
-<li>引入我们新定义的模块:</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">mod</span> mymodule;
-</code></pre></div><ul>
-<li>实现模块的配置接口：</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">impl</span> mymodule::Trait <span style="color:#66d9ef">for</span> Runtime {
-    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Event</span> <span style="color:#f92672">=</span> Event;
+</code></pre></div><p>执行完成后，你会看到一个新生成的<code>mymodule.rs</code>文件，这就是你的模块程序文件。为了使用这一模块，我们还需要修改当前目录下的<code>lib.rs</code>：</p><ul><li>引入我们新定义的模块:</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>mod</span> mymodule;
+</code></pre></div><ul><li>实现模块的配置接口：</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>impl</span> mymodule::Trait <span style=color:#66d9ef>for</span> Runtime {
+    <span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Event</span> <span style=color:#f92672>=</span> Event;
 }
-</code></pre></div><ul>
-<li>添加模块到<code>construct_runtime!</code>宏：</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">construct_runtime<span style="color:#f92672">!</span>(
-    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Runtime</span> with Log(InternalLog: <span style="color:#a6e22e">DigestItem</span><span style="color:#f92672">&lt;</span>Hash, AuthorityId, AuthoritySignature<span style="color:#f92672">&gt;</span>) <span style="color:#66d9ef">where</span>
-        Block <span style="color:#f92672">=</span> Block,
-        NodeBlock <span style="color:#f92672">=</span> opaque::Block,
-        UncheckedExtrinsic <span style="color:#f92672">=</span> UncheckedExtrinsic
+</code></pre></div><ul><li>添加模块到<code>construct_runtime!</code>宏：</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>construct_runtime<span style=color:#f92672>!</span>(
+    <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Runtime</span> with Log(InternalLog: <span style=color:#a6e22e>DigestItem</span><span style=color:#f92672>&lt;</span>Hash, AuthorityId, AuthoritySignature<span style=color:#f92672>&gt;</span>) <span style=color:#66d9ef>where</span>
+        Block <span style=color:#f92672>=</span> Block,
+        NodeBlock <span style=color:#f92672>=</span> opaque::Block,
+        UncheckedExtrinsic <span style=color:#f92672>=</span> UncheckedExtrinsic
     {
-        <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>        MyModule: <span style="color:#a6e22e">mymodule</span>::{Module, Call, Storage, Event<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span>},
+        <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>        MyModule: <span style=color:#a6e22e>mymodule</span>::{Module, Call, Storage, Event<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span>},
     }
 );
-</code></pre></div><blockquote>
-<p><a href="https://en.wikipedia.org/wiki/Metaprogramming"><strong>宏</strong></a>通常被称为元编程，根据提供的代码可以生成新的代码，实现代码复用。Substrate使用了大量的宏来减轻开发人员的工作，让人&quot;又爱又恨&rdquo;，更多细节参考 <a href="../runtime/macros/construct_runtime.md"><code>construct_runtime!</code></a>。</p>
-</blockquote>
-<p>接下来，重新编译我们的节点程序：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 编译runtime的wasm版本</span>
+</code></pre></div><blockquote><p><a href=https://en.wikipedia.org/wiki/Metaprogramming><strong>宏</strong></a>通常被称为元编程，根据提供的代码可以生成新的代码，实现代码复用。Substrate使用了大量的宏来减轻开发人员的工作，让人"又爱又恨&rdquo;，更多细节参考 <a href=../runtime/macros/construct_runtime.md><code>construct_runtime!</code></a>。</p></blockquote><p>接下来，重新编译我们的节点程序：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e># 编译runtime的wasm版本</span>
 ./scripts/build.sh
 
-<span style="color:#75715e"># 编译runtime的本地二进制版本，并构建可执行的客户端</span>
+<span style=color:#75715e># 编译runtime的本地二进制版本，并构建可执行的客户端</span>
 cargo build --release
 
-<span style="color:#75715e"># 删除链上的历史数据</span>
+<span style=color:#75715e># 删除链上的历史数据</span>
 ./target/release/demo-node purge-chain --dev
 
-<span style="color:#75715e"># 启动本地测试网络</span>
+<span style=color:#75715e># 启动本地测试网络</span>
 ./target/release/demo-node --dev
-</code></pre></div><p>请通过 <a href="https://github.com/polkadot-js/apps">Polkadot/Substrate UI</a> 简单测试一下新创建模块的功能。</p>
-<h3 id="添加业务功能">添加业务功能</h3>
-<p>本文，我们实现的业务是&quot;抛硬币&quot;游戏，用户可以付费玩游戏，如果抛出的结果为&quot;正面朝上&rdquo;，则用户胜利，获取奖池里的奖金；如果用户失败，则什么都拿不到。无论胜负，用户支付的游戏费用都要存进奖池，以备后面的用户使用。</p>
-<h4 id="添加storage-item">添加Storage Item</h4>
-<p>Runtime开发的第一步是设计你的存储数据结构，比如这里需要的游戏花费和奖池，在模块的<code>decl_storage!</code>宏中添加如下存储项：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">decl_storage<span style="color:#f92672">!</span> {
-  	<span style="color:#66d9ef">trait</span> Store <span style="color:#66d9ef">for</span> Module<span style="color:#f92672">&lt;</span>T: <span style="color:#a6e22e">Trait</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">as</span> mymodule {
-        <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>        Payment get(payment): Option<span style="color:#f92672">&lt;</span>T::Balance<span style="color:#f92672">&gt;</span>;
-        Pot get(pot): <span style="color:#a6e22e">T</span>::Balance;
-        Nonce get(nonce): <span style="color:#66d9ef">u64</span>;
+</code></pre></div><p>请通过 <a href=https://github.com/polkadot-js/apps>Polkadot/Substrate UI</a> 简单测试一下新创建模块的功能。</p><h3 id=添加业务功能>添加业务功能</h3><p>本文，我们实现的业务是"抛硬币"游戏，用户可以付费玩游戏，如果抛出的结果为"正面朝上&rdquo;，则用户胜利，获取奖池里的奖金；如果用户失败，则什么都拿不到。无论胜负，用户支付的游戏费用都要存进奖池，以备后面的用户使用。</p><h4 id=添加storage-item>添加Storage Item</h4><p>Runtime开发的第一步是设计你的存储数据结构，比如这里需要的游戏花费和奖池，在模块的<code>decl_storage!</code>宏中添加如下存储项：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>decl_storage<span style=color:#f92672>!</span> {
+  	<span style=color:#66d9ef>trait</span> Store <span style=color:#66d9ef>for</span> Module<span style=color:#f92672>&lt;</span>T: <span style=color:#a6e22e>Trait</span><span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>as</span> mymodule {
+        <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>        Payment get(payment): Option<span style=color:#f92672>&lt;</span>T::Balance<span style=color:#f92672>&gt;</span>;
+        Pot get(pot): <span style=color:#a6e22e>T</span>::Balance;
+        Nonce get(nonce): <span style=color:#66d9ef>u64</span>;
   	}
 }
-</code></pre></div><blockquote>
-<p>这里我们使用的<code>decl_storage!</code>宏使代码变得简单易懂，由Substrate负责生成更多和数据库进行交互的辅助代码，开发者只需设计存储的数据模型。</p>
-</blockquote>
-<p>这里有三个存储项：</p>
-<ul>
-<li><code>Payment</code> 类型为 <code>Option&lt;T::Balance&gt;</code> ，保存着游戏的花费。使用<code>Option</code>表明该费用是否已经被初始化。</li>
-<li><code>Pot</code> 类型为 <code>T::Balance</code> ，保存了上次获胜者之后累积的所有奖励。</li>
-<li><code>Nonce</code> 为<code>u64</code>类型的整数，我们将会在生成随机数的时候用到。</li>
-</ul>
-<p><code>Balance</code> 类型是由 <a href="https://substrate.dev/rustdocs/v1.0/srml_balances/index.html">SRML balances</a> 模块提供的，用来表示账户的余额。要使用它，需要将我们模块的配置接口修改为依赖 <a href="https://substrate.dev/rustdocs/v1.0/srml_balances/trait.Trait.html">balances Trait</a>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">trait</span> Trait: <span style="color:#a6e22e">balances</span>::Trait {
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>代码中<code>get(payment)</code>是用来定义<code>Payment</code>存储项的另一种getter函数，下面的章节我们再介绍如何使用这些getter函数。</p>
-<h4 id="定义callable-function">定义Callable Function</h4>
-<p>本节我们将会定义Runtime开发所需的可调用函数。这里所说的可调用函数，是那些可以被用户调用，并且与区块链系统进行交互的函数。函数本身是不可以被代码之外进行调用的，但是由于Substrate的封装开放了对应的RPC接口，更多细节这里我们不过多的讨论。我们为&quot;抛硬币&quot;游戏定义了两个函数：一个用来初始化游戏花费；另一个用来开始游戏并生成游戏结果。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">decl_module<span style="color:#f92672">!</span> {
-    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Module</span><span style="color:#f92672">&lt;</span>T: <span style="color:#a6e22e">Trait</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">for</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Call</span> <span style="color:#66d9ef">where</span> origin: <span style="color:#a6e22e">T</span>::Origin {
-        <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">set_payment</span>(_origin, value: <span style="color:#a6e22e">T</span>::Balance) -&gt; Result {
-            <span style="color:#75715e">// Logic for setting the game payment
-</span><span style="color:#75715e"></span>        }
+</code></pre></div><blockquote><p>这里我们使用的<code>decl_storage!</code>宏使代码变得简单易懂，由Substrate负责生成更多和数据库进行交互的辅助代码，开发者只需设计存储的数据模型。</p></blockquote><p>这里有三个存储项：</p><ul><li><code>Payment</code> 类型为 <code>Option&lt;T::Balance></code> ，保存着游戏的花费。使用<code>Option</code>表明该费用是否已经被初始化。</li><li><code>Pot</code> 类型为 <code>T::Balance</code> ，保存了上次获胜者之后累积的所有奖励。</li><li><code>Nonce</code> 为<code>u64</code>类型的整数，我们将会在生成随机数的时候用到。</li></ul><p><code>Balance</code> 类型是由 <a href=https://substrate.dev/rustdocs/v1.0/srml_balances/index.html>SRML balances</a> 模块提供的，用来表示账户的余额。要使用它，需要将我们模块的配置接口修改为依赖 <a href=https://substrate.dev/rustdocs/v1.0/srml_balances/trait.Trait.html>balances Trait</a>:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>trait</span> Trait: <span style=color:#a6e22e>balances</span>::Trait {
+    <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>}
+</code></pre></div><p>代码中<code>get(payment)</code>是用来定义<code>Payment</code>存储项的另一种getter函数，下面的章节我们再介绍如何使用这些getter函数。</p><h4 id=定义callable-function>定义Callable Function</h4><p>本节我们将会定义Runtime开发所需的可调用函数。这里所说的可调用函数，是那些可以被用户调用，并且与区块链系统进行交互的函数。函数本身是不可以被代码之外进行调用的，但是由于Substrate的封装开放了对应的RPC接口，更多细节这里我们不过多的讨论。我们为"抛硬币"游戏定义了两个函数：一个用来初始化游戏花费；另一个用来开始游戏并生成游戏结果。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>decl_module<span style=color:#f92672>!</span> {
+    <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Module</span><span style=color:#f92672>&lt;</span>T: <span style=color:#a6e22e>Trait</span><span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Call</span> <span style=color:#66d9ef>where</span> origin: <span style=color:#a6e22e>T</span>::Origin {
+        <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>set_payment</span>(_origin, value: <span style=color:#a6e22e>T</span>::Balance) -&gt; Result {
+            <span style=color:#75715e>// Logic for setting the game payment
+</span><span style=color:#75715e></span>        }
 
         play(origin) -&gt; Result {
-            <span style="color:#75715e">// Logic for playing the game
-</span><span style="color:#75715e"></span>        }
+            <span style=color:#75715e>// Logic for playing the game
+</span><span style=color:#75715e></span>        }
     }
 }
-</code></pre></div><p>上面的代码显示了我们的可调用函数位于<code>Module</code>结构体中，下面我们将会为函数添加真正的逻辑。对于 <code>set_payment</code> 函数:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">// This function initializes the `payment` storage item
-</span><span style="color:#75715e"></span><span style="color:#75715e">// It also populates the pot with an initial value
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">set_payment</span>(origin, value: <span style="color:#a6e22e">T</span>::Balance) -&gt; Result {
-    <span style="color:#75715e">// Ensure that the function call is a signed message (i.e. a transaction)
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> ensure_signed(origin)<span style="color:#f92672">?</span>;
+</code></pre></div><p>上面的代码显示了我们的可调用函数位于<code>Module</code>结构体中，下面我们将会为函数添加真正的逻辑。对于 <code>set_payment</code> 函数:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>// This function initializes the `payment` storage item
+</span><span style=color:#75715e></span><span style=color:#75715e>// It also populates the pot with an initial value
+</span><span style=color:#75715e></span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>set_payment</span>(origin, value: <span style=color:#a6e22e>T</span>::Balance) -&gt; Result {
+    <span style=color:#75715e>// Ensure that the function call is a signed message (i.e. a transaction)
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> _ <span style=color:#f92672>=</span> ensure_signed(origin)<span style=color:#f92672>?</span>;
   
-    <span style="color:#75715e">// If `payment` is not initialized with some value
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> Self::payment().is_none() {
-        <span style="color:#75715e">// Set the value of `payment`
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">&lt;</span>Payment<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::put(value);
+    <span style=color:#75715e>// If `payment` is not initialized with some value
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> Self::payment().is_none() {
+        <span style=color:#75715e>// Set the value of `payment`
+</span><span style=color:#75715e></span>        <span style=color:#f92672>&lt;</span>Payment<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::put(value);
     
-        <span style="color:#75715e">// Initialize the `pot` with the same value
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">&lt;</span>Pot<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::put(value);
+        <span style=color:#75715e>// Initialize the `pot` with the same value
+</span><span style=color:#75715e></span>        <span style=color:#f92672>&lt;</span>Pot<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::put(value);
     }
   
-    <span style="color:#75715e">// Return Ok(()) when everything happens successfully
-</span><span style="color:#75715e"></span>    Ok(())
+    <span style=color:#75715e>// Return Ok(()) when everything happens successfully
+</span><span style=color:#75715e></span>    Ok(())
 }
-</code></pre></div><p>我们的 <code>set_payment</code> 函数需要两个参数，</p>
-<ul>
-<li><code>origin</code>， 类型为 <a href="https://substrate.dev/rustdocs/v1.0/srml_system/type.Origin.html">SRML system</a> 模块定义的<code>T::Origin</code>，包含了函数调用的发出方。这个参数总是作为可调用函数的第一个参数。Substrate允许我们为这个参数缺省类型签名来简化工作。参考这里<a href="../overview/glossary.md#origin">Origin的定义</a>。</li>
-<li><code>value</code> ，类型为 <code>T::Balance</code>，用来初始化 <code>Payment</code> 和<code>Pot</code>。</li>
-</ul>
-<p>接下来，我们来实现 <code>play</code> 函数：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">// This function is allows a user to play our coin-flip game
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">play</span>(origin) -&gt; Result {
-    <span style="color:#75715e">// Ensure that the function call is a signed message (i.e. a transaction)
-</span><span style="color:#75715e"></span>    <span style="color:#75715e">// Additionally, derive the sender address from the signed message
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> sender <span style="color:#f92672">=</span> ensure_signed(origin)<span style="color:#f92672">?</span>;
+</code></pre></div><p>我们的 <code>set_payment</code> 函数需要两个参数，</p><ul><li><code>origin</code>， 类型为 <a href=https://substrate.dev/rustdocs/v1.0/srml_system/type.Origin.html>SRML system</a> 模块定义的<code>T::Origin</code>，包含了函数调用的发出方。这个参数总是作为可调用函数的第一个参数。Substrate允许我们为这个参数缺省类型签名来简化工作。参考这里<a href=../overview/glossary.md#origin>Origin的定义</a>。</li><li><code>value</code> ，类型为 <code>T::Balance</code>，用来初始化 <code>Payment</code> 和<code>Pot</code>。</li></ul><p>接下来，我们来实现 <code>play</code> 函数：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>// This function is allows a user to play our coin-flip game
+</span><span style=color:#75715e></span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>play</span>(origin) -&gt; Result {
+    <span style=color:#75715e>// Ensure that the function call is a signed message (i.e. a transaction)
+</span><span style=color:#75715e></span>    <span style=color:#75715e>// Additionally, derive the sender address from the signed message
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> sender <span style=color:#f92672>=</span> ensure_signed(origin)<span style=color:#f92672>?</span>;
   
-    <span style="color:#75715e">// Ensure that `payment` storage item has been set
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> payment <span style="color:#f92672">=</span> Self::payment().ok_or(<span style="color:#e6db74">&#34;Must have payment amount set&#34;</span>)<span style="color:#f92672">?</span>;
+    <span style=color:#75715e>// Ensure that `payment` storage item has been set
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> payment <span style=color:#f92672>=</span> Self::payment().ok_or(<span style=color:#e6db74>&#34;Must have payment amount set&#34;</span>)<span style=color:#f92672>?</span>;
   
-    <span style="color:#75715e">// Read our storage values, and place them in memory variables
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> nonce <span style="color:#f92672">=</span> Self::nonce();
-    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> pot <span style="color:#f92672">=</span> Self::pot();
+    <span style=color:#75715e>// Read our storage values, and place them in memory variables
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> nonce <span style=color:#f92672>=</span> Self::nonce();
+    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> pot <span style=color:#f92672>=</span> Self::pot();
   
-    <span style="color:#75715e">// Try to withdraw the payment from the account, making sure that it will not kill the account
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>balances::Module<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">as</span> Currency<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::withdraw(<span style="color:#f92672">&amp;</span>sender, payment, WithdrawReason::Reserve, ExistenceRequirement::KeepAlive)<span style="color:#f92672">?</span>;
+    <span style=color:#75715e>// Try to withdraw the payment from the account, making sure that it will not kill the account
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> _ <span style=color:#f92672>=</span> <span style=color:#f92672>&lt;</span>balances::Module<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>as</span> Currency<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::withdraw(<span style=color:#f92672>&amp;</span>sender, payment, WithdrawReason::Reserve, ExistenceRequirement::KeepAlive)<span style=color:#f92672>?</span>;
   
-    <span style="color:#75715e">// Generate a random hash between 0-255 using a csRNG algorithm
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">&lt;</span>system::Module<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::random_seed(), <span style="color:#f92672">&amp;</span>sender, nonce)
-      .using_encoded(<span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">as</span> system::Trait<span style="color:#f92672">&gt;</span>::Hashing::hash)
-      .using_encoded(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">128</span>)
+    <span style=color:#75715e>// Generate a random hash between 0-255 using a csRNG algorithm
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>&lt;</span>system::Module<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::random_seed(), <span style=color:#f92672>&amp;</span>sender, nonce)
+      .using_encoded(<span style=color:#f92672>&lt;</span>T <span style=color:#66d9ef>as</span> system::Trait<span style=color:#f92672>&gt;</span>::Hashing::hash)
+      .using_encoded(<span style=color:#f92672>|</span>e<span style=color:#f92672>|</span> e[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>128</span>)
     {
-        <span style="color:#75715e">// If the user won the coin flip, deposit the pot winnings; cannot fail
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">let</span> _ <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>balances::Module<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">as</span> Currency<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::deposit_into_existing(<span style="color:#f92672">&amp;</span>sender, pot)
-          .expect(<span style="color:#e6db74">&#34;`sender` must exist since a transaction is being made and withdraw will keep alive; qed.&#34;</span>);
+        <span style=color:#75715e>// If the user won the coin flip, deposit the pot winnings; cannot fail
+</span><span style=color:#75715e></span>        <span style=color:#66d9ef>let</span> _ <span style=color:#f92672>=</span> <span style=color:#f92672>&lt;</span>balances::Module<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>as</span> Currency<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::deposit_into_existing(<span style=color:#f92672>&amp;</span>sender, pot)
+          .expect(<span style=color:#e6db74>&#34;`sender` must exist since a transaction is being made and withdraw will keep alive; qed.&#34;</span>);
     
-        <span style="color:#75715e">// Reduce the pot to zero
-</span><span style="color:#75715e"></span>        pot <span style="color:#f92672">=</span> Zero::zero();
+        <span style=color:#75715e>// Reduce the pot to zero
+</span><span style=color:#75715e></span>        pot <span style=color:#f92672>=</span> Zero::zero();
     }
   
-    <span style="color:#75715e">// No matter the outcome, increase the pot by the payment amount
-</span><span style="color:#75715e"></span>    pot <span style="color:#f92672">=</span> pot.saturating_add(payment);
+    <span style=color:#75715e>// No matter the outcome, increase the pot by the payment amount
+</span><span style=color:#75715e></span>    pot <span style=color:#f92672>=</span> pot.saturating_add(payment);
   
-    <span style="color:#75715e">// Increment the nonce
-</span><span style="color:#75715e"></span>    nonce <span style="color:#f92672">=</span> nonce.wrapping_add(<span style="color:#ae81ff">1</span>);
+    <span style=color:#75715e>// Increment the nonce
+</span><span style=color:#75715e></span>    nonce <span style=color:#f92672>=</span> nonce.wrapping_add(<span style=color:#ae81ff>1</span>);
   
-    <span style="color:#75715e">// Store the updated values for our module
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">&lt;</span>Pot<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::put(pot);
-    <span style="color:#f92672">&lt;</span>Nonce<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::put(nonce);
+    <span style=color:#75715e>// Store the updated values for our module
+</span><span style=color:#75715e></span>    <span style=color:#f92672>&lt;</span>Pot<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::put(pot);
+    <span style=color:#f92672>&lt;</span>Nonce<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::put(nonce);
   
-    <span style="color:#75715e">// Return Ok(()) when everything happens successfully
-</span><span style="color:#75715e"></span>    Ok(())
+    <span style=color:#75715e>// Return Ok(()) when everything happens successfully
+</span><span style=color:#75715e></span>    Ok(())
 }
-</code></pre></div><p>上面的 <code>play</code> 函数只接收 <code>orgin</code> 这一个参数。然后做一些预置条件检查如，交易应当被签名，并且<code>payment</code>存储项不能为空。这里我们使用了 <code>Self::payment()</code> 来获取存储项中的具体值，这就是我们上面说到的getter函数的具体使用方法，另一种获取存储项的方法为 <code>&lt;Payment&lt;T&gt;&gt;::get()</code>。</p>
-<p>在真正&quot;抛硬币&quot;之前，我们需要将游戏所需的花费从用户账户取出，当游戏结束之后将这些费用放入奖池中。代码中使用的 <code>withdraw</code> 函数还需要引入下面的依赖:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> support::traits::{Currency, WithdrawReason, ExistenceRequirement};
-</code></pre></div><p>当硬币被抛出之后，用户有百分之五十的几率获胜。为了模拟这样的情况，首先生成一个0到255的随机数，再拿这个随机数跟128进行比较，如果小于128，那么用户获胜并获得奖池中的奖金；反之失败，用户什么都没有得到。最后更新存储项，为下一次游戏做准备。关于更多的随机数生成，请参考 <a href="https://substrate.dev/substrate-collectables-workshop/#/2/generating-random-data">Generating Random Data</a> 页面</p>
-<p>最后还需要引入的依赖有:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">use</span> runtime_primitives::traits::{Zero, Hash, Saturating};
-<span style="color:#66d9ef">use</span> parity_codec::Encode;
-</code></pre></div><h4 id="生成event">生成Event</h4>
-<p>客户端通过监听区块中的Event来更新链下的存储状态或与用户交互。</p>
-<p>当Payment被更新之后我们希望产生一个包含Payment信息的Event，由于用到了<code>Balance</code>类型，我们需要修改Event enum，添加泛型约束<code>Balance = &lt;T as balances::Trait&gt;::Balance</code>：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">decl_event<span style="color:#f92672">!</span>(
-	<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Event</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">where</span>
-	    AccountId <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">as</span> system::Trait<span style="color:#f92672">&gt;</span>::AccountId,
-	    Balance <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">as</span> balances::Trait<span style="color:#f92672">&gt;</span>::Balance {
-		<span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>	}
+</code></pre></div><p>上面的 <code>play</code> 函数只接收 <code>orgin</code> 这一个参数。然后做一些预置条件检查如，交易应当被签名，并且<code>payment</code>存储项不能为空。这里我们使用了 <code>Self::payment()</code> 来获取存储项中的具体值，这就是我们上面说到的getter函数的具体使用方法，另一种获取存储项的方法为 <code>&lt;Payment&lt;T>>::get()</code>。</p><p>在真正"抛硬币"之前，我们需要将游戏所需的花费从用户账户取出，当游戏结束之后将这些费用放入奖池中。代码中使用的 <code>withdraw</code> 函数还需要引入下面的依赖:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>use</span> support::traits::{Currency, WithdrawReason, ExistenceRequirement};
+</code></pre></div><p>当硬币被抛出之后，用户有百分之五十的几率获胜。为了模拟这样的情况，首先生成一个0到255的随机数，再拿这个随机数跟128进行比较，如果小于128，那么用户获胜并获得奖池中的奖金；反之失败，用户什么都没有得到。最后更新存储项，为下一次游戏做准备。关于更多的随机数生成，请参考 <a href=https://substrate.dev/substrate-collectables-workshop/#/2/generating-random-data>Generating Random Data</a> 页面</p><p>最后还需要引入的依赖有:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>use</span> runtime_primitives::traits::{Zero, Hash, Saturating};
+<span style=color:#66d9ef>use</span> parity_codec::Encode;
+</code></pre></div><h4 id=生成event>生成Event</h4><p>客户端通过监听区块中的Event来更新链下的存储状态或与用户交互。</p><p>当Payment被更新之后我们希望产生一个包含Payment信息的Event，由于用到了<code>Balance</code>类型，我们需要修改Event enum，添加泛型约束<code>Balance = &lt;T as balances::Trait>::Balance</code>：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>decl_event<span style=color:#f92672>!</span>(
+	<span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Event</span><span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>where</span>
+	    AccountId <span style=color:#f92672>=</span> <span style=color:#f92672>&lt;</span>T <span style=color:#66d9ef>as</span> system::Trait<span style=color:#f92672>&gt;</span>::AccountId,
+	    Balance <span style=color:#f92672>=</span> <span style=color:#f92672>&lt;</span>T <span style=color:#66d9ef>as</span> balances::Trait<span style=color:#f92672>&gt;</span>::Balance {
+		<span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>	}
 );
-</code></pre></div><p>之后，在Event enum中定义我们的Event，并修改<code>set_payment</code>函数来生成这一事件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">PaymentSet(Balance),
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">set_payment</span>(origin, value: <span style="color:#a6e22e">T</span>::Balance) -&gt; Result {
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> Self::payment().is_none() {
-        <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>        Self::deposit_event(RawEvent::PaymentSet(value));
+</code></pre></div><p>之后，在Event enum中定义我们的Event，并修改<code>set_payment</code>函数来生成这一事件：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>PaymentSet(Balance),
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>set_payment</span>(origin, value: <span style=color:#a6e22e>T</span>::Balance) -&gt; Result {
+    <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>if</span> Self::payment().is_none() {
+        <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>        Self::deposit_event(RawEvent::PaymentSet(value));
     }
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>}
-</code></pre></div><p>当用户完成游戏之后，我们希望产生一个包含用户信息以及获胜信息的事件，同样我们需要添加我们的Event到Event enum中，并在合适的时机触发事件：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">PlayResult(AccountId, Balance),
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">// This function is allows a user to play our coin-flip game
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">play</span>(origin) -&gt; Result {
-    <span style="color:#66d9ef">let</span> sender <span style="color:#f92672">=</span> ensure_signed(origin)<span style="color:#f92672">?</span>;
-		<span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> winnings <span style="color:#f92672">=</span> Zero::zero();
+    <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>}
+</code></pre></div><p>当用户完成游戏之后，我们希望产生一个包含用户信息以及获胜信息的事件，同样我们需要添加我们的Event到Event enum中，并在合适的时机触发事件：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>PlayResult(AccountId, Balance),
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#75715e>// This function is allows a user to play our coin-flip game
+</span><span style=color:#75715e></span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>play</span>(origin) -&gt; Result {
+    <span style=color:#66d9ef>let</span> sender <span style=color:#f92672>=</span> ensure_signed(origin)<span style=color:#f92672>?</span>;
+		<span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> winnings <span style=color:#f92672>=</span> Zero::zero();
     
-    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">&lt;</span>system::Module<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span><span style="color:#f92672">&gt;</span>::random_seed(), <span style="color:#f92672">&amp;</span>sender, nonce)
-      .using_encoded(<span style="color:#f92672">&lt;</span>T <span style="color:#66d9ef">as</span> system::Trait<span style="color:#f92672">&gt;</span>::Hashing::hash)
-      .using_encoded(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> e[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">128</span>)
+    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>&lt;</span>system::Module<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>::random_seed(), <span style=color:#f92672>&amp;</span>sender, nonce)
+      .using_encoded(<span style=color:#f92672>&lt;</span>T <span style=color:#66d9ef>as</span> system::Trait<span style=color:#f92672>&gt;</span>::Hashing::hash)
+      .using_encoded(<span style=color:#f92672>|</span>e<span style=color:#f92672>|</span> e[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>128</span>)
     {
-        <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>      
-        <span style="color:#75715e">// Set the winnings
-</span><span style="color:#75715e"></span>        winnings <span style="color:#f92672">=</span> pot;
+        <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>      
+        <span style=color:#75715e>// Set the winnings
+</span><span style=color:#75715e></span>        winnings <span style=color:#f92672>=</span> pot;
 
-        <span style="color:#75715e">// Reduce the pot to zero
-</span><span style="color:#75715e"></span>        pot <span style="color:#f92672">=</span> Zero::zero();
+        <span style=color:#75715e>// Reduce the pot to zero
+</span><span style=color:#75715e></span>        pot <span style=color:#f92672>=</span> Zero::zero();
     }
 
-    <span style="color:#75715e">// --snip--
-</span><span style="color:#75715e"></span>
-    <span style="color:#75715e">// Raise event for the play result
-</span><span style="color:#75715e"></span>    Self::deposit_event(RawEvent::PlayResult(sender, winnings));
+    <span style=color:#75715e>// --snip--
+</span><span style=color:#75715e></span>
+    <span style=color:#75715e>// Raise event for the play result
+</span><span style=color:#75715e></span>    Self::deposit_event(RawEvent::PlayResult(sender, winnings));
 
-    <span style="color:#75715e">// Return Ok(()) when everything happens successfully
-</span><span style="color:#75715e"></span>    Ok(())
+    <span style=color:#75715e>// Return Ok(()) when everything happens successfully
+</span><span style=color:#75715e></span>    Ok(())
 }
-</code></pre></div><p>这里我们定义了新的变量<code>winnings</code>保存获胜信息，初始值为<code>0</code>，如果获胜则更新为<code>pot</code>即奖池中的值。在函数返回<code>Ok(())</code>之前触发该事件。</p>
-<h2 id="总结">总结</h2>
-<p>现在已经完成了所有的代码，可以进行简单的测试。同样地，访问 <a href="https://github.com/polkadot-js/apps">Polkadot/Substrate UI</a> 在Extrinsics页面中调用上面定义的函数；之后在Chain state页面查询对应的存储项。遇到问题可以参考这里的 <a href="https://github.com/shawntabrizi/substrate-package/blob/gav-demo/substrate-node-template/runtime/src/demo.rs">“抛硬币”完整代码</a>。</p>
-<p>后续文章将会介绍如何添加测试和编写UI。更多内容请关注，</p>
-<p>知乎专栏：Substrate区块链开发</p>
-<p>公众号：沐风自语</p>
-<h2 id="reference">Reference</h2>
-<ul>
-<li><a href="https://substrate.dev/docs/en/getting-started/using-the-substrate-scripts">Using the Substrate Scripts</a></li>
-<li><a href="https://substrate.dev/docs/en/tutorials/creating-your-first-substrate-chain">Creating Your First Substrate chain</a></li>
-</ul>
-
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/SunWillsuna">
-    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
-    <div>
-        <span class="dark">Kaichao Sun</span>
-        <span>Mark it down</span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fsubstrate_coin_flip%2f - Substrate%e5%ba%94%e7%94%a8%20-%20%e6%8a%9b%e7%a1%ac%e5%b8%81%e6%b8%b8%e6%88%8f%28%e4%b8%80%29 by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="/post/trie/">理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class="dates">Mar 17 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_transaction_weight_and_fees/">Substrate 区块链应用的交易费用设计<aside class="dates">Feb 21 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_storage_data_type/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_blockchain_setup/">使用Substrate搭建你的第一条区块链<aside class="dates">May 28 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/why_oo_sucks/">Why OO Sucks<aside class="dates">Apr 25 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/solidity-basics/">理解Ethereum智能合约开发<aside class="dates">Apr 11 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell Programming<aside class="dates">Mar 30 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/master_linux_os/">The Tutorial of Manjaro Linux Usage<aside class="dates">Mar 3 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/laozhai-jiyi/">老宅记忆<aside class="dates">Feb 6 2019</aside></a>
-        </li>
-    
-</ul>
-
-
-
-        
-<footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/kaichaosun">
-        <i class="fa fa-github"></i>
-    </a>
-    
-    <a class="symbol" href="https://twitter.com/kaichaosun">
-        <i class="fa fa-twitter"></i>
-    </a>
-    
-
-
-</div>
-
-    
-    <p class="small">
-    
-        © Copyright 2020 Kaichao Sun
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://whisperd.tech/js/main.js"></script>
-<script src="https://whisperd.tech/js/highlight.js"></script>
-<script src="https://whisperd.tech/js/fix-toc.js"></script>
-
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-  
-    
-    
-  
-
-<script data-ad-client="ca-pub-2513693433628672" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-
-
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-128168145-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-</body>
-</html>
+</code></pre></div><p>这里我们定义了新的变量<code>winnings</code>保存获胜信息，初始值为<code>0</code>，如果获胜则更新为<code>pot</code>即奖池中的值。在函数返回<code>Ok(())</code>之前触发该事件。</p><h2 id=总结>总结</h2><p>现在已经完成了所有的代码，可以进行简单的测试。同样地，访问 <a href=https://github.com/polkadot-js/apps>Polkadot/Substrate UI</a> 在Extrinsics页面中调用上面定义的函数；之后在Chain state页面查询对应的存储项。遇到问题可以参考这里的 <a href=https://github.com/shawntabrizi/substrate-package/blob/gav-demo/substrate-node-template/runtime/src/demo.rs>“抛硬币”完整代码</a>。</p><p>后续文章将会介绍如何添加测试和编写UI。更多内容请关注，</p><p>知乎专栏：Substrate区块链开发</p><p>公众号：沐风自语</p><h2 id=reference>Reference</h2><ul><li><a href=https://substrate.dev/docs/en/getting-started/using-the-substrate-scripts>Using the Substrate Scripts</a></li><li><a href=https://substrate.dev/docs/en/tutorials/creating-your-first-substrate-chain>Creating Your First Substrate chain</a></li></ul></section></article><footer id=post-meta class=clearfix><a href=https://twitter.com/SunWillsuna><img class=avatar src=https://kaichaosun.github.io/images/avatar.png><div><span class=dark>Kaichao Sun</span>
+<span>Mark it down</span></div></a><section id=sharing><a class=twitter href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkaichaosun.github.io%2fpost%2fsubstrate_coin_flip%2f - Substrate%e5%ba%94%e7%94%a8%20-%20%e6%8a%9b%e7%a1%ac%e5%b8%81%e6%b8%b8%e6%88%8f%28%e4%b8%80%29 by @SunWillsuna"><span class=icon-twitter>tweet</span></a>
+<a class=facebook href=# onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;"><span class=icon-facebook-rect>Share</span></a></section></footer><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"whisperd"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a><ul id=post-list class="archive readmore"><h3>Read more</h3><li><a href=/post/trie/>理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class=dates>Mar 17 2020</aside></a></li><li><a href=/post/substrate_transaction_weight_and_fees/>Substrate 区块链应用的交易费用设计<aside class=dates>Feb 21 2020</aside></a></li><li><a href=/post/substrate_storage_data_type/>Substrate存储数据类型概览<aside class=dates>Jan 19 2020</aside></a></li><li><a href=/post/coin_flip_test_and_ui/>抛硬币游戏(二)：编写测试和UI<aside class=dates>Oct 3 2019</aside></a></li><li><a href=/post/substrate_blockchain_setup/>使用Substrate搭建你的第一条区块链<aside class=dates>May 28 2019</aside></a></li><li><a href=/post/why_oo_sucks/>Why OO Sucks<aside class=dates>Apr 25 2019</aside></a></li><li><a href=/post/solidity-basics/>理解Ethereum智能合约开发<aside class=dates>Apr 11 2019</aside></a></li><li><a href=/post/shell-cheatsheet/>Cheatsheet for Shell Programming<aside class=dates>Mar 30 2019</aside></a></li><li><a href=/post/master_linux_os/>The Tutorial of Manjaro Linux Usage<aside class=dates>Mar 3 2019</aside></a></li><li><a href=/post/laozhai-jiyi/>老宅记忆<aside class=dates>Feb 6 2019</aside></a></li></ul><footer id=footer><div id=social><a class=symbol href=https://github.com/kaichaosun><i class="fa fa-github"></i></a><a class=symbol href=https://twitter.com/kaichaosun><i class="fa fa-twitter"></i></a></div><p class=small>© Copyright 2020 Kaichao Sun</p></footer></section><script src=//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js></script><script src=https://kaichaosun.github.io/js/main.js></script><script src=https://kaichaosun.github.io/js/highlight.js></script><script src=https://kaichaosun.github.io/js/fix-toc.js></script><script>hljs.initHighlightingOnLoad();</script><script data-ad-client=ca-pub-2513693433628672 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-128168145-1','auto');ga('send','pageview');}</script></body></html>

@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Kaichao Sun">
-<meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.62.2" />
-<title>理解Golang并发编程</title>
-<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
-<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
-<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
-
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-
-
-
-<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
-
-
-<meta property="og:title" content="理解Golang并发编程" />
-<meta property="og:description" content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Kaichao Sun"><meta name=description content="kaichao's blog"><meta name=generator content="Hugo 0.62.2"><title>理解Golang并发编程</title><link rel="shortcut icon" href=https://kaichaosun.github.io/images/favicon.ico><link rel=stylesheet href=https://kaichaosun.github.io/css/style.css><link rel=stylesheet href=https://kaichaosun.github.io/css/highlight.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css><link href=https://kaichaosun.github.io/index.xml rel=alternate type=application/rss+xml title=Whisperd><meta property="og:title" content="理解Golang并发编程"><meta property="og:description" content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
 在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
 计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
 ![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)
@@ -33,18 +9,10 @@ Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提�
 通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上go关键字，方便地创建一个goroutine。
 main函数本身也是一个goroutine[3]。
 举例如下：
-package main import &quot;fmt&quot; func main() { fmt.Println(&quot;begin main goroutine&quot;) go hello() fmt.Println(&quot;end main goroutine&quot;) } func hello() { fmt.Println(&quot;begin hello goroutine&quot;) } 输出：
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;begin main goroutine&#34;) go hello() fmt.Println(&#34;end main goroutine&#34;) } func hello() { fmt.Println(&#34;begin hello goroutine&#34;) } 输出：
 begin main goroutine end main goroutine 上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
 可以在go hello()后面添加：
-time.Sleep(1 * time." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/go-channel/" />
-<meta property="article:published_time" content="2017-07-29T00:00:00+00:00" />
-<meta property="article:modified_time" content="2017-07-29T00:00:00+00:00" />
-
-
-<meta itemprop="name" content="理解Golang并发编程">
-<meta itemprop="description" content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
+time.Sleep(1 * time."><meta property="og:type" content="article"><meta property="og:url" content="https://kaichaosun.github.io/post/go-channel/"><meta property="article:published_time" content="2017-07-29T00:00:00+00:00"><meta property="article:modified_time" content="2017-07-29T00:00:00+00:00"><meta itemprop=name content="理解Golang并发编程"><meta itemprop=description content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
 在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
 计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
 ![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)
@@ -55,20 +23,10 @@ Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提�
 通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上go关键字，方便地创建一个goroutine。
 main函数本身也是一个goroutine[3]。
 举例如下：
-package main import &quot;fmt&quot; func main() { fmt.Println(&quot;begin main goroutine&quot;) go hello() fmt.Println(&quot;end main goroutine&quot;) } func hello() { fmt.Println(&quot;begin hello goroutine&quot;) } 输出：
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;begin main goroutine&#34;) go hello() fmt.Println(&#34;end main goroutine&#34;) } func hello() { fmt.Println(&#34;begin hello goroutine&#34;) } 输出：
 begin main goroutine end main goroutine 上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
 可以在go hello()后面添加：
-time.Sleep(1 * time.">
-<meta itemprop="datePublished" content="2017-07-29T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2017-07-29T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="437">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="理解Golang并发编程"/>
-<meta name="twitter:description" content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
+time.Sleep(1 * time."><meta itemprop=datePublished content="2017-07-29T00:00:00+00:00"><meta itemprop=dateModified content="2017-07-29T00:00:00+00:00"><meta itemprop=wordCount content="437"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="理解Golang并发编程"><meta name=twitter:description content="concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
 在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
 计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
 ![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)
@@ -79,87 +37,13 @@ Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提�
 通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上go关键字，方便地创建一个goroutine。
 main函数本身也是一个goroutine[3]。
 举例如下：
-package main import &quot;fmt&quot; func main() { fmt.Println(&quot;begin main goroutine&quot;) go hello() fmt.Println(&quot;end main goroutine&quot;) } func hello() { fmt.Println(&quot;begin hello goroutine&quot;) } 输出：
+package main import &#34;fmt&#34; func main() { fmt.Println(&#34;begin main goroutine&#34;) go hello() fmt.Println(&#34;end main goroutine&#34;) } func hello() { fmt.Println(&#34;begin hello goroutine&#34;) } 输出：
 begin main goroutine end main goroutine 上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
 可以在go hello()后面添加：
-time.Sleep(1 * time."/>
-<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
-
-
-    </head>
-<body>
-    <nav class="main-nav">
-	
-		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
-	
-
-	
- 		<a href='/about/'>About</a>
-  	
-
-	
-
-	
-		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
-	
-</nav>
-
-    <section id="wrapper">
-        
-        
-
-<article class="post">
-    <header>
-        <h1>理解Golang并发编程</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        July 29, 2017
-        <br>
-        
-        </h2>
-    </header>
-
-    <aside>
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#concurrency-vs-parallelism">concurrency vs parallelism</a></li>
-    <li><a href="#goroutine">Goroutine</a></li>
-    <li><a href="#channel">channel</a>
-      <ul>
-        <li><a href="#unbuffered-channel">unbuffered channel</a></li>
-        <li><a href="#buffered-channel">buffered channel</a></li>
-      </ul>
-    </li>
-    <li><a href="#select">select</a></li>
-    <li><a href="#总结">总结</a></li>
-    <li><a href="#reference">Reference</a></li>
-  </ul>
-</nav>
-    </aside>
-    
-
-    <section id="post-body">
-        <h2 id="concurrency-vs-parallelism">concurrency vs parallelism</h2>
-<p>并发和并行是彼此相关的两个概念，并不能完全等价。</p>
-<p>在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。</p>
-<p>计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：</p>
-<p>![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)</p>
-<p>Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提供goroutine和channel来实现并发编程模式。</p>
-<hr>
-<h2 id="goroutine">Goroutine</h2>
-<p>Goroutine由Go运行时创建和管理，是用于调度CPU资源的“最小单元”，和OS的线程相比更轻量[2]:</p>
-<ul>
-<li>内存消耗更低只需2kB初始栈空间，而线程初始要1Mb的空间；</li>
-<li>由golang的运行时环境创建和销毁，更加廉价，不支持手动管理；</li>
-<li>切换效率更高等。
-Goroutine和线程的关系如下图所示：</li>
-</ul>
-<p>![goroutine vs thread](/static/go-channel/goroutine vs thread.png)</p>
-<p>我们可以轻松地创建成百上千的goroutine，而不会降低程序的执行效率。</p>
-<p>通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上<code>go</code>关键字，方便地创建一个goroutine。</p>
-<p>main函数本身也是一个goroutine[3]。<br>
-举例如下：</p>
-<pre><code>package main
+time.Sleep(1 * time."><meta name=twitter:site content="@https://twitter.com/kaichaosun"></head><body><nav class=main-nav><a href=https://kaichaosun.github.io/><span class=arrow>←</span>Home</a>
+<a href=/about/>About</a>
+<a class=cta href=https://kaichaosun.github.io/index.xml>Subscribe</a></nav><section id=wrapper><article class=post><header><h1>理解Golang并发编程</h1><h2 class=subtitle></h2><h2 class=headline>July 29, 2017<br></h2></header><aside><nav id=TableOfContents><ul><li><a href=#concurrency-vs-parallelism>concurrency vs parallelism</a></li><li><a href=#goroutine>Goroutine</a></li><li><a href=#channel>channel</a><ul><li><a href=#unbuffered-channel>unbuffered channel</a></li><li><a href=#buffered-channel>buffered channel</a></li></ul></li><li><a href=#select>select</a></li><li><a href=#总结>总结</a></li><li><a href=#reference>Reference</a></li></ul></nav></aside><section id=post-body><h2 id=concurrency-vs-parallelism>concurrency vs parallelism</h2><p>并发和并行是彼此相关的两个概念，并不能完全等价。</p><p>在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。</p><p>计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：</p><p>![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)</p><p>Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提供goroutine和channel来实现并发编程模式。</p><hr><h2 id=goroutine>Goroutine</h2><p>Goroutine由Go运行时创建和管理，是用于调度CPU资源的“最小单元”，和OS的线程相比更轻量[2]:</p><ul><li>内存消耗更低只需2kB初始栈空间，而线程初始要1Mb的空间；</li><li>由golang的运行时环境创建和销毁，更加廉价，不支持手动管理；</li><li>切换效率更高等。
+Goroutine和线程的关系如下图所示：</li></ul><p>![goroutine vs thread](/static/go-channel/goroutine vs thread.png)</p><p>我们可以轻松地创建成百上千的goroutine，而不会降低程序的执行效率。</p><p>通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上<code>go</code>关键字，方便地创建一个goroutine。</p><p>main函数本身也是一个goroutine[3]。<br>举例如下：</p><pre><code>package main
 
 import &quot;fmt&quot;
 
@@ -172,25 +56,11 @@ func main() {
 func hello() {
 	fmt.Println(&quot;begin hello goroutine&quot;)
 }
-</code></pre><p>输出：</p>
-<pre><code>begin main goroutine
+</code></pre><p>输出：</p><pre><code>begin main goroutine
 end main goroutine
 </code></pre><p>上面的例子中，并不会输出<code>begin hello goroutine</code>，这是因为，
-通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。<br>
-可以在<code>go hello()</code>后面添加：</p>
-<pre><code>time.Sleep(1 * time.Second)
-</code></pre><p>就可以正常输出<code>begin hello goroutine</code>。</p>
-<hr>
-<h2 id="channel">channel</h2>
-<p>Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。<br>
-channel是一种类型，关键字<code>chan</code>和channel传输内容的类型共同定义了某一channel。<br>
-定义方式为：<code>var c chan string = make(chan string)</code>，也可以简写为：<code>var c = make(chan string)</code> 或 <code>c := make(chan string)</code></p>
-<p>通过左箭头<code>&lt;-</code>操作符操作channel变量:</p>
-<ul>
-<li><code>c &lt;- &quot;ping&quot;</code>向channel发送一个值为“ping”的字符串，</li>
-<li><code>msg := &lt;- c</code>接收channel中的一个值，并赋給msg。</li>
-</ul>
-<pre><code>package main
+通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。<br>可以在<code>go hello()</code>后面添加：</p><pre><code>time.Sleep(1 * time.Second)
+</code></pre><p>就可以正常输出<code>begin hello goroutine</code>。</p><hr><h2 id=channel>channel</h2><p>Go提供了一种机制能够使goroutine之间进行通信和同步，它就是channel。<br>channel是一种类型，关键字<code>chan</code>和channel传输内容的类型共同定义了某一channel。<br>定义方式为：<code>var c chan string = make(chan string)</code>，也可以简写为：<code>var c = make(chan string)</code> 或 <code>c := make(chan string)</code></p><p>通过左箭头<code>&lt;-</code>操作符操作channel变量:</p><ul><li><code>c &lt;- "ping"</code>向channel发送一个值为“ping”的字符串，</li><li><code>msg := &lt;- c</code>接收channel中的一个值，并赋給msg。</li></ul><pre><code>package main
 
 import (
 	&quot;fmt&quot;
@@ -219,35 +89,13 @@ func print(c chan string) {
 		time.Sleep(1 * time.Second)
 	}
 }
-</code></pre><p>输出：</p>
-<pre><code>reveving: 1
+</code></pre><p>输出：</p><pre><code>reveving: 1
 reveving: 3
 reveving: 5
 reveving: 7
 reveving: 9
     ...
-</code></pre><p>按功能，可以将channel分为只发送或只接收channel，通过修改函数签名的channel形参类型来指定channel的“方向”：</p>
-<ul>
-<li>只允许发送: <code>func ping(c chan&lt;- string)</code></li>
-<li>只允许接收: <code>func print(c &lt;-chan string)</code></li>
-<li>任何对只发送channel的接收操作和只接收channel的发送操作都会产生编译错误。</li>
-<li>不指定方向的channel被称作“双向”channel，可以将“双向”channel最为参数，传递给接收单向channel的函数，反之，则不行。</li>
-</ul>
-<h3 id="unbuffered-channel">unbuffered channel</h3>
-<p>非缓冲channel，也就是缓冲池大小为0的channel或者同步channel，上面的例子都是非缓冲channel，定义方式为：</p>
-<ul>
-<li><code>ch := make(chan int)</code></li>
-<li><code>ch := make(chan int, 0)</code></li>
-</ul>
-<p>接收非缓冲channel中的数据时，如果channel中没有数据则接收方被阻塞，如果channel中有数据则发送方被阻塞，直到channel中数据被接收。<br>
-使用非缓冲channel，可以通过数据交换来保证两个goroutine的状态同步。</p>
-<h3 id="buffered-channel">buffered channel</h3>
-<p>缓冲channel只能容纳固定量的数据，当缓冲池满之后，发送发被阻塞，直到数据被接收释放缓冲池，定义如下：</p>
-<ul>
-<li><code>ch := make(chan int)</code></li>
-</ul>
-<p>缓冲channel可以用来限制吞吐量，例子如下：</p>
-<pre><code>package main
+</code></pre><p>按功能，可以将channel分为只发送或只接收channel，通过修改函数签名的channel形参类型来指定channel的“方向”：</p><ul><li>只允许发送: <code>func ping(c chan&lt;- string)</code></li><li>只允许接收: <code>func print(c &lt;-chan string)</code></li><li>任何对只发送channel的接收操作和只接收channel的发送操作都会产生编译错误。</li><li>不指定方向的channel被称作“双向”channel，可以将“双向”channel最为参数，传递给接收单向channel的函数，反之，则不行。</li></ul><h3 id=unbuffered-channel>unbuffered channel</h3><p>非缓冲channel，也就是缓冲池大小为0的channel或者同步channel，上面的例子都是非缓冲channel，定义方式为：</p><ul><li><code>ch := make(chan int)</code></li><li><code>ch := make(chan int, 0)</code></li></ul><p>接收非缓冲channel中的数据时，如果channel中没有数据则接收方被阻塞，如果channel中有数据则发送方被阻塞，直到channel中数据被接收。<br>使用非缓冲channel，可以通过数据交换来保证两个goroutine的状态同步。</p><h3 id=buffered-channel>buffered channel</h3><p>缓冲channel只能容纳固定量的数据，当缓冲池满之后，发送发被阻塞，直到数据被接收释放缓冲池，定义如下：</p><ul><li><code>ch := make(chan int)</code></li></ul><p>缓冲channel可以用来限制吞吐量，例子如下：</p><pre><code>package main
 
 import (
 	&quot;fmt&quot;
@@ -290,22 +138,12 @@ func process(r *Request) {
 	fmt.Println(&quot;process&quot;)
 	time.Sleep(4 * time.Second)
 }
-</code></pre><p>每隔4秒钟，输出：</p>
-<pre><code>process
+</code></pre><p>每隔4秒钟，输出：</p><pre><code>process
 process
 process
 process
 process
-</code></pre><hr>
-<h2 id="select">select</h2>
-<p>针对于channel，Golang提供了一个类似<code>switch</code>的功能，即<code>select</code>，使用如下：</p>
-<ol>
-<li><code>select</code>选择第一个就绪的channel进行处理</li>
-<li>如果有多个就绪的channel，则随机选择一个channel进行处理</li>
-<li>如果没有就绪的channel，则等待直到某一channel就绪</li>
-<li>如果有<code>default</code>，则在3情形中不会等待，而是立即执行default中的代码</li>
-</ol>
-<pre><code>package main
+</code></pre><hr><h2 id=select>select</h2><p>针对于channel，Golang提供了一个类似<code>switch</code>的功能，即<code>select</code>，使用如下：</p><ol><li><code>select</code>选择第一个就绪的channel进行处理</li><li>如果有多个就绪的channel，则随机选择一个channel进行处理</li><li>如果没有就绪的channel，则等待直到某一channel就绪</li><li>如果有<code>default</code>，则在3情形中不会等待，而是立即执行default中的代码</li></ol><pre><code>package main
 
 import (
 	&quot;fmt&quot;
@@ -340,183 +178,9 @@ func print(ch1, ch2 chan int) {
 		fmt.Println(msg)
 	}
 }
-</code></pre><p>两秒钟之后，输出：<code>1</code><br>
-在select语句中添加下面代码：</p>
-<pre><code>default:
+</code></pre><p>两秒钟之后，输出：<code>1</code><br>在select语句中添加下面代码：</p><pre><code>default:
 	fmt.Println(&quot;nothing received.&quot;)
-</code></pre><p>输出： <code>nothing received.</code></p>
-<hr>
-<h2 id="总结">总结</h2>
-<p>Golang将线程抽象出来成为轻量级的goroutine，开发者不再需要过多地关注OS层面的逻辑，终于能够从并发编程中解放出来。<br>
-channel作为goroutine通信的媒介，安全高效的实现了goroutine之间的通信和共享内存。<br>
-用Effetive go中的一句话来总结[4]：</p>
-<blockquote>
-<p>Do not communicate by sharing memory; instead, share memory by communicating.</p>
-</blockquote>
-<h2 id="reference">Reference</h2>
-<p>[1] <a href="https://blog.golang.org/concurrency-is-not-parallelism">https://blog.golang.org/concurrency-is-not-parallelism</a><br>
-[2] <a href="http://blog.nindalf.com/how-goroutines-work/">http://blog.nindalf.com/how-goroutines-work/</a><br>
-[3] <a href="https://www.golang-book.com/books/intro/10">https://www.golang-book.com/books/intro/10</a><br>
-[4] <a href="https://golang.org/doc/effective_go.html">https://golang.org/doc/effective_go.html</a></p>
-
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/SunWillsuna">
-    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
-    <div>
-        <span class="dark">Kaichao Sun</span>
-        <span>Mark it down</span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fgo-channel%2f - %e7%90%86%e8%a7%a3Golang%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="/post/trie/">理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class="dates">Mar 17 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_transaction_weight_and_fees/">Substrate 区块链应用的交易费用设计<aside class="dates">Feb 21 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_storage_data_type/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_coin_flip/">Substrate应用 - 抛硬币游戏(一)<aside class="dates">Aug 5 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_blockchain_setup/">使用Substrate搭建你的第一条区块链<aside class="dates">May 28 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/why_oo_sucks/">Why OO Sucks<aside class="dates">Apr 25 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/solidity-basics/">理解Ethereum智能合约开发<aside class="dates">Apr 11 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell Programming<aside class="dates">Mar 30 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/master_linux_os/">The Tutorial of Manjaro Linux Usage<aside class="dates">Mar 3 2019</aside></a>
-        </li>
-    
-</ul>
-
-
-
-        
-<footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/kaichaosun">
-        <i class="fa fa-github"></i>
-    </a>
-    
-    <a class="symbol" href="https://twitter.com/kaichaosun">
-        <i class="fa fa-twitter"></i>
-    </a>
-    
-
-
-</div>
-
-    
-    <p class="small">
-    
-        © Copyright 2020 Kaichao Sun
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://whisperd.tech/js/main.js"></script>
-<script src="https://whisperd.tech/js/highlight.js"></script>
-<script src="https://whisperd.tech/js/fix-toc.js"></script>
-
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-  
-    
-    
-  
-
-<script data-ad-client="ca-pub-2513693433628672" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-
-
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-128168145-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-</body>
-</html>
+</code></pre><p>输出： <code>nothing received.</code></p><hr><h2 id=总结>总结</h2><p>Golang将线程抽象出来成为轻量级的goroutine，开发者不再需要过多地关注OS层面的逻辑，终于能够从并发编程中解放出来。<br>channel作为goroutine通信的媒介，安全高效的实现了goroutine之间的通信和共享内存。<br>用Effetive go中的一句话来总结[4]：</p><blockquote><p>Do not communicate by sharing memory; instead, share memory by communicating.</p></blockquote><h2 id=reference>Reference</h2><p>[1] <a href=https://blog.golang.org/concurrency-is-not-parallelism>https://blog.golang.org/concurrency-is-not-parallelism</a><br>[2] <a href=http://blog.nindalf.com/how-goroutines-work/>http://blog.nindalf.com/how-goroutines-work/</a><br>[3] <a href=https://www.golang-book.com/books/intro/10>https://www.golang-book.com/books/intro/10</a><br>[4] <a href=https://golang.org/doc/effective_go.html>https://golang.org/doc/effective_go.html</a></p></section></article><footer id=post-meta class=clearfix><a href=https://twitter.com/SunWillsuna><img class=avatar src=https://kaichaosun.github.io/images/avatar.png><div><span class=dark>Kaichao Sun</span>
+<span>Mark it down</span></div></a><section id=sharing><a class=twitter href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkaichaosun.github.io%2fpost%2fgo-channel%2f - %e7%90%86%e8%a7%a3Golang%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b by @SunWillsuna"><span class=icon-twitter>tweet</span></a>
+<a class=facebook href=# onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;"><span class=icon-facebook-rect>Share</span></a></section></footer><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"whisperd"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a><ul id=post-list class="archive readmore"><h3>Read more</h3><li><a href=/post/trie/>理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class=dates>Mar 17 2020</aside></a></li><li><a href=/post/substrate_transaction_weight_and_fees/>Substrate 区块链应用的交易费用设计<aside class=dates>Feb 21 2020</aside></a></li><li><a href=/post/substrate_storage_data_type/>Substrate存储数据类型概览<aside class=dates>Jan 19 2020</aside></a></li><li><a href=/post/coin_flip_test_and_ui/>抛硬币游戏(二)：编写测试和UI<aside class=dates>Oct 3 2019</aside></a></li><li><a href=/post/substrate_coin_flip/>Substrate应用 - 抛硬币游戏(一)<aside class=dates>Aug 5 2019</aside></a></li><li><a href=/post/substrate_blockchain_setup/>使用Substrate搭建你的第一条区块链<aside class=dates>May 28 2019</aside></a></li><li><a href=/post/why_oo_sucks/>Why OO Sucks<aside class=dates>Apr 25 2019</aside></a></li><li><a href=/post/solidity-basics/>理解Ethereum智能合约开发<aside class=dates>Apr 11 2019</aside></a></li><li><a href=/post/shell-cheatsheet/>Cheatsheet for Shell Programming<aside class=dates>Mar 30 2019</aside></a></li><li><a href=/post/master_linux_os/>The Tutorial of Manjaro Linux Usage<aside class=dates>Mar 3 2019</aside></a></li></ul><footer id=footer><div id=social><a class=symbol href=https://github.com/kaichaosun><i class="fa fa-github"></i></a><a class=symbol href=https://twitter.com/kaichaosun><i class="fa fa-twitter"></i></a></div><p class=small>© Copyright 2020 Kaichao Sun</p></footer></section><script src=//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js></script><script src=https://kaichaosun.github.io/js/main.js></script><script src=https://kaichaosun.github.io/js/highlight.js></script><script src=https://kaichaosun.github.io/js/fix-toc.js></script><script>hljs.initHighlightingOnLoad();</script><script data-ad-client=ca-pub-2513693433628672 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-128168145-1','auto');ga('send','pageview');}</script></body></html>

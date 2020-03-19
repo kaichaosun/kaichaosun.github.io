@@ -1,28 +1,4 @@
-<!DOCTYPE html>
-<html lang="en-us">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Kaichao Sun">
-<meta name="description" content="kaichao&#39;s blog">
-<meta name="generator" content="Hugo 0.62.2" />
-<title>如何部署 IOTA 的 IRI headless 全节点</title>
-<link rel="shortcut icon" href="https://whisperd.tech/images/favicon.ico">
-<link rel="stylesheet" href="https://whisperd.tech/css/style.css">
-<link rel="stylesheet" href="https://whisperd.tech/css/highlight.css">
-
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-
-
-
-<link href="https://whisperd.tech/index.xml" rel="alternate" type="application/rss+xml" title="Whisperd" />
-
-
-<meta property="og:title" content="如何部署 IOTA 的 IRI headless 全节点" />
-<meta property="og:description" content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Kaichao Sun"><meta name=description content="kaichao's blog"><meta name=generator content="Hugo 0.62.2"><title>如何部署 IOTA 的 IRI headless 全节点</title><link rel="shortcut icon" href=https://kaichaosun.github.io/images/favicon.ico><link rel=stylesheet href=https://kaichaosun.github.io/css/style.css><link rel=stylesheet href=https://kaichaosun.github.io/css/highlight.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css><link href=https://kaichaosun.github.io/index.xml rel=alternate type=application/rss+xml title=Whisperd><meta property="og:title" content="如何部署 IOTA 的 IRI headless 全节点"><meta property="og:description" content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
 通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。
 本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。
 部署 IRI headless 全节点 服务器选择 目前国内的服务器提供商包括阿里云，华为，青云等， 国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。
@@ -35,15 +11,7 @@ sudo add-apt-repository ppa:webupd8team/java sudo apt-get update 安装JDK8，
 sudo apt-get install oracle-java8-installer 查看安装，
 java -version 下载并运行IRI 1.IRI的Github release链接：https://github.com/iotaledger/iri/releases
 下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。
-2.添加配置内容，保存至本地iri.config：" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://whisperd.tech/post/how-to-setup-iri/" />
-<meta property="article:published_time" content="2017-12-17T00:00:00+00:00" />
-<meta property="article:modified_time" content="2017-12-17T00:00:00+00:00" />
-
-
-<meta itemprop="name" content="如何部署 IOTA 的 IRI headless 全节点">
-<meta itemprop="description" content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
+2.添加配置内容，保存至本地iri.config："><meta property="og:type" content="article"><meta property="og:url" content="https://kaichaosun.github.io/post/how-to-setup-iri/"><meta property="article:published_time" content="2017-12-17T00:00:00+00:00"><meta property="article:modified_time" content="2017-12-17T00:00:00+00:00"><meta itemprop=name content="如何部署 IOTA 的 IRI headless 全节点"><meta itemprop=description content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
 通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。
 本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。
 部署 IRI headless 全节点 服务器选择 目前国内的服务器提供商包括阿里云，华为，青云等， 国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。
@@ -56,17 +24,7 @@ sudo add-apt-repository ppa:webupd8team/java sudo apt-get update 安装JDK8，
 sudo apt-get install oracle-java8-installer 查看安装，
 java -version 下载并运行IRI 1.IRI的Github release链接：https://github.com/iotaledger/iri/releases
 下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。
-2.添加配置内容，保存至本地iri.config：">
-<meta itemprop="datePublished" content="2017-12-17T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2017-12-17T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="213">
-
-
-
-<meta itemprop="keywords" content="" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="如何部署 IOTA 的 IRI headless 全节点"/>
-<meta name="twitter:description" content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
+2.添加配置内容，保存至本地iri.config："><meta itemprop=datePublished content="2017-12-17T00:00:00+00:00"><meta itemprop=dateModified content="2017-12-17T00:00:00+00:00"><meta itemprop=wordCount content="213"><meta itemprop=keywords content><meta name=twitter:card content="summary"><meta name=twitter:title content="如何部署 IOTA 的 IRI headless 全节点"><meta name=twitter:description content="什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
 通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。
 本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。
 部署 IRI headless 全节点 服务器选择 目前国内的服务器提供商包括阿里云，华为，青云等， 国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。
@@ -79,104 +37,20 @@ sudo add-apt-repository ppa:webupd8team/java sudo apt-get update 安装JDK8，
 sudo apt-get install oracle-java8-installer 查看安装，
 java -version 下载并运行IRI 1.IRI的Github release链接：https://github.com/iotaledger/iri/releases
 下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。
-2.添加配置内容，保存至本地iri.config："/>
-<meta name="twitter:site" content="@https://twitter.com/kaichaosun"/>
-
-
-    </head>
-<body>
-    <nav class="main-nav">
-	
-		<a href='https://whisperd.tech'> <span class="arrow">←</span>Home</a>
-	
-
-	
- 		<a href='/about/'>About</a>
-  	
-
-	
-
-	
-		<a class="cta" href="https://whisperd.tech/index.xml">Subscribe</a>
-	
-</nav>
-
-    <section id="wrapper">
-        
-        
-
-<article class="post">
-    <header>
-        <h1>如何部署 IOTA 的 IRI headless 全节点</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        December 17, 2017
-        <br>
-        
-        </h2>
-    </header>
-
-    <aside>
-        <nav id="TableOfContents">
-  <ul>
-    <li><a href="#什么是-iota">什么是 IOTA</a></li>
-    <li><a href="#部署-iri-headless-全节点">部署 IRI headless 全节点</a>
-      <ul>
-        <li><a href="#服务器选择">服务器选择</a></li>
-        <li><a href="#服务器的基础环境准备">服务器的基础环境准备</a></li>
-        <li><a href="#下载并运行iri">下载并运行IRI</a></li>
-        <li><a href="#常用脚本">常用脚本</a></li>
-        <li><a href="#节点同步">节点同步</a></li>
-        <li><a href="#节点管理">节点管理</a></li>
-        <li><a href="#自动发现的nelson">自动发现的nelson</a></li>
-      </ul>
-    </li>
-    <li><a href="#reference">Reference</a></li>
-  </ul>
-</nav>
-    </aside>
-    
-
-    <section id="post-body">
-        <h2 id="什么是-iota">什么是 IOTA</h2>
-<p>IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。<br>
-通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。<br>
-本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。</p>
-<h2 id="部署-iri-headless-全节点">部署 IRI headless 全节点</h2>
-<h3 id="服务器选择">服务器选择</h3>
-<p>目前国内的服务器提供商包括阿里云，华为，青云等，
-国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。<br>
-运行 IRI 全节点配置至少是:</p>
-<ul>
-<li>1vCPU</li>
-<li>4G 内存</li>
-<li>1M 带宽</li>
-<li>硬盘40G目前是足够的，可以按需添加数据盘</li>
-<li>ECS 实例规格应为独享</li>
-</ul>
-<p>操作系统选择适合自己的Linux发行版，建议使用每种发行版的最新版本，如Ubuntu 16.04。</p>
-<p>本文所使用配置，如下图：
-<img src="/static/iri-setup/iri_aliyun_config.png" alt="iri_aliyun_config"></p>
-<h3 id="服务器的基础环境准备">服务器的基础环境准备</h3>
-<p>1.安装Git，在IRI搭建时并没有用到，之后tangle网络生成snapshot时需要：</p>
-<pre><code>sudo apt-get update
+2.添加配置内容，保存至本地iri.config："><meta name=twitter:site content="@https://twitter.com/kaichaosun"></head><body><nav class=main-nav><a href=https://kaichaosun.github.io/><span class=arrow>←</span>Home</a>
+<a href=/about/>About</a>
+<a class=cta href=https://kaichaosun.github.io/index.xml>Subscribe</a></nav><section id=wrapper><article class=post><header><h1>如何部署 IOTA 的 IRI headless 全节点</h1><h2 class=subtitle></h2><h2 class=headline>December 17, 2017<br></h2></header><aside><nav id=TableOfContents><ul><li><a href=#什么是-iota>什么是 IOTA</a></li><li><a href=#部署-iri-headless-全节点>部署 IRI headless 全节点</a><ul><li><a href=#服务器选择>服务器选择</a></li><li><a href=#服务器的基础环境准备>服务器的基础环境准备</a></li><li><a href=#下载并运行iri>下载并运行IRI</a></li><li><a href=#常用脚本>常用脚本</a></li><li><a href=#节点同步>节点同步</a></li><li><a href=#节点管理>节点管理</a></li><li><a href=#自动发现的nelson>自动发现的nelson</a></li></ul></li><li><a href=#reference>Reference</a></li></ul></nav></aside><section id=post-body><h2 id=什么是-iota>什么是 IOTA</h2><p>IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。<br>通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。<br>本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。</p><h2 id=部署-iri-headless-全节点>部署 IRI headless 全节点</h2><h3 id=服务器选择>服务器选择</h3><p>目前国内的服务器提供商包括阿里云，华为，青云等，
+国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。<br>运行 IRI 全节点配置至少是:</p><ul><li>1vCPU</li><li>4G 内存</li><li>1M 带宽</li><li>硬盘40G目前是足够的，可以按需添加数据盘</li><li>ECS 实例规格应为独享</li></ul><p>操作系统选择适合自己的Linux发行版，建议使用每种发行版的最新版本，如Ubuntu 16.04。</p><p>本文所使用配置，如下图：
+<img src=/static/iri-setup/iri_aliyun_config.png alt=iri_aliyun_config></p><h3 id=服务器的基础环境准备>服务器的基础环境准备</h3><p>1.安装Git，在IRI搭建时并没有用到，之后tangle网络生成snapshot时需要：</p><pre><code>sudo apt-get update
 
 sudo apt-get install git
-</code></pre><p>2.安装screen，管理服务器终端产生的session</p>
-<pre><code>sudo apt-get install screen
+</code></pre><p>2.安装screen，管理服务器终端产生的session</p><pre><code>sudo apt-get install screen
 </code></pre><p>3.安装Java，
-Oracle JDK，添加Oracle的包管理仓库并更新，</p>
-<pre><code>sudo add-apt-repository ppa:webupd8team/java
+Oracle JDK，添加Oracle的包管理仓库并更新，</p><pre><code>sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
-</code></pre><p>安装JDK8，</p>
-<pre><code>sudo apt-get install oracle-java8-installer
-</code></pre><p>查看安装，</p>
-<pre><code>java -version
-</code></pre><h3 id="下载并运行iri">下载并运行IRI</h3>
-<p>1.IRI的Github release链接：https://github.com/iotaledger/iri/releases<br>
-下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。</p>
-<p>2.添加配置内容，保存至本地iri.config：</p>
-<pre><code>[IRI]
+</code></pre><p>安装JDK8，</p><pre><code>sudo apt-get install oracle-java8-installer
+</code></pre><p>查看安装，</p><pre><code>java -version
+</code></pre><h3 id=下载并运行iri>下载并运行IRI</h3><p>1.IRI的Github release链接：https://github.com/iotaledger/iri/releases<br>下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。</p><p>2.添加配置内容，保存至本地iri.config：</p><pre><code>[IRI]
 PORT = 14265
 TCP_RECEIVER_PORT = 14600
 UDP_RECEIVER_PORT = 14700
@@ -185,216 +59,34 @@ IXI_DIR = ixi
 HEADLESS = true
 DEBUG = true
 DB_PATH = db
-</code></pre><p>上面的配置中，端口可以按照自己的要求进行修改，neighbours的内容是社区提供的可自动建立连接的一些节点。</p>
-<p>3.复制本地iri和配置文件到服务器：</p>
-<pre><code>scp ./iri-1.4.1.2.jar root@&lt;your-ip&gt;:~/iri/
+</code></pre><p>上面的配置中，端口可以按照自己的要求进行修改，neighbours的内容是社区提供的可自动建立连接的一些节点。</p><p>3.复制本地iri和配置文件到服务器：</p><pre><code>scp ./iri-1.4.1.2.jar root@&lt;your-ip&gt;:~/iri/
 
 scp ./iri.config root@&lt;your-ip&gt;:~/iri/
-</code></pre><p>4.运行IRI</p>
-<p>SSH到服务器，运行</p>
-<pre><code>screen -mSL iri java -jar iri-1.4.1.2.jar -c iri_config --remote --remote-limit-api &quot;attachToTangle&quot;
-</code></pre><h3 id="常用脚本">常用脚本</h3>
-<p><em>查看节点信息：</em></p>
-<pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
+</code></pre><p>4.运行IRI</p><p>SSH到服务器，运行</p><pre><code>screen -mSL iri java -jar iri-1.4.1.2.jar -c iri_config --remote --remote-limit-api &quot;attachToTangle&quot;
+</code></pre><h3 id=常用脚本>常用脚本</h3><p><em>查看节点信息：</em></p><pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
   -H 'X-IOTA-API-Version: 1' \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{&quot;command&quot;: &quot;getNodeInfo&quot;}'
-</code></pre><p><em>查看邻居节点连接状态：</em></p>
-<pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
+</code></pre><p><em>查看邻居节点连接状态：</em></p><pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
   -H 'X-IOTA-API-Version: 1' \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{&quot;command&quot;: &quot;getNeighbors&quot;}'
-</code></pre><p><em>添加邻居节点：</em></p>
-<pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
+</code></pre><p><em>添加邻居节点：</em></p><pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
   -X POST \
   -H 'X-IOTA-API-Version: 1' \
   -H 'Content-Type: application/json' \
   -d '{&quot;command&quot;: &quot;addNeighbors&quot;, &quot;uris&quot;: [&quot;tcp://&lt;neighbour-ip&gt;:&lt;neighbour-port&gt;&quot;]}'
-</code></pre><p><em>删除邻居节点：</em></p>
-<pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
+</code></pre><p><em>删除邻居节点：</em></p><pre><code>curl http://&lt;your-ip&gt;:&lt;your-port&gt; \
   -X POST \
   -H 'X-IOTA-API-Version: 1' \
   -H 'Content-Type: application/json' \
   -d '{&quot;command&quot;: &quot;removeNeighbors&quot;, &quot;uris&quot;: [&quot;tcp://&lt;neighbour-ip&gt;:&lt;neighbour-port&gt;&quot;]}'
-</code></pre><h3 id="节点同步">节点同步</h3>
-<ol>
-<li>想方设法加入<a href="https://iotatangle.slack.com">Slack</a>，添加channel：nodesharing、mainnet-bootstrap和nelson。
-寻找邻居节点，互粉之后一定做好记录，如果对方的节点中断，一定要及时告知，并清理无连接的节点。</li>
-<li>可以选择社区提供的数据库来加速下载：https://iota.lukaseder.de/download.html<br>
-下载完成之后替换自己的db文件，并修改对应数据库配置项。</li>
-</ol>
-<h3 id="节点管理">节点管理</h3>
-<p>社区提供了开源的监控软件IOTA Peer Manager：
-<a href="https://github.com/akashgoswami/ipm">https://github.com/akashgoswami/ipm</a></p>
-<h3 id="自动发现的nelson">自动发现的nelson</h3>
-<p>Nelson基于IRI的API，可以实现邻居节点的自动发现和连接，非常实用。参考Github地址：https://github.com/SemkoDev/nelson.cli</p>
-<p>GUI监控如下图：
-<img src="/static/iri-setup/iri_aliyun_config.png" alt="nelson"></p>
-<h2 id="reference">Reference</h2>
-<p>[1] <a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04">https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04</a><br>
-[2] <a href="https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/">https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/</a><br>
-[3] <a href="https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04">https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04</a></p>
-
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/SunWillsuna">
-    <img class="avatar" src="https://whisperd.tech/images/avatar.png">
-    <div>
-        <span class="dark">Kaichao Sun</span>
-        <span>Mark it down</span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fwhisperd.tech%2fpost%2fhow-to-setup-iri%2f - %e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%20IOTA%20%e7%9a%84%20IRI%20headless%20%e5%85%a8%e8%8a%82%e7%82%b9 by @SunWillsuna"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "whisperd" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="/post/trie/">理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class="dates">Mar 17 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_transaction_weight_and_fees/">Substrate 区块链应用的交易费用设计<aside class="dates">Feb 21 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_storage_data_type/">Substrate存储数据类型概览<aside class="dates">Jan 19 2020</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/coin_flip_test_and_ui/">抛硬币游戏(二)：编写测试和UI<aside class="dates">Oct 3 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_coin_flip/">Substrate应用 - 抛硬币游戏(一)<aside class="dates">Aug 5 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/substrate_blockchain_setup/">使用Substrate搭建你的第一条区块链<aside class="dates">May 28 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/why_oo_sucks/">Why OO Sucks<aside class="dates">Apr 25 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/solidity-basics/">理解Ethereum智能合约开发<aside class="dates">Apr 11 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/shell-cheatsheet/">Cheatsheet for Shell Programming<aside class="dates">Mar 30 2019</aside></a>
-        </li>
-    
-        <li>
-            <a href="/post/master_linux_os/">The Tutorial of Manjaro Linux Usage<aside class="dates">Mar 3 2019</aside></a>
-        </li>
-    
-</ul>
-
-
-
-        
-<footer id="footer">
-    
-        <div id="social">
-
-	
-	
-    <a class="symbol" href="https://github.com/kaichaosun">
-        <i class="fa fa-github"></i>
-    </a>
-    
-    <a class="symbol" href="https://twitter.com/kaichaosun">
-        <i class="fa fa-twitter"></i>
-    </a>
-    
-
-
-</div>
-
-    
-    <p class="small">
-    
-        © Copyright 2020 Kaichao Sun
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://whisperd.tech/js/main.js"></script>
-<script src="https://whisperd.tech/js/highlight.js"></script>
-<script src="https://whisperd.tech/js/fix-toc.js"></script>
-
-<script>hljs.initHighlightingOnLoad();</script>
-
-
-
-  
-    
-    
-  
-
-<script data-ad-client="ca-pub-2513693433628672" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-
-
-
-
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-128168145-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-
-</body>
-</html>
+</code></pre><h3 id=节点同步>节点同步</h3><ol><li>想方设法加入<a href=https://iotatangle.slack.com>Slack</a>，添加channel：nodesharing、mainnet-bootstrap和nelson。
+寻找邻居节点，互粉之后一定做好记录，如果对方的节点中断，一定要及时告知，并清理无连接的节点。</li><li>可以选择社区提供的数据库来加速下载：https://iota.lukaseder.de/download.html<br>下载完成之后替换自己的db文件，并修改对应数据库配置项。</li></ol><h3 id=节点管理>节点管理</h3><p>社区提供了开源的监控软件IOTA Peer Manager：
+<a href=https://github.com/akashgoswami/ipm>https://github.com/akashgoswami/ipm</a></p><h3 id=自动发现的nelson>自动发现的nelson</h3><p>Nelson基于IRI的API，可以实现邻居节点的自动发现和连接，非常实用。参考Github地址：https://github.com/SemkoDev/nelson.cli</p><p>GUI监控如下图：
+<img src=/static/iri-setup/iri_aliyun_config.png alt=nelson></p><h2 id=reference>Reference</h2><p>[1] <a href=https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04>https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04</a><br>[2] <a href=https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/>https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/</a><br>[3] <a href=https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04>https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04</a></p></section></article><footer id=post-meta class=clearfix><a href=https://twitter.com/SunWillsuna><img class=avatar src=https://kaichaosun.github.io/images/avatar.png><div><span class=dark>Kaichao Sun</span>
+<span>Mark it down</span></div></a><section id=sharing><a class=twitter href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkaichaosun.github.io%2fpost%2fhow-to-setup-iri%2f - %e5%a6%82%e4%bd%95%e9%83%a8%e7%bd%b2%20IOTA%20%e7%9a%84%20IRI%20headless%20%e5%85%a8%e8%8a%82%e7%82%b9 by @SunWillsuna"><span class=icon-twitter>tweet</span></a>
+<a class=facebook href=# onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;"><span class=icon-facebook-rect>Share</span></a></section></footer><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"whisperd"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a><ul id=post-list class="archive readmore"><h3>Read more</h3><li><a href=/post/trie/>理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class=dates>Mar 17 2020</aside></a></li><li><a href=/post/substrate_transaction_weight_and_fees/>Substrate 区块链应用的交易费用设计<aside class=dates>Feb 21 2020</aside></a></li><li><a href=/post/substrate_storage_data_type/>Substrate存储数据类型概览<aside class=dates>Jan 19 2020</aside></a></li><li><a href=/post/coin_flip_test_and_ui/>抛硬币游戏(二)：编写测试和UI<aside class=dates>Oct 3 2019</aside></a></li><li><a href=/post/substrate_coin_flip/>Substrate应用 - 抛硬币游戏(一)<aside class=dates>Aug 5 2019</aside></a></li><li><a href=/post/substrate_blockchain_setup/>使用Substrate搭建你的第一条区块链<aside class=dates>May 28 2019</aside></a></li><li><a href=/post/why_oo_sucks/>Why OO Sucks<aside class=dates>Apr 25 2019</aside></a></li><li><a href=/post/solidity-basics/>理解Ethereum智能合约开发<aside class=dates>Apr 11 2019</aside></a></li><li><a href=/post/shell-cheatsheet/>Cheatsheet for Shell Programming<aside class=dates>Mar 30 2019</aside></a></li><li><a href=/post/master_linux_os/>The Tutorial of Manjaro Linux Usage<aside class=dates>Mar 3 2019</aside></a></li></ul><footer id=footer><div id=social><a class=symbol href=https://github.com/kaichaosun><i class="fa fa-github"></i></a><a class=symbol href=https://twitter.com/kaichaosun><i class="fa fa-twitter"></i></a></div><p class=small>© Copyright 2020 Kaichao Sun</p></footer></section><script src=//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js></script><script src=https://kaichaosun.github.io/js/main.js></script><script src=https://kaichaosun.github.io/js/highlight.js></script><script src=https://kaichaosun.github.io/js/fix-toc.js></script><script>hljs.initHighlightingOnLoad();</script><script data-ad-client=ca-pub-2513693433628672 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-128168145-1','auto');ga('send','pageview');}</script></body></html>
