@@ -229,12 +229,12 @@ em, i { font-style: italic; }
 .post h1 {
 	margin-bottom: 0px;
 	color: #222;
-	font: 300 32px/1.4em "Helvetica Neue", Helvetica,Arial,sans-serif;
+	font: 400 32px/1.4em "Helvetica Neue", Helvetica,Arial,sans-serif;
 }
 
 .post h2 {
 	margin-top: 40px;
-	font: 300 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font: 500 24px/1.5 "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #111;
 }
 
@@ -263,10 +263,20 @@ em, i { font-style: italic; }
 }
 
 h3, h4, h5 { color:#333; }
+
 h1 {margin-bottom: 30px}
+
 h2 {margin-bottom: 20px}
-h3 { font-size:20px; font-weight: 400; margin-bottom: 10px;}
+
+h3 {
+	font-size:20px;
+	font-weight: 400;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
 h4 { font-size:16px; font-weight:bold; }
+
 h5 { font-size:15px; font-weight: bold; }
 
 h6 {

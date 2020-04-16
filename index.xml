@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Whisperd</title><link>https://kaichaosun.github.io/</link><description>Recent content on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 02 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Substrate代码导读：node-template</title><link>https://kaichaosun.github.io/post/substrate_node_template_guide/</link><pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_node_template_guide/</guid><description>通过本文，你会了解到，
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Whisperd</title><link>https://kaichaosun.github.io/</link><description>Recent content on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Kusama系列：如何进行链上治理</title><link>https://kaichaosun.github.io/post/kusama_governance/</link><pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/kusama_governance/</guid><description>通过本文，你会了解到：
+典型区块链网络的治理机制有哪些； 什么是链上治理； Kusama网络的治理机制。 为什么需要链上治理 人类社会的进步，除了依赖技术的创新，还与社会的治理息息相关。治理体现在社会生活的方方面面，比如：
+资源的分配，职责的划分； 奖励和惩罚机制； 未来的治理走向，等等。 治理的表现形式多种多样，有些是明文规定的法律条文，有些是隐性的社会规则。基本上，有人参与的活动就存在治理，小到院子里的小朋友们如何轮流滑滑梯，大到一个企业、国家如果分配输入、划分职责。
+合理、透明、高效的治理，能提高社会协作的效率，进而提高生产效率和大众的幸福感；试想一下，如果你生活在一个没有治理或者治理不合理的环境里，那么社会的协作将会混乱不堪，很难出现高效的生产活动，公平和平等也就无从谈起。
+去中心应用独特的价值吸引了越来越多的人来使用，区块链作为去中心应用的一种典型的技术实现方式，拥有着众多的利益相关方，如：
+区块链应用的终端用户； 区块链核心技术开发人员； 运营节点的服务商，包括PoW的矿池（矿工）和矿机，PoS的验证人节点等。 那么，已有的区块链系统是如何协调这些利益相关方、实现治理的呢？
+比特币由中本聪完成最初版本的开发并上线运行，紧接着第二年，中本聪选择淡出人们的视线，将源代码的控制权移交给社区的开发者。比特币协议的修改需要通过BIP（Bitcoin Improvement Proposals），任何人都可以提交，但是在真正实现某项修改之前，需要充分考虑其安全性和可行性。BIP的生命周期如下图所示，
+BIP的成功实施，需要经历这样几个阶段，
+草案（Draft），提交BIP到开发者邮件列表和Github仓库，收集社区的反馈，讨论、解决反对意见，如果社区内形成了大致共识（rough consensus），就可以进入下一阶段；
+大致共识是指，对反对的意见进行充分地讨论，直到大多数人认为反对意见是不正确的。
+提出（Proposed），在这个阶段，BIP拥有了可运行的功能代码，并且制定了部署计划；
+完成（Final），线上的比特币网络节点部署了这一修改，并且达到了一定的标准，通常需要有全网95%以上的算力触发此项修改。
+随着比特币网络的发展，大的数字货币交易所、矿池（矿工）、投资机构在网络的运行上拥有越来越高的话语权，下图展示了当前一周内的算力分布。
+在2017年的隔离见证（SegWit，BIP141及后续相关的BIP）升级过程中，各方势力的角逐如同一场没有硝烟的战争，最终分叉成为两个网络。在这一过程中，比特币的治理机制体现地淋漓尽致，既有大的算力集团可以“一手遮天”，也有核心开发者提交多个BIP来应对各种变数，还有持中立态度的部分用户和交易所。很显然，这样的治理效率低，不够透明，也谈不上真正地去中心。
+另外一个典型的区块链网络是以太坊，它拥有和比特币网络类似的治理机制，通过EIP（Ethereum Improvement Proposals）来管理新特性的实施和部署，不同的是，以太坊的核心开发者在社区拥有极高的声誉和影响力，以太坊基金会的控制力也更强，EIP的实施从流程来看更加清晰，如下图所示。
+从2016年的The DAO攻击事件，可以感受到以太坊网络的治理氛围，在各种社交频道都能看到针对这次攻击及其解决方案的激烈讨论，最终以硬分叉的形式将被黑客盗取的ETH退还给投资人，以太坊基金会及大部分的核心开发者投入到分叉后新的以太坊链，也有少部分的矿工、开发者选择坚守在原有的那条链上。
+通过上面两个例子，我们看到了治理在区块链生态里的重要作用，并且有越来越多的团队发现比特币这一类的链下治理（Off-Chain Governance）的不足，并尝试使用链上治理（On-Chain Governance）的方式，来提高治理的效率、透明度，从而进一步实现去中心的目标。Kusama就是这样一个采用链上治理的区块链网络。
+Kusama链上治理 治理的核心体现在，当出现意见分歧时，哪一方拥有更高的权力，以及如何做出最终的决定。在Kusama网络里，权力属于KSM token（下面简称为ksm或token）的持有人，最终的决定则由民主投票产生，参与投票的token数量越多、锁定时间越长，权力就越大。Kusama网络的治理概览如下图，
+Kusama网络采用了三院制（Tricameral）的治理结构，
+公投议院（Referendum chamber，也称为立法院），拥有最广泛的成员（即所有的token持有人）和最高的权利，所有的“立法”（即区块链runtime逻辑的修改）必须经过民主公投； 理事会（Council），是Kusama网络中一些日常事务的具体执行机构，其成员由token持有人投票产生； 技术委员会（Technical Committee），由开发Polkadot/Kusama网络协议的技术团队组成，作为理事会的补充和制衡，同时受理事会钳制。 民主公投时可使用的投票机制有，
+绝对多数赞成，公投议案的通过需要获得绝对多数的赞成票，即默认议案不通过； 绝对多数反对，只有获得绝对多数的反对票，才能阻止公投议案的通过，即默认议案通过； 过半数赞成，公投议案的通过只需要超过一半的投票是赞成票。 其中绝对多数的具体比例和投票率相关，投票率越高，绝对多数所要求的比例越低，比如投票率只有50%时，绝对多数的比例接近80%，当投票率为100%，绝对多数的比例是50%+1。过半数赞成是指无论投票率的高低，赞成票都只需要满足50%+1即可。
+民主公投 得益于Substrate提供的无分叉升级方式，Kusama网络上任何runtime逻辑的修改，都可以直接通过链上升级来实现。这些修改必须提交议案进行公投，如果公投通过，网络会在一段时间之后自动升级并部署此项修改。polkadot-js/apps提供的公投页面如下， 公众提交议案的流程：</description></item><item><title>Substrate代码导读：node-template</title><link>https://kaichaosun.github.io/post/substrate_node_template_guide/</link><pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_node_template_guide/</guid><description>通过本文，你会了解到，
 Substrate node-template的组成部分，及各部分的功能简介 参数如何配置 Substrate作为一个标准的区块链开发框架，不仅提供了必备的底层公共组件（如数据库、共识、P2P、交易池）和通用的runtime模块（如资产相关的balances，治理相关的democracy等），还提供了将各个功能组件连接起来的节点模板程序（node-template）和节点程序（node）。本文主要介绍node-template中各个代码块的功能。
 文件目录 在使用类Unix操作系统的情况下，进入node-template文件目录，执行tree -I target命令，获取详细的文件信息如下：
 这里我们忽略了target文件目录下的内容，来较少干扰性的输出。
