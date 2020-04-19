@@ -524,10 +524,12 @@ Post List
 
 #post-nav span.prev {
 	float: left;
+	font: 400 17px/1.8 "Helvetica Neue",helvetica,Arial,sans-serif
 }
 
 #post-nav span.next {
 	float: right;
+	font: 400 17px/1.8 "Helvetica Neue",helvetica,Arial,sans-serif
 }
 
 #post-nav span .arrow {
@@ -684,6 +686,7 @@ ul {
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 	padding-left: 1em;
+	padding-right: 1em;
 }
 
 ol > li {
