@@ -713,3 +713,12 @@ ul > li > ul > li > ul > li {
 	padding-top: 15px;
 	padding-bottom: 5px;
 }
+
+#mc_embed_signup {
+    margin-top: 80px;
+    margin-bottom: 40px;
+}
+
+#mc-embedded-subscribe {
+    background-color: #5badf0 !important;
+}
