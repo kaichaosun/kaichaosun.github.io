@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Javascript on Whisperd</title><link>https://kaichaosun.github.io/tags/javascript/</link><description>Recent content in Javascript on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Apr 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>理解 Javascript 的几种异步模式</title><link>https://kaichaosun.github.io/post/callback-promise/</link><pubDate>Wed, 05 Apr 2017 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/callback-promise/</guid><description>Javacript 提供了基于回调的异步编程模式，如回调函数，Promise对象，Async Function 等。下面是我在学习过程中总结的 一些特性和使用方式。
+Javascript 运行时概念 栈(Stack) 和其他语言一样, 栈保存了函数调用的层次关系, 栈中的每一块叫做一帧(frame), 最上层的那一帧, 代表了最内层的函数, 当函数返回时, 清空帧, 当调用栈中所有的帧清空(即最外层函数返回), 当前执行的代码块结束。 JS调用栈有三个特点:
+单线程, 浏览器的JS引擎本身是多线程的, 但是JS的调用栈是单线程的, 一次只能执行一段代码; 同步执行, 在栈中的任务依次执行并返回, 不能在任务之间切换 非阻塞, 在线程繁忙时, 浏览器仍然可以接收事件 堆(Heap) 堆中保存了大量的对象,垃圾收集器定期清理未被引用的对象。
+事件队列(event queue) 当调用某些Web APIs时,如DOM事件(如鼠标点击操作)、XMLHttpRequest, setTimeout()等, 会添加callback函数到event queue。
+Event loop Event loop将event queue中按照&amp;quot;FIFO&amp;quot;的顺序将callback取出,放入栈中,callback函数返回,清空栈, 循环执行上述步骤。
+MDN提供的伪代码实现如下:
+while(queue.waitForMessage()) { queue.processNextMessage(); } Callback Callback函数 和其他编程语言(Java, Ruby)不同,在JS中,函数也是对象(Function instanceof Object返回为true)。 函数是JS的&amp;quot;一等公民&amp;rdquo;,通俗的理解是,可以将函数作为参数传给另外一个函数,也可以将一个函数作为另一个函数的返回值。
+function bar(cb) { setTimeout(cb,2000); } function foo() { console.</description></item></channel></rss>

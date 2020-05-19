@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Thoughts on Whisperd</title><link>https://kaichaosun.github.io/categories/thoughts/</link><description>Recent content in Thoughts on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 06 Feb 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/categories/thoughts/index.xml" rel="self" type="application/rss+xml"/><item><title>老宅记忆</title><link>https://kaichaosun.github.io/post/laozhai-jiyi/</link><pubDate>Wed, 06 Feb 2019 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/laozhai-jiyi/</guid><description>时间大概是我遇到过最抽象的概念。
+到现在，依然没有搞明白时间于我或者我们的意义。通过观察老宅，希望能明白一些。
+说故事，还是得从自己说起，因为感受深刻，记忆详实。时间不必清晰，人物也谈不上典型，故事更是最寻常不过的。
+老宅是一块记忆的活化石，记忆是我。
+大年三十，是家里最热闹的日子，因为是爷爷的生日，外面混的不论好坏，人得到齐。
+中午的伙食，来于长辈的辛劳。
+吃席从来是足够复杂的一件事情，成年汉子必须喝酒，不会喝，就得练，酒桌文化我想，也算是中国普及最广的文化了，超越了地区贫富高低。一杯酒，喜乐恩仇。极少数的情况下，我会觉得喝酒有乐趣，大概是没有酒量。但是又须和其他人保持步调一致，这是很易理解的，围绕一张桌的是快三十年的相互了解，一致比不一致要容易太多了。
+吃完饭，要去上坟祭祖，拿上鞭炮，汤水，就要出发。一路上，废弃的玉米杆铺路，尘土轻扬，心情松畅。到了跟父辈兄弟沟通最深刻话题的时段了，生与湮灭，落叶归根，大题面前，总能窥见人格的变迁。我从来没见过爷爷的爹，也就是老爷爷，因为没见过，才觉得神秘，才有很多的故事流传于耳畔。记忆碎片里有小时候老奶奶在的日子，阳光、板凳和微笑。
+一年的结束和开始，在我的内心，永远是初一这两天。大清早就鞭炮雷动，驱年守岁。拜年，最传统的项目，在记忆里占据了大篇幅。小时候喜欢拜年，因为这是一年中唯一光明正大的挣钱机会。亲戚邻里，奶奶叔叔，进门先高喊，喊的声音大，年气儿才够浓，给压岁钱才会痛快。正经说，拜年不是一件光嘴上寒暄的容易事儿，进堂屋，迎正墙，磕头跪地，单腿双膝，诚意可见。磕了头，一定是敬烟吃糖，一顿寒暄，来去几个回合，内容一共没几句，但是一句不该多，更一句不能少。升了学的，到了年龄还没结婚的，刚结了婚有小孩儿的，一定被抓着手多问几句，这个时候一定不能表现出厌烦，过了年，出门在外，漫无目的的关心仿佛也变成了奢侈品。
+年节，过的是一个心气儿，拍着记忆中的老宅，给这个年增加了一点新意。
+不经意，看到时间流去。谈笑里，新庙老宅骤雨。</description></item><item><title>Hackday是一种怎样的体验？</title><link>https://kaichaosun.github.io/post/hackday/</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/hackday/</guid><description>加入 Thoughtworks 之后，经历了REA (realestate.com.au) 三次 Hackday，感受很多，我觉得有必要和大家分享一下这么优秀的想法和活动。
+什么是 hackday？ Hackday，有时也被叫做 Hackathon，是IT行业一个类似于“百米冲刺”的活动，主要目的在于围绕一个主题，进行软件设计和开发，持续时间不等，可以是一天，也可以是一周，以2~3天为多数。活动范围有企业内部、社区等。
+REA的 hackday 长什么样？ 在 REA，协作和创新被视为企业的灵魂，每个季度会举办一次hackday，为期三天，除非有相当紧急的线上问题需要处理，一般来说，大部分人都是能够参与其中的。很难想象一个公司所有人三天里都在搞“飞机”，不干“正事”，但是这不也正体现了一个企业的文化、魄力和产品的稳定性吗？ hackday 流程大致是这样的，
+团队内部 brain storm，收集 idea； 投票选出意向参与的项目，分配资源； 公司范围的 Stand up，阐述 idea，并找到目标资源（UX，前端Dev，后端Dev，等等） 团队内部 Kick off，划分 story MVP 功能开发（结对编程），一般为 1.5~2天 制作 Showcase 海报 公司范围 Showcase 拉票，投票 根据项目的情况，少数会进入产品，多数会成为工作生活的小助手，解决工作生活中的痛点。 我参与的 hackday 项目 印象比较深刻的是4个:
+CI 监控 REA很多CI跑在 Bamboo 和 Buildkite上，每个平台提供的监控数据和展示层不能整合，其中一次hackday，我们就自己动手去整合两个平台的数据，外加一个数据展示的web页面，加上炫酷的动画，完美~ 并且成功的在最近一次hackday前“卖”给了别的team。
+Slack robot 监控红了，build 挂了，总得人来修吧，但是这个人呢，太忙，又或者不知道是自己在值班，怎么办呢，我们就让一个robot定时去拉build的状态，一旦红了，去slack上@他，叫醒他，“嘿，哥们，你不修，你好意思吗?”
+奔跑吧，会员卡 每当我走进xx超市、xx火锅，结账那一刻，我是拒绝的，尼玛这么点东西，怎么这么贵？现在好了， 我们搞了VIP会员卡共享的公众号，可以注册登记每个人的会员卡，可以供大家查询使用。虽然还有很多功能需要完善，但是我们已经迈出了一大步，对吗？PS: 公众号还在公司内测，一旦公开第一时间跟大家分享。</description></item></channel></rss>

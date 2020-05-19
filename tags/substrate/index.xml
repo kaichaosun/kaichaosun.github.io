@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Substrate on Whisperd</title><link>https://kaichaosun.github.io/tags/substrate/</link><description>Recent content in Substrate on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/tags/substrate/index.xml" rel="self" type="application/rss+xml"/><item><title>Kusama系列：如何进行链上治理</title><link>https://kaichaosun.github.io/post/kusama_governance/</link><pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/kusama_governance/</guid><description>通过本文，你会了解到：
+典型区块链网络的治理机制有哪些； 什么是链上治理； Kusama网络的治理机制。 为什么需要链上治理 人类社会的进步，除了依赖技术的创新，还与社会的治理息息相关。治理体现在社会生活的方方面面，比如：
+资源的分配，职责的划分； 奖励和惩罚机制； 未来的治理走向，等等。 治理的表现形式多种多样，有些是明文规定的法律条文，有些是隐性的社会规则。基本上，有人参与的活动就存在治理，小到院子里的小朋友们如何轮流滑滑梯，大到一个企业、国家如果分配输入、划分职责。
+合理、透明、高效的治理，能提高社会协作的效率，进而提高生产效率和大众的幸福感；试想一下，如果你生活在一个没有治理或者治理不合理的环境里，那么社会的协作将会混乱不堪，很难出现高效的生产活动，公平和平等也就无从谈起。
+去中心应用独特的价值吸引了越来越多的人来使用，区块链作为去中心应用的一种典型的技术实现方式，拥有着众多的利益相关方，如：
+区块链应用的终端用户； 区块链核心技术开发人员； 运营节点的服务商，包括PoW的矿池（矿工）和矿机，PoS的验证人节点等。 那么，已有的区块链系统是如何协调这些利益相关方、实现治理的呢？
+比特币由中本聪完成最初版本的开发并上线运行，紧接着第二年，中本聪选择淡出人们的视线，将源代码的控制权移交给社区的开发者。比特币协议的修改需要通过BIP（Bitcoin Improvement Proposals），任何人都可以提交，但是在真正实现某项修改之前，需要充分考虑其安全性和可行性。BIP的生命周期如下图所示，
+BIP的成功实施，需要经历这样几个阶段，
+草案（Draft），提交BIP到开发者邮件列表和Github仓库，收集社区的反馈，讨论、解决反对意见，如果社区内形成了大致共识（rough consensus），就可以进入下一阶段；
+大致共识是指，对反对的意见进行充分地讨论，直到大多数人认为反对意见是不正确的。
+提出（Proposed），在这个阶段，BIP拥有了可运行的功能代码，并且制定了部署计划；
+完成（Final），线上的比特币网络节点部署了这一修改，并且达到了一定的标准，通常需要有全网95%以上的算力触发此项修改。
+随着比特币网络的发展，大的数字货币交易所、矿池（矿工）、投资机构在网络的运行上拥有越来越高的话语权，下图展示了当前一周内的算力分布。
+在2017年的隔离见证（SegWit，BIP141及后续相关的BIP）升级过程中，各方势力的角逐如同一场没有硝烟的战争，最终分叉成为两个网络。在这一过程中，比特币的治理机制体现地淋漓尽致，既有大的算力集团可以“一手遮天”，也有核心开发者提交多个BIP来应对各种变数，还有持中立态度的部分用户和交易所。很显然，这样的治理效率低，不够透明，也谈不上真正地去中心。
+另外一个典型的区块链网络是以太坊，它拥有和比特币网络类似的治理机制，通过EIP（Ethereum Improvement Proposals）来管理新特性的实施和部署，不同的是，以太坊的核心开发者在社区拥有极高的声誉和影响力，以太坊基金会的控制力也更强，EIP的实施从流程来看更加清晰，如下图所示。
+从2016年的The DAO攻击事件，可以感受到以太坊网络的治理氛围，在各种社交频道都能看到针对这次攻击及其解决方案的激烈讨论，最终以硬分叉的形式将被黑客盗取的ETH退还给投资人，以太坊基金会及大部分的核心开发者投入到分叉后新的以太坊链，也有少部分的矿工、开发者选择坚守在原有的那条链上。
+通过上面两个例子，我们看到了治理在区块链生态里的重要作用，并且有越来越多的团队发现比特币这一类的链下治理（Off-Chain Governance）的不足，并尝试使用链上治理（On-Chain Governance）的方式，来提高治理的效率、透明度，从而进一步实现去中心的目标。Kusama就是这样一个采用链上治理的区块链网络。
+Kusama链上治理 治理的核心体现在，当出现意见分歧时，哪一方拥有更高的权力，以及如何做出最终的决定。在Kusama网络里，权力属于KSM token（下面简称为ksm或token）的持有人，最终的决定则由民主投票产生，参与投票的token数量越多、锁定时间越长，权力就越大。Kusama网络的治理概览如下图，
+Kusama网络采用了三院制（Tricameral）的治理结构，
+公投议院（Referendum chamber，也称为立法院），拥有最广泛的成员（即所有的token持有人）和最高的权利，所有的“立法”（即区块链runtime逻辑的修改）必须经过民主公投； 理事会（Council），是Kusama网络中一些日常事务的具体执行机构，其成员由token持有人投票产生； 技术委员会（Technical Committee），由开发Polkadot/Kusama网络协议的技术团队组成，作为理事会的补充和制衡，同时受理事会钳制。 民主公投时可使用的投票机制有，
+绝对多数赞成，公投议案的通过需要获得绝对多数的赞成票，即默认议案不通过； 绝对多数反对，只有获得绝对多数的反对票，才能阻止公投议案的通过，即默认议案通过； 过半数赞成，公投议案的通过只需要超过一半的投票是赞成票。 其中绝对多数的具体比例和投票率相关，投票率越高，绝对多数所要求的比例越低，比如投票率只有50%时，绝对多数的比例接近80%，当投票率为100%，绝对多数的比例是50%+1。过半数赞成是指无论投票率的高低，赞成票都只需要满足50%+1即可。
+民主公投 得益于Substrate提供的无分叉升级方式，Kusama网络上任何runtime逻辑的修改，都可以直接通过链上升级来实现。这些修改必须提交议案进行公投，如果公投通过，网络会在一段时间之后自动升级并部署此项修改。polkadot-js/apps提供的公投页面如下， 公众提交议案的流程：</description></item><item><title>Substrate代码导读：node-template</title><link>https://kaichaosun.github.io/post/substrate_node_template_guide/</link><pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_node_template_guide/</guid><description>通过本文，你会了解到，
+Substrate node-template的组成部分，及各部分的功能简介 参数如何配置 Substrate作为一个标准的区块链开发框架，不仅提供了必备的底层公共组件（如数据库、共识、P2P、交易池）和通用的runtime模块（如资产相关的balances，治理相关的democracy等），还提供了将各个功能组件连接起来的节点模板程序（node-template）和节点程序（node）。本文主要介绍node-template中各个代码块的功能。
+文件目录 在使用类Unix操作系统的情况下，进入node-template文件目录，执行tree -I target命令，获取详细的文件信息如下：
+这里我们忽略了target文件目录下的内容，来较少干扰性的输出。
+workspace cargo.toml node-template是一个标准的Rust workspace项目，当项目比较复杂时，使用workspace可以清晰地管理组件库（library）和可执行程序（binary）。在项目根目录的cargo.toml文件里有：
+[workspace] members = [ &amp;#39;node&amp;#39;, &amp;#39;pallets/template&amp;#39;, &amp;#39;runtime&amp;#39;, ] 这个workspace的成员有node、pallets/template、runtime，其中node是可执行程序，在对应的src/main.rs文件内拥有一个可执行的main函数入口；pallets/template和runtime是组件库，在src/lib.rs定义了可被外部使用的函数和数据结构。
+细心的同学会注意到cargo.toml里还有下面两行配置:
+[profile.release] panic = &amp;#39;unwind&amp;#39; 它和catch_unwind一起使用可以捕获某个线程内panic抛出的异常，常用的场景有：
+在其它编程语言中嵌入Rust； 自定义线程处理的逻辑； 测试框架，因为测试用例可以panic，但是不能中断测试的运行。 具体请参考Controlling panics with std::panic。
+workspace build.rs 自定义的构建脚本放置在项目的build.rs文件内，可以在编译构建项目之前，让Cargo去编译和执行该脚本，使用场景有：
+编译、连接第三方的非Rust代码； 构建之前的代码生成功能。 node-template根目录下的build.rs的具体功能，参考下面的注释，
+use vergen::{ConstantsFlags, generate_cargo_keys}; const ERROR_MSG: &amp;amp;str = &amp;#34;Failed to generate metadata files&amp;#34;; fn main() { // 使用vergen生成环境变量，供项目中的env!宏获取 // 这里设置了VERGEN_SHA_SHORT为Git最新的commit id的缩写 generate_cargo_keys(ConstantsFlags::SHA_SHORT).</description></item><item><title>理解Substrate数据存储的底层实现Merkle Patricia Trie</title><link>https://kaichaosun.github.io/post/trie/</link><pubDate>Tue, 17 Mar 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/trie/</guid><description>[TOC]
+通过本文，你会了解到：
+区块链应用为什么使用Merkle Tree的数据结构； Substrate采用的Patricia Merkle Trie的特点和应用。 Merkle Tree介绍 Merkle Tree是一种数据结构，用来验证计算机之间存储和传输数据的一致性，如果不使用这一数据结构，一致性的验证需要消耗大量的存储和网络资源，如比对计算机之间的所有数据；使用Merkle Tree，只需要比对merkle root（根节点）就可以达到相同的效果。整个过程，简单的描述如下：
+将数据通过哈希之后放置在叶子节点之中； 将相邻两个数据的哈希值组合在一起，得出一个新的哈希值； 依次类推，直到只有一个节点也就是根节点； 在验证另外的计算机拥有和本机相同的数据时，只需验证其提供的根节点和自己的根节点一致即可。 Merke Tree使用了加密哈希算法来快速验证数据一致性，常用的加密哈希算法有SHA-256，SHA-3，Blake2等，它们可以做到，
+相同的输入有相同的输出； 对任意数据可以实现快速计算； 从哈希值无法推断出原信息； 不会碰撞（即不同输入对应相同输出）； 输入即使只有很小的改变，输出也会有极大不同。 在区块链应用Bitcoin网络中，存储的数据为转移Bitcoin的交易，如“Alice发送给Bob 5个比特币”，通过使用Merkle Tree，除了上面提到的验证各个节点之间的数据一致性，还可以用来快速验证一个交易是否属于某个区块。轻节点只需要下载很少的数据就可以验证交易的有效性，例如下图所示，用户要验证交易T(D)在某个区块之中，需要依赖的数据仅仅是HC, HAB, HEFGH, 和 merkle root即HABCDEFGH。
+Merkle Patricia Trie原理 Trie Patria Trie也是一种树形的数据结构，也称为Prefix Tree，Radix Tree，或者简称为Trie，最早来源于英文单词 retrieve，可以发音为try，常用的使用场景包括：
+搜索引擎的自动补全功能； IP路由等。 Trie的特点是，某节点的key是从根节点到该节点的路径，即不同的key有相同前缀时，它们共享前缀所对应的路径。这种数据结构，可用于快速查找前缀相同的数据，内存开销较少。如以下数据及对应的trie表示为：
+key value to 7 tea 3 ted 4 ten 12 A 15 i 11 in 5 inn 9 Substrate使用base-16，即每个节点最多有16个子节点：</description></item><item><title>Substrate 区块链应用的交易费用设计</title><link>https://kaichaosun.github.io/post/substrate_transaction_weight_and_fees/</link><pubDate>Fri, 21 Feb 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_transaction_weight_and_fees/</guid><description>[TOC]
+通过本文，你将学到：
+区块链应用为什么存在交易费用 Substrate 交易费用的组成 如何设计更合理的交易费用 为什么存在交易费用 在传统物联网（web 2.0）时代，使用微信、微博、淘宝等互联网应用时，终端用户不需要直接费用，而是由服务提供方利用用户的个人信息、产生的数据、注意力等来变现，典型的方式有
+广告推送； 通过用户数据分析指导商家决策； 甚至直接共享、贩卖用户隐私等。 在使用以上所说的web 2.0服务时，用户数据的所有者是服务提供方。在过去的20年里，虽然我们享受了互联网应用带来的好处，但也时刻“品尝”着隐私泄露、数据主权丢失带来的恶果。
+区块链应用将服务的各个组件完全透明化，用户数据的所有权归属于个人，而不是应用的开发者或者任何其他的第三方。用户通过持有私钥掌握着数据，只有持有私钥的人才可以解锁和转移数据，敏感数据往往可以通过加密防止被窃取。
+任何区块链应用的出现和流行都离不开这些利益相关方：
+开发和运营团队 维护网络正常运行的节点 终端用户 “天下没有免费的晚餐”，终端用户在享受自由的应用服务同时，需要支付相应的服务费用，也就是交易费用，因为服务是由交易触发的。这些费用可以用来激励相关方更加有效的协作，从而提供更优质的服务。
+交易费用的另一个目的是在网络和计算资源有限的条件下，高效地调节这些资源的利用率，而不至于被网络中的垃圾交易所浪费。
+在不同的应用场景中，对资源消耗的成本估算不尽相同，合理地设计交易费用可以实现参与方的共赢，推动应用的普及。
+合理设计交易费用 如前文所述，交易费用的目的主要是：
+激励服务提供方即开发团队和节点 调节资源利用率 注：本文不考虑通证的通胀和其它的激励措施。
+节点和开发团队对交易费用分成，具体的比例由各方根据实际情况协调，并通过链上治理的方式进行动态的调整。
+在区块链网络中，典型的资源和相应的费用设计方式如下：
+有限的区块大小，通过计算每笔交易占用的字节数来收取交易费； 有限的区块生成时间，通过计算或者性能测试得出不同交易所消耗的时间； 链上状态的存储资源，通常方式有一次性付费和租赁两种模式。一次性付费发生在交易处理过程中，在开发时对此费用评估。租赁模式还会考虑某个交易占据链上状态的时长，超时之后对相应状态进行清除。 Substrate 交易费用组成 Substrate作为一个通用的区块链应用开发框架，充分考虑了上面提到的各种因素。Substrate设计的交易费用由以下几部分组成：
+总费用 = 基本费用 +（字节费用 + 权重费用）*（1 + 动态调节费率）+ 小费 用于支付的货币由transaction-payment模块的Currency类型指定，通常由Balances模块给出。
+基本费用 即TransactionBaseFee，是每笔交易（特例请参考下面，通过pays_fee设置无付费的交易）都需支付的费用，定义在transaction-payment模块中，在runtime初始化时进行配置，并可以随着runtime的升级进行更新。基本费用的合理设置，可以有效的减少垃圾交易，例如Kusama网络的基本费用目前设置为 0.01 ksm。
+字节费用 在处理区块大小的限制时，Substrate引入了最大区块长度和字节费用，system模块定义了最大区块长度（MaximumBlockLength），transaction-payment模块定义了每字节的费用（TransactionByteFee），总的字节费用为：
+字节费用 = 每字节费用 * 字节数 和基本费用相同的是，每字节费用也是配置在可升级的runtime代码中。字节数的计算是按照交易的结构体通过SCALE编码之后的长度，应用开发者无需过多的关注。以Kusama网络为例，相关的设置如下：
+最大区块长度：5MB 每字节费用：0.</description></item><item><title>Substrate存储数据类型概览</title><link>https://kaichaosun.github.io/post/substrate_storage_data_type/</link><pubDate>Sun, 19 Jan 2020 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_storage_data_type/</guid><description>通过本文，你将学会：
+区块链应用和传统应用在数据存储层的不同之处； 使用区块链进行数据存储时遇到的约束； Substrate可用的存储数据类型和使用方法。 如果想更好的理解本文的内容，最好有Substrate runtime的开发经验，你可以根据官方的教程（Proof Of Existence 或 Cryptokitties）来实践，也可以参考本专栏的其它文章。需要说明的是Substrate源码正在快速迭代更新中，部分语法可能不适用。遇到任何问题欢迎到相应的渠道来咨询。本文源码位于kaichaosun/play-substrate。
+区块链数据存储的不同 在传统web应用开发领域，数据库相关内容的设计和操作是极为重要的一部分。底层数据库可以分为：
+关系型数据库，用来存储关系型数据 非关系型数据库，可以存储非关系型的多种数据形式，如键值对、半结构化数据等。 以关系型数据为例，在开发过程中通常涉及以下几个方面：
+数据库选型，常用的有MySQL，PostgreSQL等。 设计表结构，需要符合业务的需要并满足一定的原则（也被称为数据库的范式）。 编写SQL，或者ORM框架提供的DSL，如Rails提供的Active Record，Java生态里的MyBatis。 区块链作为去中心应用最典型的一种形式，被很多开发者所热衷。区块链应用通常有这样几个特点：
+发布的代码是开源可审查的。 运行的程序的是对等的，任何人都可以启动并参与到网络中。 数据库是去中心的，它增量地存储数据，就如同记账一样。 通过引入延迟和随机来保证账本同一时间只能有一个节点可以写账本，也就是工作量证明（PoW）或者权益证明（PoS）。 一个已经存在的业务，通过使用区块链的技术、去中心的思想，或许能绽放出新的生命力。
+典型的区块链应用如Bitcoin和Ethereum，它们的客户端软件依赖高效的键值对数据库，比如Bitcoin core 和 Ethereum Go 客户端使用的是LevelDB，Parity Ethereum 和 Substrate 内置的是RocksDB。
+区块链数据存储的约束 现实世界的霸权，导致了区块链应用受到大家的追捧，越来越多的开发者、创业者选择区块链作为自己业务的载体，然而它目前的基础设施还不足以支撑过于复杂的业务场景，以存储为例比如：
+大文件如图片、视频直接存储在链上的成本很高，我们需要其它的去中心存储方案来解决它。这就导致一个完整的去中心应用可能由多个不同的链来提供服务，而不同链之间的交互也变的不可或缺。 链式的区块存储结构不利于对历史数据的索引，如查询某个账户特定交易的所有记录，通常需要一个辅助的链外存储系统来帮助实现高效、自定义的查询功能，以满足终端用户灵活的需求。目前可用的方案只能通过传统中心化的数据库。 区块链的共识机制要求所有的节点在运行同一批事务的时候有相同的输出，而浮点数的舍入、计算、比较可能随着不同的编译器、优化程度、计算机架构出现不同的结果，所以区块链应用在进行数值运算时不能使用浮点数。更多内容，请参考Stop using floating point!，The trouble with rounding floating point numbers。 Substrate 存储单元的数据类型 现在转向今天我们关注的主题，当使用Subsrate开发一条应用链的时候，可以用到哪些存储数据类型和它们相应的操作API。
+需要指出的是，存储数据结构的设计需要结合自己的业务进行高度定制。在Substrate的开发过程中不涉及关系表的设计，而是通过它定义的一套标准化接口对数据库中存储的键值对进行增删改查的操作，开发者只需要关注自己的业务，而无需过多地关注与数据库底层的交互，真正地从繁杂的底层开发中解放出来。
+Substrate作为一个通用的区块链开发框架，提供了丰富的数据类型用于在链上存储数据。它是基于Rust语言开发的，所支持的数据类型是Rust原生类型的子集（定义在核心库和alloc库中），以及这些原生类型构成的映射类型，同时要满足一定的编解码条件。我们通常把它们分为以下四种：
+单值类型，可用来存储某种单一类型的值，如布尔，数值，枚举，结构体等。 简单映射类型，类型标识为map，可以存储键值对，通过key可以索引到value，并进行相应的修改。 链接映射类型，类型标识为linked_map，和map类型类似，也是用于存储键值对，不同的是linked_map可以对所有的键值对进行遍历操作，而map目前只能对值（value）进行遍历，不能遍历所有的键（key），更多内容参考这个issue: Default keys to something enumerable和之前的PR: Introduce prefixed storage with enumeration。 双键映射类型，类型标识为double_map，顾名思义，两个key，对应一个value，主要目的是通过第一个键（key 1）快速删除任意key 2的记录，也可以遍历key 1对应的所有的值。 单值类型 Rust提供了丰富的基本类型和组合类型，大部分可以在runtime开发中直接使用，并且Substrate还内置了一些独有的类型可以方便地开发去中心应用，部分类型如下表所示：</description></item><item><title>抛硬币游戏(二)：编写测试和UI</title><link>https://kaichaosun.github.io/post/coin_flip_test_and_ui/</link><pubDate>Thu, 03 Oct 2019 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/coin_flip_test_and_ui/</guid><description>在之前的文章 Substrate应用 - 抛硬币游戏（一），我们完成了runtime的开发，从而实现了一个自定义功能（即抛硬币游戏）的区块链网络。现在让我们来看一下如何编写测试代码和UI，你也可以直接看最终的模块代码和UI代码。
+测试 重要性 为功能模块编写测试，是软件开发过程中不可缺省的一个环节，完备的测试能够：
+确保代码的执行符合预期； 增强重构时的信心； 从代码的使用角度，提升代码的设计等。 通常情况下，测试可以分为以下几种：
+单元测试，mock实现代码中的依赖如其它功能模块，仅测试当前函数的功能； 集成测试，不mock实现代码中的依赖，对多个功能模块整体考虑，进行测试； End to End 测试，是面向当前系统与依赖的第三方服务之间的测试。 当我们在使用Substrate进行开发时，主要会使用到单元测试和集成测试的方法，对于不同的场景，可以按需选择。一个最佳实践是，确保自定义的runtime模块有良好的测试覆盖。
+Rust 测试代码 Rust测试代码通常会和实现代码放在同一个文件或相同的目录下，取决于测试代码的数量，更多内容可以参考Rust book。下面是一个简单的测试用例：
+pub fn add_two(a: i32) -&amp;gt; i32 { a + 2 } #[cfg(test)] mod tests { use super::*; #[test] fn test_add_two() { assert_eq!(4, add_two(2)); } } 一些需要注意的点包括：
+测试代码使用属性#[cfg(test)]进行标识 use super::*用来引入当前模块的功能代码 测试函数通过属性#[test]进行标识 断言方式有： 表达式的值为true：assert!(expression) 表达式的值是期望的值：assert_eq!(expected, expression) 表达式的值不是其它不相关的值：assert_ne!(other, expression) 异常发生：#[should_panic] Substrate提供了自定义的断言： 结果为Ok(())：assert_ok!(expreesion) 结果为Err(error_info)：assert_err!(expression, error_info) 结果为Err(error_info)，并且不修改存储状态：assert_noop!</description></item><item><title>Substrate应用 - 抛硬币游戏(一)</title><link>https://kaichaosun.github.io/post/substrate_coin_flip/</link><pubDate>Mon, 05 Aug 2019 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_coin_flip/</guid><description>**当我们应用区块链解决生活中问题的时候，它的价值就产生了。**如果还不清楚Substrate的基本概念，在开始本文的阅读之前，我希望你能大概浏览Substrate开发者中心的文档：https://substrate.dev 或者参考之前的教程《使用Substrate搭建你的第一条区块链》来了解Substrate相关的基础知识。本文会从零开始开发一条承载具体业务的区块链应用，即抛硬币游戏。
+预备 快速安装Substrate依赖，详细内容参考开发者中心文档《Installing Substrate》： curl https://getsubstrate.io -sSf | bash -s -- --fast 更新substrate-up脚本，它提供了初始化节点、创建新模块等功能： git clone https://github.com/paritytech/substrate-up cd substrate-up cp -a substrate-* ~/.cargo/bin cp -a polkadot-* ~/.cargo/bin 创建区块链节点 作为一个通用的区块链开发框架，Substrate提供了用于构建区块链的所有组件，开发者要做的只是将需要的组件组装起来。为了帮助开发者从繁杂的组装工作中解放出来，Substrate提供了两类的节点程序来快速实现组装工作：
+Template Node: 包含了所需用到的最少组件，但是依然具备完善的区块链功能。可以在其上快速开发应用，添加新的功能模块。 Node: 基本上包含了Substrate提供的所有组件，让你能够测试内置的各种功能。 这里所说的节点通常也被称为点对点节点或者全节点，承载了区块链的所有功能，你可以把它想象成传统互联网开发中的后端，但是没有放在中心化的服务器上，而是散落在世界的各个角落里。
+本文我们将会用Template Node作为我们的节点程序，承载我们的抛硬币游戏。
+初始化节点 substrate-up脚本提供的初始化节点命令是substrate-node-new，通过下载和编译Template Node来生成我们的节点程序。运行下面的命令来生成节点，替换demo-node为你自己的节点名，替换yourname为你的团队或个人名字：
+substrate-node-new demo-node yourname 启动刚刚生成的节点：
+cd demo-node ./target/release/demo-node --dev 如果在控制台看到这些内容，证明你的节点创建成功：
+2019-07-27 18:03:45 Substrate Node 2019-07-27 18:03:45 version 1.0.0-2857a44-x86_64-macos 2019-07-27 18:03:45 by demo-author, 2017, 2018 2019-07-27 18:03:45 Chain specification: Development 2019-07-27 18:03:45 Node name: safe-tin-6167 2019-07-27 18:03:45 Roles: AUTHORITY 2019-07-27 18:03:45 Initializing Genesis block/state (state: 0x79b0…3c01, header-hash: 0xacb5…bb17) 2019-07-27 18:03:45 Loaded block-time = 10 seconds from genesis on first-launch 2019-07-27 18:03:45 Best block: #0 2019-07-27 18:03:45 Using default protocol ID &amp;quot;sup&amp;quot; because none is configured in the chain specs 2019-07-27 18:03:45 Local node identity is: QmZH4oHKH4nwaP4apeYCM7EJXkxAjv4AqnJt29MrMNhWBV 2019-07-27 18:03:45 Libp2p =&amp;gt; Random Kademlia query has yielded empty results 2019-07-27 18:03:46 Listening for new connections on 127.</description></item><item><title>使用Substrate搭建你的第一条区块链</title><link>https://kaichaosun.github.io/post/substrate_blockchain_setup/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_blockchain_setup/</guid><description>为什么使用区块链 比特币网络作为最早的区块链网络，已经存在了十年时间。在今天，区块链技术还没有像互联网那样深刻地改变着我们每个人的生活，但是它的优势已经在一些行业和领域展现出来，比如国际支付、金融衍生品交易、预测市场、去中心化自治组织等。
+区块链或者更准确的说是去中心账本，相对于传统互联网行业有其天生的优势，比如：
+永不离线 - 安全的公有链又全球数以万计的计算机节点共同维护，理论上讲只要还有一个节点可供访问，数据就不会丢失。 开源审查 - 绝大部分区块链应用的代码都是开源的，供全世界的开发人员审查，除了能够提升代码质量，开源运动更为深远的意义在于通过分享促进着人类社会的进步。 数据加密 - 密码学技术是去中心账本的基石，保证数据不被篡改，让数据更加安全。 保护隐私 - 每一个用户都是链上的一个账户，而账户的所有信息完全由掌握账户所对应私钥的用户控制着，除非用户自己公开或者交易数据，否则数据不会泄露。 分享权益 - 用户可以通过参与到区块链的安全运转机制中，获取到原本只有中心化的企业才能拿到的权益。 随着区块链技术的不断演进，交易成本、确认时间、能源消耗、安全性、互通性都得到了极大地提升，传统互联网企业在相同的产业领域将面临着具有以上所说优势的区块链企业的挑战。
+现在处在优势地位的传统互联网&amp;quot;独角兽&amp;rdquo;，如果依靠区块链技术成功转型，能够确保在未来不会被轻易淘汰；
+处于劣势地位的小企业或者小团队，通过在链上实现业务，可以达到&amp;quot;四两拨千斤&amp;quot;的竞争优势。
+然而区块链的开发依赖多学科的知识技能，比如密码学、高效点对点网络、软件工程、经济学模型等等，小团队甚至是大企业都很难具备这样的人才资源，对于&amp;quot;上链&amp;quot;大多数人都是心有余而力不足。Substrate的出现就是为了解决这个问题。
+什么是Substrate Substrate是由德国Parity公司推出的一个区块链构建框架。它实现了区块链开发领域中所遇到的大部分通用功能，比如点对点网络连接，可配置的共识算法，常用加密算法，数据库存储，交易管理等。通过使用Substrate，使普通的软件开发人员可以在短时间内建立一条属于自己的完整区块链，开发者只需要关注自己的业务逻辑，从底层复杂的技术中解放出来。
+使用Substrate构建的区块链，有一个额外的好处，就是可以轻易地连接到Parity的Polkadot公链网络，这一网络具有很多优势，比如跨链交易、共享安全等。
+Substrate是由Rust语言开发，而Rust最为一门高级静态编程语言，具有诸多优势，如内存安全、类型检查、支持编译为WASM、函数式友好、社区资料完善等优点。通过借助Rust的优良特性，也使得Substrate的性能优良、可读性高。
+你也可以参考Substrate官方参考文档来了解更多。
+下面，进入今天我们的主要任务，使用Substrate来构建一条本地的测试区块链网络。
+搭建区块链 通过这一节，你会学到：
+如何创建和编译节点程序 如何启动节点程序及各项参数配置 不同的节点网络有什么区别 如何修改chainspec文件 准备环境 Mac OS 或者Linux计算机 Git 创建和编译节点程序 方式一 安装依赖工具，如Rust环境、openssl、cmake、 llvm库： curl https://getsubstrate.io -sSf | bash 如果感兴趣上面脚本的具体执行内容，可以参考这里。由于国内网络原因，以上脚本可能会下载失败或者过慢，参考下面的方法配置国内的Rust仓库镜像进行下载。
+git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp config ~/.cargo/config ./getsubstrate 新建节点程序，使用命令行导航至你想要放置节点程序的目录，执行： substrate-node-new substrate-demo-node someone 你也可以替换substrate-demo-node为你想要的节点程序名，替换someone为你自己的名字。等待命令执行完后，一个属于自己的节点程序就完成了。</description></item></channel></rss>

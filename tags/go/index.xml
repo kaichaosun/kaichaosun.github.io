@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on Whisperd</title><link>https://kaichaosun.github.io/tags/go/</link><description>Recent content in Go on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 29 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>理解Golang并发编程</title><link>https://kaichaosun.github.io/post/go-channel/</link><pubDate>Sat, 29 Jul 2017 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/go-channel/</guid><description>concurrency vs parallelism 并发和并行是彼此相关的两个概念，并不能完全等价。
+在程序中，并发强调的是独立执行的程序的组合；并行强调的是同时执行计算任务[1]。
+计算机核心的数量决定了并行计算的能力，大多数人类作为“单核”动物(老顽童小龙女除外)，可以说自己在并发某些任务，如我在听歌写代码，但是不能说这两件事在并行，参考下图：
+![concurrency vs parallelism](/static/go-channel/currency vs parallelism.png)
+Golang的并发模型源于Communicating Sequential Processes (CSP)，通过提供goroutine和channel来实现并发编程模式。
+Goroutine Goroutine由Go运行时创建和管理，是用于调度CPU资源的“最小单元”，和OS的线程相比更轻量[2]:
+内存消耗更低只需2kB初始栈空间，而线程初始要1Mb的空间； 由golang的运行时环境创建和销毁，更加廉价，不支持手动管理； 切换效率更高等。 Goroutine和线程的关系如下图所示： ![goroutine vs thread](/static/go-channel/goroutine vs thread.png)
+我们可以轻松地创建成百上千的goroutine，而不会降低程序的执行效率。
+通过goroutine可以让一个函数和其他的函数并行执行。可以在函数调用前面加上go关键字，方便地创建一个goroutine。
+main函数本身也是一个goroutine[3]。
+举例如下：
+package main import &amp;quot;fmt&amp;quot; func main() { fmt.Println(&amp;quot;begin main goroutine&amp;quot;) go hello() fmt.Println(&amp;quot;end main goroutine&amp;quot;) } func hello() { fmt.Println(&amp;quot;begin hello goroutine&amp;quot;) } 输出：
+begin main goroutine end main goroutine 上面的例子中，并不会输出begin hello goroutine，这是因为， 通过使用goroutine，我们不需要等待函数调用的返回结果，而会接着执行下面的代码。
+可以在go hello()后面添加：
+time.Sleep(1 * time.</description></item><item><title>Golang web 开发</title><link>https://kaichaosun.github.io/post/golang-docker-ci/</link><pubDate>Wed, 05 Jul 2017 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/golang-docker-ci/</guid><description>背景 Web应用长期以来是Ruby、Java、PHP等开发语言的战场。
+Ruby可以实现快速原型开发，Ruby On Rails “全能”框架实现“全栈”开发，缺点有大型应用性能差、调试困难； Java 20多年的发展历程，各种第三方库、框架健全，运行效率高， 但是随着应用的功能膨胀，臃肿的get/set方法，JVM占用大量计算机资源、性能调试困难，函数式编程不友好。 PHP，TL;DR 本文实现了一个最小化web应用，以此来了解Golang web的生态，通过使用Docker隔离开发环境， 使用Posgres持久化数据，源代码请参考这里
+Why Go? 性能优越 部署简单，只需要将打包好的二进制文件部署到服务器上 内置丰富的标准库，让程序员的生活变得简单美好 静态语言，类型检查 duck typing goroutine将开发人员从并发编程中解放出来 函数作为“一等公民” &amp;hellip; Golang第三方框架选择 Web框架: Gin，性能卓越，API友好，功能完善 ORM: GORM,支持多种主流数据库方言，文档清晰 包管理工具: Glide,类似于Ruby的bundler或者NodeJS中的npm 测试工具: GoConvey,符合BDD测试风格,支持浏览器测试结果的可视化 Testify,提供丰富的断言和Mock功能 数据库migration: migrate 日志工具: Logrus,结构化日志输出，完全兼容标准库的logger Dockerize 开发环境 发布应用 base image Dockerfile如下:
+FROM golang:1.8 # 包管理工具 RUN curl https://glide.sh/get | sh # 代码热加载 RUN go get github.</description></item></channel></rss>
