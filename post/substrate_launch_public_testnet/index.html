@@ -1,0 +1,332 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=author content="Kaichao Sun"><meta name=description content="kaichao's blog"><meta name=generator content="Hugo 0.62.2"><title>Substrate 部署公开测试网络</title><link rel="shortcut icon" href=https://kaichaosun.github.io/images/favicon.ico><link rel=stylesheet href=https://kaichaosun.github.io/css/style.css><link rel=stylesheet href=https://kaichaosun.github.io/css/highlight.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css><meta property="og:title" content="Substrate 部署公开测试网络"><meta property="og:description" content="通过本文，你会了解到：
+ 如何修改node template，使它能够提供完整的权益证明（Proof of Stake, PoS）功能； Chain Specification的内容，以及如何生成它； 配置和启动公开测试网络等。  添加 PoS 功能 Substrate node template 是一个快速开发Substrate应用链的节点程序，它内置的是权威证明（Proof of Authority, PoA）共识算法，出块算法是 Aura，也就是出块的节点和顺序是固定不变的。一个线上的公开区块链应用，需要实现一定程度的去中心化，并且通过随机出块来保证安全性，Substrate内置的权益证明（PoS）共识算法就是为了满足此类的需求。
+使用 Substrate 添加 PoS 共识算法，通常有两种方法，
+ 使用 Substrate node 节点程序，它内置了几乎所有 Substrate 的功能模块，包括由 Babe 和 GRANDPA 组成的 PoS 共识算法； 在 node template 节点程序的基础上，修改或添加所需的功能模块，包括修改出块算法为 BABE，添加用户权益质押（staking）的功能，及治理（governance）相关功能（非必须）等。 也可以使用 substrate-stencil，具体方法参考readme文档。  这里我们以第二种即修改 node template 为例，介绍一下具体的流程，这么做的好处是，通过一步步添加新的功能，熟悉各个模块的作用以及它们之间的关系。
+切换 Babe Babe 是Substrate/Polkadot内置的默认出块算法，它的特点是：
+ 出块节点由当前的验证人集合随机产生； 同时存在次级出块节点，如果当前槽（Slot）没有满足要求的随机区块产生，由次级出块节点生产一个区块； 如果长时间不出块比如所有的验证人离线，会导致网络瘫痪，不可恢复。  更多关于Substrate的共识算法，参考官方文档 Advanced - Consensus。
+相应的将 Aura 切换为 Babe 的代码修改如下："><meta property="og:type" content="article"><meta property="og:url" content="https://kaichaosun.github.io/post/substrate_launch_public_testnet/"><meta property="article:published_time" content="2020-07-17T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-17T00:00:00+00:00"><meta itemprop=name content="Substrate 部署公开测试网络"><meta itemprop=description content="通过本文，你会了解到：
+ 如何修改node template，使它能够提供完整的权益证明（Proof of Stake, PoS）功能； Chain Specification的内容，以及如何生成它； 配置和启动公开测试网络等。  添加 PoS 功能 Substrate node template 是一个快速开发Substrate应用链的节点程序，它内置的是权威证明（Proof of Authority, PoA）共识算法，出块算法是 Aura，也就是出块的节点和顺序是固定不变的。一个线上的公开区块链应用，需要实现一定程度的去中心化，并且通过随机出块来保证安全性，Substrate内置的权益证明（PoS）共识算法就是为了满足此类的需求。
+使用 Substrate 添加 PoS 共识算法，通常有两种方法，
+ 使用 Substrate node 节点程序，它内置了几乎所有 Substrate 的功能模块，包括由 Babe 和 GRANDPA 组成的 PoS 共识算法； 在 node template 节点程序的基础上，修改或添加所需的功能模块，包括修改出块算法为 BABE，添加用户权益质押（staking）的功能，及治理（governance）相关功能（非必须）等。 也可以使用 substrate-stencil，具体方法参考readme文档。  这里我们以第二种即修改 node template 为例，介绍一下具体的流程，这么做的好处是，通过一步步添加新的功能，熟悉各个模块的作用以及它们之间的关系。
+切换 Babe Babe 是Substrate/Polkadot内置的默认出块算法，它的特点是：
+ 出块节点由当前的验证人集合随机产生； 同时存在次级出块节点，如果当前槽（Slot）没有满足要求的随机区块产生，由次级出块节点生产一个区块； 如果长时间不出块比如所有的验证人离线，会导致网络瘫痪，不可恢复。  更多关于Substrate的共识算法，参考官方文档 Advanced - Consensus。
+相应的将 Aura 切换为 Babe 的代码修改如下："><meta itemprop=datePublished content="2020-07-17T00:00:00+00:00"><meta itemprop=dateModified content="2020-07-17T00:00:00+00:00"><meta itemprop=wordCount content="976"><meta itemprop=keywords content="Blockchain,Substrate,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Substrate 部署公开测试网络"><meta name=twitter:description content="通过本文，你会了解到：
+ 如何修改node template，使它能够提供完整的权益证明（Proof of Stake, PoS）功能； Chain Specification的内容，以及如何生成它； 配置和启动公开测试网络等。  添加 PoS 功能 Substrate node template 是一个快速开发Substrate应用链的节点程序，它内置的是权威证明（Proof of Authority, PoA）共识算法，出块算法是 Aura，也就是出块的节点和顺序是固定不变的。一个线上的公开区块链应用，需要实现一定程度的去中心化，并且通过随机出块来保证安全性，Substrate内置的权益证明（PoS）共识算法就是为了满足此类的需求。
+使用 Substrate 添加 PoS 共识算法，通常有两种方法，
+ 使用 Substrate node 节点程序，它内置了几乎所有 Substrate 的功能模块，包括由 Babe 和 GRANDPA 组成的 PoS 共识算法； 在 node template 节点程序的基础上，修改或添加所需的功能模块，包括修改出块算法为 BABE，添加用户权益质押（staking）的功能，及治理（governance）相关功能（非必须）等。 也可以使用 substrate-stencil，具体方法参考readme文档。  这里我们以第二种即修改 node template 为例，介绍一下具体的流程，这么做的好处是，通过一步步添加新的功能，熟悉各个模块的作用以及它们之间的关系。
+切换 Babe Babe 是Substrate/Polkadot内置的默认出块算法，它的特点是：
+ 出块节点由当前的验证人集合随机产生； 同时存在次级出块节点，如果当前槽（Slot）没有满足要求的随机区块产生，由次级出块节点生产一个区块； 如果长时间不出块比如所有的验证人离线，会导致网络瘫痪，不可恢复。  更多关于Substrate的共识算法，参考官方文档 Advanced - Consensus。
+相应的将 Aura 切换为 Babe 的代码修改如下："><meta name=twitter:site content="@https://twitter.com/kaichaosun"></head><body><nav class=main-nav><a href=https://kaichaosun.github.io/><span class=arrow>←</span>Home</a>
+<a href=/about/>About</a>
+<a class=cta href=#email-subscribe>Subscribe</a></nav><section id=wrapper><article class=post><header><h1>Substrate 部署公开测试网络</h1><h2 class=subtitle></h2><h2 class=headline>July 17, 2020<br><a href=https://kaichaosun.github.io/tags/blockchain>Blockchain</a>
+<a href=https://kaichaosun.github.io/tags/substrate>Substrate</a></h2></header><aside><nav id=TableOfContents><ul><li><a href=#添加-pos-功能>添加 PoS 功能</a><ul><li><a href=#切换-babe>切换 Babe</a></li><li><a href=#添加-staking-功能>添加 staking 功能</a></li><li><a href=#添加治理功能>添加治理功能</a></li></ul></li><li><a href=#chain-specification>Chain Specification</a></li><li><a href=#启动公开测试网络>启动公开测试网络</a><ul><li><a href=#启动网络的-poa-模式>启动网络的 PoA 模式</a></li><li><a href=#切换网络为-pos-模式>切换网络为 PoS 模式</a></li><li><a href=#启用治理功能>启用治理功能</a></li><li><a href=#删除-sudo-权限>删除 sudo 权限</a></li><li><a href=#开启转账和其它功能模块>开启转账和其它功能模块</a></li></ul></li><li><a href=#总结>总结</a></li></ul></nav></aside><section id=post-body><p>通过本文，你会了解到：</p><ul><li>如何修改node template，使它能够提供完整的权益证明（Proof of Stake, PoS）功能；</li><li>Chain Specification的内容，以及如何生成它；</li><li>配置和启动公开测试网络等。</li></ul><h2 id=添加-pos-功能>添加 PoS 功能</h2><p><a href=https://github.com/substrate-developer-hub/substrate-node-template>Substrate node template</a> 是一个快速开发Substrate应用链的节点程序，它内置的是权威证明（Proof of Authority, PoA）共识算法，出块算法是 <a href=https://substrate.dev/docs/en/knowledgebase/advanced/consensus#aura>Aura</a>，也就是出块的节点和顺序是固定不变的。一个线上的公开区块链应用，需要实现一定程度的去中心化，并且通过随机出块来保证安全性，Substrate内置的权益证明（PoS）共识算法就是为了满足此类的需求。</p><p>使用 Substrate 添加 PoS 共识算法，通常有两种方法，</p><ol><li>使用 <a href=https://github.com/paritytech/substrate/tree/master/bin/node>Substrate node</a> 节点程序，它内置了几乎所有 Substrate 的功能模块，包括由 <a href=https://substrate.dev/docs/en/knowledgebase/advanced/consensus#consensus-in-substrate>Babe 和 GRANDPA</a> 组成的 PoS 共识算法；</li><li>在 node template 节点程序的基础上，修改或添加所需的功能模块，包括修改出块算法为 BABE，添加用户权益质押（staking）的功能，及治理（governance）相关功能（非必须）等。</li><li>也可以使用 <a href=https://github.com/kaichaosun/substrate-stencil>substrate-stencil</a>，具体方法参考readme文档。</li></ol><p>这里我们以第二种即修改 node template 为例，介绍一下具体的流程，这么做的好处是，通过一步步添加新的功能，熟悉各个模块的作用以及它们之间的关系。</p><h3 id=切换-babe>切换 Babe</h3><p>Babe 是Substrate/Polkadot内置的默认出块算法，它的特点是：</p><ul><li>出块节点由当前的验证人集合随机产生；</li><li>同时存在次级出块节点，如果当前槽（Slot）没有满足要求的随机区块产生，由次级出块节点生产一个区块；</li><li>如果长时间不出块比如所有的验证人离线，会导致网络瘫痪，不可恢复。</li></ul><p>更多关于Substrate的共识算法，参考官方文档 <a href=https://substrate.dev/docs/en/knowledgebase/advanced/consensus>Advanced - Consensus</a>。</p><p>相应的将 <a href=https://github.com/kaichaosun/tao/commit/610532546d9801f6ba46a6bd325bfbff29629919>Aura 切换为 Babe 的代码修改</a>如下：</p><p>在 runtime/lib.rs 中添加 Babe 模块接口的实现，</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>parameter_types<span style=color:#f92672>!</span> {
+    <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>const</span> EpochDuration: <span style=color:#66d9ef>u64</span> <span style=color:#f92672>=</span> EPOCH_DURATION_IN_SLOTS;
+    <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>const</span> ExpectedBlockTime: <span style=color:#66d9ef>u64</span> <span style=color:#f92672>=</span> MILLISECS_PER_BLOCK;
+}
+
+<span style=color:#66d9ef>impl</span> babe::Trait <span style=color:#66d9ef>for</span> Runtime {
+    <span style=color:#66d9ef>type</span> <span style=color:#a6e22e>EpochDuration</span> <span style=color:#f92672>=</span> EpochDuration;
+    <span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ExpectedBlockTime</span> <span style=color:#f92672>=</span> ExpectedBlockTime;
+    <span style=color:#66d9ef>type</span> <span style=color:#a6e22e>EpochChangeTrigger</span> <span style=color:#f92672>=</span> babe::SameAuthoritiesForever;
+}
+</code></pre></div><p>在 construct_runtime 时引入 Babe 模块，</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust>Babe: <span style=color:#a6e22e>babe</span>::{Module, Call, Storage, Config, Inherent(Timestamp)},
+</code></pre></div><p>实现对应的runtime api，</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>impl</span> sp_consensus_babe::BabeApi<span style=color:#f92672>&lt;</span>Block<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>for</span> Runtime {
+    <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>configuration</span>() -&gt; <span style=color:#a6e22e>sp_consensus_babe</span>::BabeGenesisConfiguration {
+        sp_consensus_babe::BabeGenesisConfiguration {
+            slot_duration: <span style=color:#a6e22e>Babe</span>::slot_duration(),
+            epoch_length: <span style=color:#a6e22e>EpochDuration</span>::get(),
+            c: <span style=color:#a6e22e>PRIMARY_PROBABILITY</span>,
+            genesis_authorities: <span style=color:#a6e22e>Babe</span>::authorities(),
+            randomness: <span style=color:#a6e22e>Babe</span>::randomness(),
+            allowed_slots: <span style=color:#a6e22e>sp_consensus_babe</span>::AllowedSlots::PrimaryAndSecondaryPlainSlots,
+        }
+    }
+
+    <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>authorities</span>() -&gt; Vec<span style=color:#f92672>&lt;</span>AuraId<span style=color:#f92672>&gt;</span> {
+        Aura::authorities()
+    }
+    <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>current_epoch_start</span>() -&gt; <span style=color:#a6e22e>sp_consensus_babe</span>::SlotNumber {
+        Babe::current_epoch_start()
+    }
+}
+</code></pre></div><p>在 Chain spec (chain_spec.rs) 中添加 Babe 的初始区块配置，节点服务启动代码 (service.rs) 修改为 Babe 的启动方式，具体代码请参考<a href=https://github.com/kaichaosun/tao/commit/610532546d9801f6ba46a6bd325bfbff29629919>这里</a>。</p><h3 id=添加-staking-功能>添加 staking 功能</h3><p>Substrate 在共识算法中使用了提名权益证明（Nominated Proof-of-Stake, NPoS），节点可以申请成为验证人，网络中的其它用户可以提名不同的验证人和候选人。每隔一段时间进行选举，使用的选举算法为 <a href=https://wiki.polkadot.network/docs/en/learn-phragmen>Phragmén method</a>，胜出的节点会成为下一轮正式的验证人，参与区块生产、区块最终性投票等。</p><p>NPoS 功能依赖一系列的模块，</p><ul><li>staking：用来管理验证、提名，取消验证、提名，验证人分数统计和奖励发放等；</li><li>session：管理验证人的会话密钥（Session Keys），控制Session的长度和轮换；</li><li>authorship：runtime里用来追踪当前区块生产者和叔块（Uncles），staking模块使用这些信息来统计用于奖励的分数；</li><li>offences, babe, grandpa, im-online：一起协作用来处理验证人的非法行文，如同一个验证人在当前slot生产多个区块，GRANDPA投票人在同一轮针对不同的区块多次投票，大量验证人长时间掉线等；</li><li>utility：实现了批量发送交易的辅助功能，验证人通过前端apps提取奖励时需要用到。</li></ul><p>你如果对如何一步步添加以上不同的模块感兴趣，可以参考这里的<a href=https://github.com/kaichaosun/tao/commits/babe>代码提交记录</a>。</p><h3 id=添加治理功能>添加治理功能</h3><p>Substrate / Polkadot 的一个创新点在于链上治理，网络中持有 token 的用户可以对链的升级操作进行投票。只有投票通过，才会在一段时间之后更新链上的逻辑即 runtime。相关的模块有：</p><ul><li>treasury：国库，管理网络的公共资金，用户可以通过提案申请资金，也可以由议会成员对用户进行打赏，国库内资金来源有交易费用分成、验证人非法行为的罚没等；</li><li>collective：用来管理一系列账户组成的集体，集体中的成员对动议（通常是可调用函数的调用操作）进行投票，一旦投票通过，以所需的origin执行该可调用函数；</li><li>membership，elections-phragmen：管理某个collective的成员，其中membership通过特定origin进行管理，elections-phragmen通过选举的方式进行管理；</li><li>democracy，scheduler：公投议案的管理如提出、投票、委托，注册原始升级代码等；scheduler模块可以定时执行通过的议案。</li></ul><p>也可以查看添加以上模块的<a href=https://github.com/kaichaosun/tao/commit/c53f4b4c95a004fc7de185ad74451073120fa7b8>示例代码</a>。</p><h2 id=chain-specification>Chain Specification</h2><p>Chain Spec 包含了一系列配置信息，节点程序用它来连接指定的区块链网络，可连接的引导节点信息，以及初始区块的状态，具体信息如下：</p><ul><li>元信息如链的name，id；</li><li>链的类型 chainType，常用的如，Development 启动本地单节点网络，Local 启动本地多节点测试网络， Live 为公开测试网络或正式网络；</li><li>启动引导节点 bootNodes，即程序启动之后，初始可连接的网络节点有哪些，用来获取区块信息和其它可连接的节点信息；</li><li>监控服务地址 telemetryEndpoints，节点启动后会定时向该地址发送节点自身的状态如CPU使用率、内存消耗、当前区块信息等等；</li><li>protocolId 用来标识点对点网络传输过程中使用的非libp2p的协议，Substrate 网络传输层依赖了libp2p，除了libp2p规定的协议之外，Substrate 里规定的非libp2p协议需要使用protocolId区分不同的区块链网络，更多内容参考<a href=https://crates.parity.io/sc_network/index.html>文档 sc_network</a>；</li><li>properties 可包含一些可选的属性信息，如表示token字符的tokenSymbol和小数位数tokenDecimals，前端可以获取相应的此类信息进行展示；</li><li>genesis 即初始区块信息，是所有可用模块的初始信息的集合。</li></ul><p>以下是 Chain Spec 的一个示例：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;My Staging Testnet&#34;</span>,
+  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;my_staging&#34;</span>,
+  <span style=color:#f92672>&#34;chainType&#34;</span>: <span style=color:#e6db74>&#34;Live&#34;</span>,
+  <span style=color:#f92672>&#34;bootNodes&#34;</span>: [
+    <span style=color:#e6db74>&#34;/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWMmsXriTjqeiw4Us9LLgzRGiUmq8f5frBvyJgaYAwNcrU&#34;</span>
+  ],
+  <span style=color:#f92672>&#34;telemetryEndpoints&#34;</span>: [
+    [
+      <span style=color:#e6db74>&#34;/dns/telemetry.polkadot.io/tcp/443/x-parity-wss/%2Fsubmit%2F&#34;</span>,
+      <span style=color:#ae81ff>0</span>
+    ]
+  ],
+  <span style=color:#f92672>&#34;protocolId&#34;</span>: <span style=color:#e6db74>&#34;my_staging&#34;</span>,
+  <span style=color:#f92672>&#34;properties&#34;</span>: {
+    <span style=color:#f92672>&#34;tokenDecimals&#34;</span>: <span style=color:#ae81ff>15</span>,
+    <span style=color:#f92672>&#34;tokenSymbol&#34;</span>: <span style=color:#e6db74>&#34;MYS&#34;</span>
+  },
+  <span style=color:#f92672>&#34;consensusEngine&#34;</span>: <span style=color:#66d9ef>null</span>,
+  <span style=color:#f92672>&#34;genesis&#34;</span>: {
+    <span style=color:#f92672>&#34;runtime&#34;</span>: {
+      <span style=color:#f92672>&#34;system&#34;</span>: {
+        <span style=color:#f92672>&#34;changesTrieConfig&#34;</span>: <span style=color:#66d9ef>null</span>,
+        <span style=color:#f92672>&#34;code&#34;</span>: <span style=color:#e6db74>&#34;... ...&#34;</span>
+      },
+      <span style=color:#f92672>&#34;babe&#34;</span>: {
+        <span style=color:#f92672>&#34;authorities&#34;</span>: []
+      },
+      <span style=color:#f92672>&#34;grandpa&#34;</span>: {
+        <span style=color:#f92672>&#34;authorities&#34;</span>: []
+      },
+      <span style=color:#f92672>&#34;balances&#34;</span>: {
+        <span style=color:#f92672>&#34;balances&#34;</span>: [
+          [
+            <span style=color:#e6db74>&#34;5FemZuvaJ7wVy4S49X7Y9mj7FyTR4caQD5mZo2rL7MXQoXMi&#34;</span>,
+            <span style=color:#ae81ff>100000000000000000000</span>
+          ],
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ]
+      },
+      <span style=color:#f92672>&#34;sudo&#34;</span>: {
+        <span style=color:#f92672>&#34;key&#34;</span>: <span style=color:#e6db74>&#34;5FemZuvaJ7wVy4S49X7Y9mj7FyTR4caQD5mZo2rL7MXQoXMi&#34;</span>
+      },
+      <span style=color:#f92672>&#34;staking&#34;</span>: {
+        <span style=color:#f92672>&#34;historyDepth&#34;</span>: <span style=color:#ae81ff>84</span>,
+        <span style=color:#f92672>&#34;validatorCount&#34;</span>: <span style=color:#ae81ff>8</span>,
+        <span style=color:#f92672>&#34;minimumValidatorCount&#34;</span>: <span style=color:#ae81ff>4</span>,
+        <span style=color:#f92672>&#34;invulnerables&#34;</span>: [
+          <span style=color:#e6db74>&#34;5Grpw9i5vNyF6pbbvw7vA8pC5Vo8GMUbG8zraLMmAn32kTNH&#34;</span>,
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ],
+        <span style=color:#f92672>&#34;forceEra&#34;</span>: <span style=color:#e6db74>&#34;ForceNone&#34;</span>,
+        <span style=color:#f92672>&#34;slashRewardFraction&#34;</span>: <span style=color:#ae81ff>100000000</span>,
+        <span style=color:#f92672>&#34;canceledPayout&#34;</span>: <span style=color:#ae81ff>0</span>,
+        <span style=color:#f92672>&#34;stakers&#34;</span>: [
+          [
+            <span style=color:#e6db74>&#34;5Grpw9i5vNyF6pbbvw7vA8pC5Vo8GMUbG8zraLMmAn32kTNH&#34;</span>,
+            <span style=color:#e6db74>&#34;5DLMZF33f61KvPDbJU5c2dPNQZ3jJyptsacpvsDhwNS1wUuU&#34;</span>,
+            <span style=color:#ae81ff>10000000000000000</span>,
+            <span style=color:#e6db74>&#34;Validator&#34;</span>
+          ],
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ]
+      },
+      <span style=color:#f92672>&#34;session&#34;</span>: {
+        <span style=color:#f92672>&#34;keys&#34;</span>: [
+          [
+            <span style=color:#e6db74>&#34;5Grpw9i5vNyF6pbbvw7vA8pC5Vo8GMUbG8zraLMmAn32kTNH&#34;</span>,
+            <span style=color:#e6db74>&#34;5Grpw9i5vNyF6pbbvw7vA8pC5Vo8GMUbG8zraLMmAn32kTNH&#34;</span>,
+            {
+              <span style=color:#f92672>&#34;babe&#34;</span>: <span style=color:#e6db74>&#34;5Dhd2QbrSE4dyNn3YUg8j5TY3fG7ZAWZMoRRF9KUc7VPVGmC&#34;</span>,
+              <span style=color:#f92672>&#34;grandpa&#34;</span>: <span style=color:#e6db74>&#34;5C6rkxAZB437B5Bf1yS4B4qjW4HZPeBp8Kzx2Se9FLKhfyHY&#34;</span>,
+              <span style=color:#f92672>&#34;im_online&#34;</span>: <span style=color:#e6db74>&#34;5DscuovXyY1o7DxYroYjYgipn87eqYLyQA3HJ21Utb7TqAai&#34;</span>
+            }
+          ],
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ]
+      },
+      <span style=color:#f92672>&#34;imOnline&#34;</span>: {
+        <span style=color:#f92672>&#34;keys&#34;</span>: []
+      },
+      <span style=color:#f92672>&#34;treasury&#34;</span>: {},
+      <span style=color:#f92672>&#34;collectiveInstance1&#34;</span>: {
+        <span style=color:#f92672>&#34;phantom&#34;</span>: <span style=color:#66d9ef>null</span>,
+        <span style=color:#f92672>&#34;members&#34;</span>: []
+      },
+      <span style=color:#f92672>&#34;collectiveInstance2&#34;</span>: {
+        <span style=color:#f92672>&#34;phantom&#34;</span>: <span style=color:#66d9ef>null</span>,
+        <span style=color:#f92672>&#34;members&#34;</span>: [
+          <span style=color:#e6db74>&#34;5FemZuvaJ7wVy4S49X7Y9mj7FyTR4caQD5mZo2rL7MXQoXMi&#34;</span>,
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ]
+      },
+      <span style=color:#f92672>&#34;electionsPhragmen&#34;</span>: {
+        <span style=color:#f92672>&#34;members&#34;</span>: [
+          [
+            <span style=color:#e6db74>&#34;5FemZuvaJ7wVy4S49X7Y9mj7FyTR4caQD5mZo2rL7MXQoXMi&#34;</span>,
+            <span style=color:#ae81ff>10000000000000000</span>
+          ],
+          <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+        ]
+      },
+      <span style=color:#f92672>&#34;membershipInstance1&#34;</span>: {
+        <span style=color:#f92672>&#34;members&#34;</span>: [],
+        <span style=color:#f92672>&#34;phantom&#34;</span>: <span style=color:#66d9ef>null</span>
+      },
+      <span style=color:#f92672>&#34;democracy&#34;</span>: {}
+    }
+  }
+}
+</code></pre></div><p>上面的例子中，为了易读性缺省了一些必要的信息，如system的code、其他的初始账户和验证人信息等。</p><p>那么，如何生成 Chain Spec 呢？</p><ol><li><p>在节点的chain_spec.rs文件中添加自定义的GenesisConfig信息，如初始runtime 的 wasm 代码，初始区块存在的账户和余额，初始验证人的信息，治理团体的信息等：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>staging_testnet_genesis</span>() -&gt; <span style=color:#a6e22e>GenesisConfig</span> {
+    <span style=color:#75715e>// subkey inspect &#34;$SECRET&#34;
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> endowed_accounts <span style=color:#f92672>=</span> vec<span style=color:#f92672>!</span>[
+        <span style=color:#75715e>// 5FemZuvaJ7wVy4S49X7Y9mj7FyTR4caQD5mZo2rL7MXQoXMi
+</span><span style=color:#75715e></span>        hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;9eaf896d76b55e04616ff1e1dce7fc5e4a417967c17264728b3fd8fee3b12f3c&#34;</span>].into(),
+        ... ...
+    ];
+   
+    <span style=color:#75715e>// for i in 1 2 3 4; do for j in stash controller; do subkey inspect &#34;$SECRET//$i//$j&#34;; done; done
+</span><span style=color:#75715e></span>    <span style=color:#75715e>// for i in 1 2 3 4; do for j in babe; do subkey --sr25519 inspect &#34;$SECRET//$i//$j&#34;; done; done
+</span><span style=color:#75715e></span>    <span style=color:#75715e>// for i in 1 2 3 4; do for j in grandpa; do subkey --ed25519 inspect &#34;$SECRET//$i//$j&#34;; done; done
+</span><span style=color:#75715e></span>    <span style=color:#75715e>// for i in 1 2 3 4; do for j in im_online; do subkey --sr25519 inspect &#34;$SECRET//$i//$j&#34;; done; done
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>let</span> initial_authorities: Vec<span style=color:#f92672>&lt;</span>(
+      AccountId,
+      AccountId,
+      BabeId,
+      GrandpaId,
+      ImOnlineId,
+    )<span style=color:#f92672>&gt;</span> <span style=color:#f92672>=</span> vec<span style=color:#f92672>!</span>[(
+      <span style=color:#75715e>// 5Grpw9i5vNyF6pbbvw7vA8pC5Vo8GMUbG8zraLMmAn32kTNH
+</span><span style=color:#75715e></span>      hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;d41e0bf1d76de368bdb91896b0d02d758950969ea795b1e7154343ee210de649&#34;</span>].into(),
+      <span style=color:#75715e>// 5DLMZF33f61KvPDbJU5c2dPNQZ3jJyptsacpvsDhwNS1wUuU
+</span><span style=color:#75715e></span>      hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;382bd29103cf3af5f7c032bbedccfb3144fe672ca2c606147974bc2984ca2b14&#34;</span>].into(),
+      <span style=color:#75715e>// 5Dhd2QbrSE4dyNn3YUg8j5TY3fG7ZAWZMoRRF9KUc7VPVGmC
+</span><span style=color:#75715e></span>      hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;48640c12bc1b351cf4b051ac1cf7b5740765d02e34989d0a9dd935ce054ebb21&#34;</span>].unchecked_into(),
+      <span style=color:#75715e>// 5C6rkxAZB437B5Bf1yS4B4qjW4HZPeBp8Kzx2Se9FLKhfyHY
+</span><span style=color:#75715e></span>      hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;01a474a93a0cf830fb40b1d17fd1fc7c6b4a95fa11f90345558574a72da0d4b1&#34;</span>].unchecked_into(),
+      <span style=color:#75715e>// 5DscuovXyY1o7DxYroYjYgipn87eqYLyQA3HJ21Utb7TqAai
+</span><span style=color:#75715e></span>      hex<span style=color:#f92672>!</span>[<span style=color:#e6db74>&#34;50041e469c63c994374a2829b0b0829213abd53be5113e751043318a9d7c0757&#34;</span>].unchecked_into(),
+    ),
+    ... ...
+    ];
+   
+    <span style=color:#66d9ef>const</span> ENDOWMENT: <span style=color:#a6e22e>u128</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>1_000_000</span> <span style=color:#f92672>*</span> DOLLARS;
+    <span style=color:#66d9ef>const</span> STASH: <span style=color:#a6e22e>u128</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>100</span> <span style=color:#f92672>*</span> DOLLARS;
+    <span style=color:#66d9ef>let</span> num_endowed_accounts <span style=color:#f92672>=</span> endowed_accounts.len();
+   
+    GenesisConfig {
+      system: Some(SystemConfig {
+        code: <span style=color:#a6e22e>WASM_BINARY</span>.to_vec(),
+        changes_trie_config: Default::default(),
+      }),
+      balances: Some(BalancesConfig {
+        balances: <span style=color:#a6e22e>endowed_accounts</span>.iter()
+          .map(<span style=color:#f92672>|</span>k: <span style=color:#66d9ef>&amp;</span><span style=color:#a6e22e>AccountId</span><span style=color:#f92672>|</span> (k.clone(), ENDOWMENT))
+          .chain(initial_authorities.iter().map(<span style=color:#f92672>|</span>x<span style=color:#f92672>|</span> (x.<span style=color:#ae81ff>0.</span>clone(), STASH)))
+          .collect(),
+      }),
+      babe: Some(BabeConfig {
+        authorities: <span style=color:#a6e22e>vec</span><span style=color:#f92672>!</span>[],
+      }),
+      grandpa: Some(GrandpaConfig {
+        authorities: <span style=color:#a6e22e>vec</span><span style=color:#f92672>!</span>[],
+      }),
+      sudo: Some(SudoConfig {
+        key: <span style=color:#a6e22e>endowed_accounts</span>[<span style=color:#ae81ff>0</span>].clone(),
+      }),
+      session: Some(SessionConfig {
+        keys: <span style=color:#a6e22e>initial_authorities</span>.iter().map(<span style=color:#f92672>|</span>x<span style=color:#f92672>|</span> {
+          (
+            x.<span style=color:#ae81ff>0.</span>clone(),
+            x.<span style=color:#ae81ff>0.</span>clone(),
+            session_keys(x.<span style=color:#ae81ff>2.</span>clone(), x.<span style=color:#ae81ff>3.</span>clone(), x.<span style=color:#ae81ff>4.</span>clone())
+          )
+        }).collect::<span style=color:#f92672>&lt;</span>Vec<span style=color:#f92672>&lt;</span>_<span style=color:#f92672>&gt;</span><span style=color:#f92672>&gt;</span>(),
+      }),
+      staking: Some(StakingConfig {
+        validator_count: <span style=color:#a6e22e>initial_authorities</span>.len() <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>u32</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>,
+        minimum_validator_count: <span style=color:#a6e22e>initial_authorities</span>.len() <span style=color:#66d9ef>as</span> <span style=color:#66d9ef>u32</span>,
+        stakers: <span style=color:#a6e22e>initial_authorities</span>
+          .iter()
+          .map(<span style=color:#f92672>|</span>x<span style=color:#f92672>|</span> (x.<span style=color:#ae81ff>0.</span>clone(), x.<span style=color:#ae81ff>1.</span>clone(), STASH, StakerStatus::Validator))
+          .collect(),
+        invulnerables: <span style=color:#a6e22e>initial_authorities</span>.iter().map(<span style=color:#f92672>|</span>x<span style=color:#f92672>|</span> x.<span style=color:#ae81ff>0.</span>clone()).collect(),
+        force_era: <span style=color:#a6e22e>Forcing</span>::ForceNone,
+        slash_reward_fraction: <span style=color:#a6e22e>Perbill</span>::from_percent(<span style=color:#ae81ff>10</span>),
+        .. Default::default()
+      }),
+      im_online: Some(ImOnlineConfig {
+        keys: <span style=color:#a6e22e>vec</span><span style=color:#f92672>!</span>[],
+      }),
+      democracy: Some(DemocracyConfig::default()),
+      elections_phragmen: Some(ElectionsConfig {
+        members: <span style=color:#a6e22e>endowed_accounts</span>.iter()
+              .take((num_endowed_accounts <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>)
+              .cloned()
+              .map(<span style=color:#f92672>|</span>member<span style=color:#f92672>|</span> (member, STASH))
+              .collect(),
+      }),
+      collective_Instance1: Some(CouncilConfig::default()),
+      collective_Instance2: Some(TechnicalCommitteeConfig {
+        members: <span style=color:#a6e22e>endowed_accounts</span>.iter()
+              .take((num_endowed_accounts <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>)
+              .cloned()
+              .collect(),
+        phantom: Default::default(),
+      }),
+      membership_Instance1: Some(Default::default()),
+      treasury: Some(Default::default()),
+    }
+}
+</code></pre></div><p>初始区块的账户可以是网络的管理员、发起者，或者其他社区成员，初始余额可以根据对网络的贡献进行分配。我们可以使用 subkey 工具生成所需的初始验证人信息，如stash和controller 账户，以及由Babe、GRANDPA、im-online组成的Session Keys，其中GRANDPA使用的是ed25519加密算法，其它则使用sr25519加密算法。subkey的使用方法可以参考<a href=https://substrate.dev/docs/en/knowledgebase/integrate/subkey>官方文档 The subkey Tool</a>，这里用到的命令在代码的注释中已经给出。</p><p>接着，就可以使用 <code>ChainSpec::from_genesis</code> 将通用的配置信息和 GenesisConfig 组合成Chain Spec，这里bootnodes的信息可以为空，在我们启动bootnode并获取到它的PeerId（打印在命令行输出）之后，修改Chain Spec 的 JSON 文件即可：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>tao_staging_testnet_config</span>() -&gt; <span style=color:#a6e22e>ChainSpec</span> {
+    <span style=color:#66d9ef>let</span> boot_nodes <span style=color:#f92672>=</span> vec<span style=color:#f92672>!</span>[];
+   
+    ChainSpec::from_genesis(
+      <span style=color:#e6db74>&#34;My Staging Testnet&#34;</span>,
+      <span style=color:#e6db74>&#34;my_staging&#34;</span>,
+      ChainType::Live,
+      staging_testnet_genesis,
+      boot_nodes,
+      Some(
+        TelemetryEndpoints::new(vec<span style=color:#f92672>!</span>[(<span style=color:#e6db74>&#34;wss://telemetry.polkadot.io/submit/&#34;</span>.to_string(), <span style=color:#ae81ff>0</span>)])
+          .expect(<span style=color:#e6db74>&#34;Westend Staging telemetry url is valid; qed&#34;</span>)
+      ),
+      Some(<span style=color:#e6db74>&#34;my_staging&#34;</span>),
+      None,
+      Default::default(),
+    )
+}
+</code></pre></div></li><li><p>修改 command.rs 里的 load_spec，添加公开测试网络的解析方式：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>load_spec</span>(<span style=color:#f92672>&amp;</span>self, id: <span style=color:#66d9ef>&amp;</span><span style=color:#66d9ef>str</span>) -&gt; Result<span style=color:#f92672>&lt;</span>Box<span style=color:#f92672>&lt;</span>dyn sc_service::ChainSpec<span style=color:#f92672>&gt;</span>, String<span style=color:#f92672>&gt;</span> {
+     Ok(<span style=color:#66d9ef>match</span> id {
+        <span style=color:#e6db74>&#34;dev&#34;</span> <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span> Box::new(chain_spec::development_config()),
+        <span style=color:#e6db74>&#34;&#34;</span> <span style=color:#f92672>|</span> <span style=color:#e6db74>&#34;local&#34;</span> <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span> Box::new(chain_spec::local_testnet_config()),
+        <span style=color:#e6db74>&#34;my-staging&#34;</span> <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span> Box::new(chain_spec::staging_testnet_config()),
+        path <span style=color:#f92672>=</span><span style=color:#f92672>&gt;</span> Box::new(chain_spec::ChainSpec::from_json_file(
+          std::path::PathBuf::from(path),
+        )<span style=color:#f92672>?</span>),
+     })
+}
+</code></pre></div></li><li><p>使用build-spec子命令生成Chain Spec 配置文件，命令为<code>./target/release/node-template build-spec --chain my-staging > my-staging.json</code>；</p></li><li><p>如果要发布公开网络，需要使用编码后的Chain Spec文件，从而确保网络中的各个节点使用相同的初始状态即genesis hash相同，命令为：<code>./target/release/node-template build-spec --chain=my-staging.json --raw > my-staging-raw.json</code>，将此文件分发即可，也可以修改 staging_testnet_config，添加以配置文件加载网络的解析方式，</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#e6db74>/// Staging testnet generator
+</span><span style=color:#e6db74></span><span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>staging_testnet_config</span>() -&gt; Result<span style=color:#f92672>&lt;</span>ChainSpec, String<span style=color:#f92672>&gt;</span> {
+    ChainSpec::from_json_bytes(<span style=color:#f92672>&amp;</span>include_bytes<span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;../res/my-staging-raw.json&#34;</span>)[..])
+}
+</code></pre></div></li><li><p>配置bootnodes，启动某个bootnode的命令为：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>./target/release/node-template <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --node-key c12b6d18942f5ee8528c8e2baf4e147b5c5c18710926ea492d09cbd9f6c9f82a <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --base-path /tmp/bootnode1 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --chain my-staging-raw.json <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --name bootnode1
+</code></pre></div><p>node-key 可使用 subkey ed25519的方式生成；如果默认的chain就是my-staging-raw.json所指定的，<code>--chain</code>也可以缺省。</p><p>记录打印的PeerId（即这里的<code>12D3KooWMmsXriTjqeiw4Us9LLgzRGiUmq8f5frBvyJgaYAwNcrU</code>），结合bootnode的IP地址或者域名更新 Chain Spec 文件并重新分发。最好有多个bootnodes，防止出现单点故障。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;My Staging Testnet&#34;</span>,
+ <span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>d</span><span style=color:#f92672>&#34;: &#34;</span><span style=color:#960050;background-color:#1e0010>m</span><span style=color:#960050;background-color:#1e0010>y</span><span style=color:#960050;background-color:#1e0010>_</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#960050;background-color:#1e0010>t</span><span style=color:#960050;background-color:#1e0010>a</span><span style=color:#960050;background-color:#1e0010>g</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>n</span><span style=color:#960050;background-color:#1e0010>g</span><span style=color:#e6db74>&#34;,
+</span><span style=color:#e6db74>  &#34;</span><span style=color:#960050;background-color:#1e0010>c</span><span style=color:#960050;background-color:#1e0010>h</span><span style=color:#960050;background-color:#1e0010>a</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>n</span><span style=color:#960050;background-color:#1e0010>T</span><span style=color:#960050;background-color:#1e0010>y</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#960050;background-color:#1e0010>e</span><span style=color:#e6db74>&#34;: &#34;</span><span style=color:#960050;background-color:#1e0010>L</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>v</span><span style=color:#960050;background-color:#1e0010>e</span><span style=color:#e6db74>&#34;,
+</span><span style=color:#e6db74>  &#34;</span><span style=color:#960050;background-color:#1e0010>b</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>t</span><span style=color:#960050;background-color:#1e0010>N</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>d</span><span style=color:#960050;background-color:#1e0010>e</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#e6db74>&#34;: [
+</span><span style=color:#e6db74>    &#34;</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#ae81ff>4</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#960050;background-color:#1e0010>y</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>u</span><span style=color:#960050;background-color:#1e0010>r</span><span style=color:#960050;background-color:#1e0010>-</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#960050;background-color:#1e0010>-</span><span style=color:#960050;background-color:#1e0010>a</span><span style=color:#960050;background-color:#1e0010>d</span><span style=color:#960050;background-color:#1e0010>d</span><span style=color:#960050;background-color:#1e0010>r</span><span style=color:#960050;background-color:#1e0010>e</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#960050;background-color:#1e0010>t</span><span style=color:#960050;background-color:#1e0010>c</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#ae81ff>30333</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#ae81ff>2</span><span style=color:#960050;background-color:#1e0010>p</span><span style=color:#960050;background-color:#1e0010>/</span><span style=color:#ae81ff>12</span><span style=color:#960050;background-color:#1e0010>D</span><span style=color:#ae81ff>3</span><span style=color:#960050;background-color:#1e0010>K</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>o</span><span style=color:#960050;background-color:#1e0010>W</span><span style=color:#960050;background-color:#1e0010>M</span><span style=color:#960050;background-color:#1e0010>m</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#960050;background-color:#1e0010>X</span><span style=color:#960050;background-color:#1e0010>r</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>T</span><span style=color:#960050;background-color:#1e0010>j</span><span style=color:#960050;background-color:#1e0010>q</span><span style=color:#960050;background-color:#1e0010>e</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>w</span><span style=color:#ae81ff>4</span><span style=color:#960050;background-color:#1e0010>U</span><span style=color:#960050;background-color:#1e0010>s</span><span style=color:#ae81ff>9</span><span style=color:#960050;background-color:#1e0010>L</span><span style=color:#960050;background-color:#1e0010>L</span><span style=color:#960050;background-color:#1e0010>g</span><span style=color:#960050;background-color:#1e0010>z</span><span style=color:#960050;background-color:#1e0010>R</span><span style=color:#960050;background-color:#1e0010>G</span><span style=color:#960050;background-color:#1e0010>i</span><span style=color:#960050;background-color:#1e0010>U</span><span style=color:#960050;background-color:#1e0010>m</span><span style=color:#960050;background-color:#1e0010>q</span><span style=color:#ae81ff>8</span><span style=color:#960050;background-color:#1e0010>f</span><span style=color:#ae81ff>5</span><span style=color:#960050;background-color:#1e0010>f</span><span style=color:#960050;background-color:#1e0010>r</span><span style=color:#960050;background-color:#1e0010>B</span><span style=color:#960050;background-color:#1e0010>v</span><span style=color:#960050;background-color:#1e0010>y</span><span style=color:#960050;background-color:#1e0010>J</span><span style=color:#960050;background-color:#1e0010>g</span><span style=color:#960050;background-color:#1e0010>a</span><span style=color:#960050;background-color:#1e0010>Y</span><span style=color:#960050;background-color:#1e0010>A</span><span style=color:#960050;background-color:#1e0010>w</span><span style=color:#960050;background-color:#1e0010>N</span><span style=color:#960050;background-color:#1e0010>c</span><span style=color:#960050;background-color:#1e0010>r</span><span style=color:#960050;background-color:#1e0010>U</span><span style=color:#960050;background-color:#1e0010>&#34;</span>
+  <span style=color:#960050;background-color:#1e0010>]</span>,
+  <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span> <span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span><span style=color:#960050;background-color:#1e0010>.</span>
+}
+</code></pre></div></li></ol><h2 id=启动公开测试网络>启动公开测试网络</h2><p>为了确保公开网络的发布过程顺利，不会出现大范围的故障，这里我们借鉴 Kusama/Polkadot 正式网络的发布流程，具体可以分为下面几个步骤：</p><p><img src=/static/launch/launch_process.png alt=launch_process></p><p>在部署和升级的过程中，可以借助一些监控和辅助工具如：</p><ul><li>Prometheus，用来监控节点的状态，<a href=https://substrate.dev/docs/en/tutorials/visualize-node-metrics/>参考文档 Visualizing Node Metrics</a>；</li><li><a href=https://gitlab.com/chevdor/srtool>srtool</a>，编译 runtime 的 wasm 代码，用来解决不同的硬件、操作系统导致同样的代码编译结果不同，无法验证的问题；</li><li>其它<a href=https://wiki.polkadot.network/docs/en/build-tools-index>工具</a>。</li></ul><h3 id=启动网络的-poa-模式>启动网络的 PoA 模式</h3><p>在这一阶段，要确保：</p><ul><li><p>Staking模块的初始配置即 StakingConfig 的 force_era 设置为 <strong>ForceNone</strong>，这样的话，网络的验证人不会变化；</p></li><li><p>使用 system 模块提供的 <code>BaseCallFilter</code> 过滤掉当前阶段非必须的功能模块，从而不会因为网络不稳定导致无效交易的发生，示例代码参考<a href=https://github.com/kaichaosun/tao/blob/babe/runtime/src/lib.rs#L255>这里</a>；</p></li><li><p>启动初始验证人，命令为：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>./target/release/node-template <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --base-path  /tmp/validator1 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --chain   my-staging-raw.json <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --bootnodes  /ip4/your-ip/tcp/30333/p2p/12D3KooWBmAwcd4PJNJvfV89HwE48nwkRmAgo8Vy3uQEyNNHBox2 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --name  validator1 <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>    --validator
+</code></pre></div><p><code>--chain</code>和<code>--bootnodes</code>如果已经配置在默认启动模式下，可缺省；需要将初始验证人集合所指定的验证人都启动，并且不少于3个。</p><p>启动之后，给每个验证人设置 Session Keys，这里以curl发送http请求进行添加为例，</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>// 添加Babe的密钥
+curl http://localhost:9933  -H <span style=color:#e6db74>&#34;Content-Type:application/json;charset=utf-8&#34;</span> -d <span style=color:#e6db74>&#34;@babe1&#34;</span>
+  
+// babe1文件的内容
+<span style=color:#f92672>{</span>
+    <span style=color:#e6db74>&#34;jsonrpc&#34;</span>:<span style=color:#e6db74>&#34;2.0&#34;</span>,
+    <span style=color:#e6db74>&#34;id&#34;</span>:1,
+    <span style=color:#e6db74>&#34;method&#34;</span>:<span style=color:#e6db74>&#34;author_insertKey&#34;</span>,
+    <span style=color:#e6db74>&#34;params&#34;</span>: <span style=color:#f92672>[</span>
+        <span style=color:#e6db74>&#34;babe&#34;</span>,
+        <span style=color:#e6db74>&#34;own word vocal dog decline set bitter example forget excite gesture water//1//babe&#34;</span>,
+        <span style=color:#e6db74>&#34;0x48640c12bc1b351cf4b051ac1cf7b5740765d02e34989d0a9dd935ce054ebb21&#34;</span>
+    <span style=color:#f92672>]</span>
+<span style=color:#f92672>}</span>
+</code></pre></div><p>GRANDPA，im-online 密钥的设置方式类似，更多内容可以参考文档 <a href=https://substrate.dev/docs/en/tutorials/start-a-private-network/customchain#add-keys-to-keystore>Creating Your Private Network</a>。注意：<strong>GRANDPA密钥设置之后，需要重启节点</strong>。</p></li><li><p>允许提名和验证意向，等待拥有充足的提名和验证人之后，就可以考虑切换为 PoS 模式。</p></li></ul><h3 id=切换网络为-pos-模式>切换网络为 PoS 模式</h3><p>网络在PoA阶段稳定并且没有可见的故障后，可以使用 sudo 权限调用 staking 模块的 force_new_era，开启验证人的选举，一段时间之后，选举得出的新验证人将会开始生产和验证区块，在这一阶段：</p><ul><li>可以根据网络情况，调节验证人数量，既要保证一定程度的去中心化，也要确保网络的时延、区块生产间隔稳定、可靠；</li><li>使用 sudo 权限取消针对验证人的不必要惩罚。</li></ul><h3 id=启用治理功能>启用治理功能</h3><p>通过修改<code>BaseCallFilter</code>的逻辑，可以启用所需的治理功能，包括：</p><ul><li>投票选举议会成员；</li><li>议会成员通过提案维护网络；</li><li>网络用户通过提案申请国库资金，不过需要等待转账功能开启才可以真正转账；</li><li>通过公投提案升级网络等等。</li></ul><h3 id=删除-sudo-权限>删除 sudo 权限</h3><p>在网络的早期，合理地使用 sudo 权限，可以高效地管理网络的运转；但是在一个去中心化的网络中，这样的一个超级管理员，不符合去中心的价值观，在合适的时间点要进行删除，通常是在开启治理的一段时间之后。</p><p>删除 sudo 需要使用链上升级的方式，也就要求对此升级进行全民公投，由公投结果来决定是否删除 sudo 模块。</p><h3 id=开启转账和其它功能模块>开启转账和其它功能模块</h3><p>接着就可以一步步地引入和开启更多的功能模块，如转账、链上身份注册等等。</p><h2 id=总结>总结</h2><p>通过本文，你已经了解到了如何修改 node-template 发布一个可用的公开测试网节点程序，chain spec 的组成和配置方法，最后我们模拟了如何渐进地启动一个公开测试网络。注意，<strong>本文所列代码未经过审计，不可直接应用于生产环境。</strong></p></section></article><footer id=post-meta class=clearfix><a href=https://twitter.com/kaichaosun><img class=avatar src=https://kaichaosun.github.io/images/avatar.png><div><span class=dark>Kaichao Sun</span>
+<span>Mark it down</span></div></a><section id=sharing><a class=twitter href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkaichaosun.github.io%2fpost%2fsubstrate_launch_public_testnet%2f - Substrate%20%e9%83%a8%e7%bd%b2%e5%85%ac%e5%bc%80%e6%b5%8b%e8%af%95%e7%bd%91%e7%bb%9c by @kaichaosun"><span class=icon-twitter>tweet</span></a>
+<a class=facebook href=# onclick="window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),'facebook-share-dialog','width=626,height=436');return false;"><span class=icon-facebook-rect>Share</span></a></section></footer><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"whisperd"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a><ul id=post-list class="archive readmore"><iframe src=https://kaichao.substack.com/embed id=email-subscribe width=100% height=320 style="border:1px solid #eee;background:#fff;margin-top:60px" frameborder=0 scrolling=no></iframe><h3>Read more</h3><li><a href=/post/how_to_blockchain/>如何学习区块链技术<aside class=dates>Apr 30 2020</aside></a></li><li><a href=/post/kusama_governance/>Kusama系列：如何进行链上治理<aside class=dates>Apr 16 2020</aside></a></li><li><a href=/post/substrate_node_template_guide/>Substrate代码导读：node-template<aside class=dates>Apr 2 2020</aside></a></li><li><a href=/post/trie/>理解Substrate数据存储的底层实现Merkle Patricia Trie<aside class=dates>Mar 17 2020</aside></a></li><li><a href=/post/substrate_transaction_weight_and_fees/>Substrate 区块链应用的交易费用设计<aside class=dates>Feb 21 2020</aside></a></li><li><a href=/post/substrate_storage_data_type/>Substrate存储数据类型概览<aside class=dates>Jan 19 2020</aside></a></li><li><a href=/post/coin_flip_test_and_ui/>抛硬币游戏(二)：编写测试和UI<aside class=dates>Oct 3 2019</aside></a></li><li><a href=/post/substrate_metadata/>Substrate Runtime Metadata<aside class=dates>Sep 7 2019</aside></a></li><li><a href=/post/substrate_coin_flip/>Substrate应用 - 抛硬币游戏(一)<aside class=dates>Aug 5 2019</aside></a></li><li><a href=/post/substrate_module_struct/>Substrate Module Struct<aside class=dates>Jul 30 2019</aside></a></li><li><a href=/post/substrate_blockchain_setup/>使用Substrate搭建你的第一条区块链<aside class=dates>May 28 2019</aside></a></li><li><a href=/post/why_oo_sucks/>Why OO Sucks<aside class=dates>Apr 25 2019</aside></a></li><li><a href=/post/solidity-basics/>理解Ethereum智能合约开发<aside class=dates>Apr 11 2019</aside></a></li><li><a href=/post/shell-cheatsheet/>Cheatsheet for Shell Programming<aside class=dates>Mar 30 2019</aside></a></li><li><a href=/post/master_linux_os/>The Tutorial of Manjaro Linux Usage<aside class=dates>Mar 3 2019</aside></a></li><li><a href=/post/laozhai-jiyi/>老宅记忆<aside class=dates>Feb 6 2019</aside></a></li><li><a href=/post/dependency_injection_in_scala/>Dependency Injection in Scala<aside class=dates>Jan 17 2019</aside></a></li><li><a href=/post/error_handling_in_scala/>Understand Error Handling in Scala<aside class=dates>Jan 17 2019</aside></a></li><li><a href=/post/common-cli-cheatsheet/>Cheatsheet for Common Usage CLI<aside class=dates>Jan 2 2019</aside></a></li><li><a href=/post/understand-monad/>Understand Monad in Functional Programming<aside class=dates>Oct 13 2018</aside></a></li></ul><footer id=footer><div id=social><a class=symbol href=https://github.com/kaichaosun><i class="fa fa-github"></i></a><a class=symbol href=https://twitter.com/kaichaosun><i class="fa fa-twitter"></i></a></div><p class=small>© Copyright 2020 Kaichao Sun</p></footer></section><script src=//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js></script><script src=https://kaichaosun.github.io/js/main.js></script><script src=https://kaichaosun.github.io/js/highlight.js></script><script src=https://kaichaosun.github.io/js/fix-toc.js></script><script>hljs.initHighlightingOnLoad();</script><script data-ad-client=ca-pub-2513693433628672 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create','UA-128168145-1','auto');ga('send','pageview');}</script></body></html>
