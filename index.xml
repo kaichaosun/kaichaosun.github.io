@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Whisperd</title><link>https://kaichaosun.github.io/</link><description>Recent content on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 08 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Substrate 如何使用 libp2p 进行点对点通信</title><link>https://kaichaosun.github.io/post/substrate_network_libp2p/</link><pubDate>Mon, 08 Feb 2021 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_network_libp2p/</guid><description>通过本文，你将了解到，
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Whisperd</title><link>https://kaichaosun.github.io/</link><description>Recent content on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 21 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>你的元宇宙会不会把我从 “一条人” 变成 “一条狗”？</title><link>https://kaichaosun.github.io/post/metaverse/</link><pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/metaverse/</guid><description>我们先不说元宇宙，因为太简单，几句话就可以讲清楚。
+但是要理解背后的推力，我们就得先聊一聊 人和狗 是不是自由这件事。
+我喜欢狗，虽然小时候 在夏天 吃西瓜的时候被咬过几次。
+在这里，我们关心的是人和狗是不是各自拥有 行为自由 和 思想自由。
+什么是 行为自由？ 人能走路（狗跑的也挺快），走的再远也有尽头。随着交通工具进步，地域隔阂减弱，去哪里、走多远，由每个人按照一定的规则，自己说了算。
+在走路的时候中，人还会边听、边看，对感兴趣的内容可以说出自己的看法，甚至发布到可触及的人际网络中获得响应，在响应的作用下，调整自己的行为方式。
+比如小时候从村子坐车赶个集市，长大点去城里或者到外地读个书，这些都是在拓展自身的行动范围。那是不是就可以认为这个人拥有了行动（注意不是行为）自由？如果这个人还可以表达自己的看法、接收其他人的反馈，是不是拥有了 行为自由？
+我的答案是 不一定，你的呢？
+我脑子里 行为自由 的定义是，如果一个人的行为 在对他人不造成伤害的情况下，不应该被 人为地 限制。通过努力可以挣脱规则，但是人为地限制没办法使用固定的方式来挣脱。
+现在看看我们身边可爱的狗，
+他没有行为自由，因为有根绳子挂在脖子上，在挣脱绳子之前，他被人为地限制，也就没有我们这里所说的 行为自由。（这个绳子不是可以挣脱吗，绳子应该算是规则吧？它不是狗的规则、而是人给狗加的限制，因为挣脱的可能性极低，挣脱的方法是随机的，把脖子勒断你也挣不开铁链子。）
+再来看看人，
+对于触犯法律的人，没有行为自由。当然，也不是 所有没有触犯法律的人 都有行为自由，尽管在他们身上看不到任何物理的绳子或者监狱。但是，还有一根道德的绳子和一根权力的绳子。
+道德的绳子反映了社会里 多数人 对 某种行为 的接受程度。
+权力的绳子反映了社会里 少数人 对 某种行为 的接受程度。
+比如你喜欢打游戏，想把打游戏变成自己的职业，但是身边的多数人都不接受，他们会劝你好好学习书本知识，找个稳定的工作。这就是道德的绳子，善于进行道德绑架的人，想牢牢的抓住这根绳子，“驯化”其他人。
+再比如你想使用优质的国际互联网服务和应用，但是少数拥有权力的人，会封锁你的网络，让你很难去访问这些服务，甚至会颁布法律来阻止。权力的绳子被野心家玩弄，仿佛这根细细的绳子真的能够盖住整个世界。
+道德和权力的绳子，反映了社会上每个人的 思想自由 程度。
+什么是 思想自由？ 人能思考（狗应该也可以），思考的时候会有边界，也就是所谓的“看不懂”，当你的行为阅历增多、知识体系和深度变广的时候，思考的边界会向外拓展，此时又会出现新的边界，拓展的过程甚至可以叫做思维跃升，直白点说就是，“看看，那是过去的我，像不像个傻子”。有哪些思维跃升的例子呢？
+比如地球不是宇宙的中心，现在三岁小孩都能在书上看到地球是围绕太阳在转。可在过去，老祖宗们几千年里都觉得地球才是中心。
+并不是所有的思维跃升都能达到推翻“地心说”的地步，比如对 是不是要买学区房 这件事的不同认识就有很多，
+第一种认识，为什么要买学区房？孩子上完学找个活儿能养活自己就行。 第二种认识，要买 教学质量好的学区房，这样孩子上学就省心多了，将来可以上个好高中、考上大学，找个工资高又不累的工作。 第三种认识，不管什么学校，先去看看，采光好不好，生源怎么样，交通差不差，没问题就上，不行就想其他办法。 第四种认识，房子的直接价值是 日常居住，为什么承载了其他勾连的用途？ 比如土地财政，优质教育资源。社会上很多问题比如 996加班、创新乏力 等等的直接原因就是房价过高。解决房子问题的关键在于，鼓励社会面的线上教育创新，开放高质量的数字教育资源，上网课这种形式目前看太单一。另外一个是以政府卖地为主的土地财政，如果不卖地，那卖什么，为啥一定要卖，为啥你有权力卖？大家可以想想。 第五六七八种 &amp;hellip; 对于学区房或者其他细小事物认知的拓展，我认为也是思维跃升，并且可能会更重要，因为这些认知不是大众公认的，需要不断的体验、积累知识、反复测试和验证，修改自己的认知。
+现在给出我所理解的 思想自由，</description></item><item><title>Substrate 如何使用 libp2p 进行点对点通信</title><link>https://kaichaosun.github.io/post/substrate_network_libp2p/</link><pubDate>Mon, 08 Feb 2021 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_network_libp2p/</guid><description>通过本文，你将了解到，
 点对点通信的特点； libp2p的基本介绍； 以及Substrate如何使用libp2p实现点对点的通信。 点对点通信 在Web2.0时代，绝大多数互联网应用采用了基于TCP/IP的“客户端-服务器”通信架构，在客户端采集数据并发送给服务器，服务器存储和处理数据，客户端进而获取并使用这些处理后的数据。这种模式支撑了互联网近三十年的蓬勃发展，在给普通用户提供便利的同时，也出现了各种各样的问题，比如：
 泄露用户隐私； 贩卖用户数据； 服务商发布没有底线的广告给不明真相的用户造成不可挽回的损失； 不经协商，随意删除用户发布的内容； 垄断市场和定价； 过度利用用户心理，无节制地占据用户的时间； &amp;hellip;&amp;hellip; 客户端-服务器通信模型如下图：
 在为以上问题寻找解决方案时，点对点（即peer to peer）的通信机制逐渐走进了技术先驱们的视野。在互联网早期的时候，点对点通信主要用于文件共享，如音乐共享服务Napster和流媒体下载服务BitTorrent。点对点服务更加广泛的应用，还需要一定的治理机制，来处理资源的版权问题和现实世界的监管，这些不是本文的重点，不做过多地介绍。
