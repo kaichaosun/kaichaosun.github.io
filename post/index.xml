@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Whisperd</title><link>https://kaichaosun.github.io/post/</link><description>Recent content in Posts on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 21 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>你的元宇宙会不会把我从 “一条人” 变成 “一条狗”？</title><link>https://kaichaosun.github.io/post/metaverse/</link><pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/metaverse/</guid><description>我们先不说元宇宙，因为太简单，几句话就可以讲清楚。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Whisperd</title><link>https://kaichaosun.github.io/post/</link><description>Recent content in Posts on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Substrate 技术演进</title><link>https://kaichaosun.github.io/post/substrate_history/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_history/</guid><description>有些人可能不是很熟悉 Substrate，我们简单介绍下，
+Substrate是一个构建区块链的开发框架，可以让开发者在很短的时间开发一个高可用的区块链应用，而不需要过多的关心一些底层的技术。
+通过这个框架可以让更多的应用开发者加入进来，使用区块链技术改造自己应用场景，开发对用户更加友好、以用户为中心的应用，
+例如保护用户隐私，用户数据所有权等等，同时也是 下一代互联网（Web 3.0）的愿景。
+Substrate 特性 Substrate在设计和开发过程中，一个首要的考量是保证软件的可扩展性。
+Parity的工程师在开发的时候考虑了多种可能的使用场景，比如各种类型的公链，优化交易的UTXO模型，支持WASM智能合约，构建隐私应用的数据存储链等等，甚至还有一些联盟链的使用场景。
+能做到这一点的一个重要原因是Parity有很多区块链客户端软件的开发经验，比如以太坊，Zcash和Bitcoin的Rust客户端。
+Substrate的另外一个特点是高度模块化，模块的种类和层次相当丰富，建议多看看看相关的源代码，会有更多深入的理解。
+我们举几个例子，
+比如数据库有ParityDB, RocksDB。 哈希算法模块有xxhash, blake2, keccak。 公钥加密算法有ed25519, sr25519，ecdsa。 开发者可以自由地选择模块加入到自己的应用里。
+Substrate所有的组件代码都是开源的，已经有超过300名开发者贡献substrate代码库，很多重要的功能是由社区主导开发的，
+我相信，开源是去中心应用的必要条件，同时它也能更好的促进行业发展，推动社会变革。
+现在我们来看下substrate提供了哪些区块链开发常用的核心组件，
+比如刚刚提到过的高效的数据库存储层 网络通信层，Substrate使用的是从ipfs抽离出 的libp2p 点对点通信组件库 交易队列或者说交易池，对交易进行一定的排序和验证 还有一个重要的是共识机制，来对多个节点之间的记账操作进行协调，Substrate提供的共识机制包括工作量证明（POW），权威证明（Proof of Authority）, 和权益证明（PoS）。 Runtime 模块，它提供了链上的业务逻辑，用来处理交易，改变链上的状态，典型的业务模块有资产管理，治理，身份等等。 上面只列举了一部分功能组件，并且这些组件都可以被方便地扩展，如果现有的组件不满足你的业务要求，还可以自定义自己需要的组件。
+Substrate 演进 Idea 提到 Substrate，不得不先说说 Polkadot，它的愿景是一个多链的未来。
+那既然需要很多条链，自然需要一个灵活高效的脚手架。
+在2018年初，parity 核心开发从原来的Polkadot代码库分离出 Substrate，里面包含了 Polkadot 用到的所有底层组件。
+Web3 Summit Demo 在2018年 Web3 Summit 会议上， Gav用一台全新的电脑上，演示了如何使用Substrate在十几分钟内搭建了一个包含客户端、ui的区块链应用，这个应用是模拟一个简单的抛硬币游戏。
+从这以后，Substrate也正式从Polkadot的底层库，转变成一个通用、开源的基于 Rust 编程语言的区块链开发框架。
+Evolved with Polkadot Substrate技术演进的一个主要推动力是Polkadot跨链协议的设计，为它提供了一系列的基础功能和核心业务组件，我们之前也提到了这些组件。
+Substrate不仅要满足Polkadot的需要，同时也一步步添加了各种区块链开发时所需要的一系列新功能，例如
+多种共识引擎， 开发 runtime 所需的API接口， 对底层数据库和数据结构的封装， 节点的模板程序等等。 在2019年4月发布了第一个稳定版本 v1.</description></item><item><title>元宇宙会不会把我们从一条人变成一条狗？</title><link>https://kaichaosun.github.io/post/metaverse/</link><pubDate>Fri, 21 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/metaverse/</guid><description>我们先不说元宇宙，因为太简单，几句话就可以讲清楚。
 但是要理解背后的推力，我们就得先聊一聊 人和狗 是不是自由这件事。
 我喜欢狗，虽然小时候 在夏天 吃西瓜的时候被咬过几次。
 在这里，我们关心的是人和狗是不是各自拥有 行为自由 和 思想自由。
