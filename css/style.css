@@ -728,3 +728,7 @@ ul > li > ul > li > ul > li {
 	text-align: center;
 	font-size: 20px;
 }
+
+#TableOfContents {
+	margin-bottom: 60px;
+}
