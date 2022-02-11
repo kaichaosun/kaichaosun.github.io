@@ -1,4 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Whisperd</title><link>https://kaichaosun.github.io/post/</link><description>Recent content in Posts on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Substrate 技术演进</title><link>https://kaichaosun.github.io/post/substrate_history/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_history/</guid><description>有些人可能不是很熟悉 Substrate，我们简单介绍下，
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Whisperd</title><link>https://kaichaosun.github.io/post/</link><description>Recent content in Posts on Whisperd</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 11 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://kaichaosun.github.io/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Build in Public：创业团队的重要性</title><link>https://kaichaosun.github.io/post/build_team/</link><pubDate>Fri, 11 Feb 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/build_team/</guid><description>Build in Public 中文意思是 将构建产品的过程公开。
+公开构建产品的好处是，
+从一开始就获取社区的关注，并且逐步积累关注 社区成员更早的提供反馈、需求 帮助招募志同道合的小伙伴 我打算实践这种工作方式。
+今天的主题是我所观察到的 创业过程中，团队的重要性以及可能遇到的问题。
+你可能经常听到创业这个词，但是不清楚它具体代表了哪些事情，我认为它也是一个“哈姆雷特”，不同的人有不同的解读。
+我认为的创业团队可以包括以下这些形式，
+独立的开发者、小店经营者 夫妻搭档、几个人的小团队、小生意 几十个人，甚至上百人的“大团队” 如果团队人数更多，划分为小团队、增加团队交互的效率就更加关键，以构建产品的思维来服务其它团队。 创业过程中，团队为什么重要？ 一个成功的能够服务用户的产品，从想法到落地会遇到各种挑战，比如，
+当前或者未来预期的某个时间点，判断这一产品是否具有市场 产品的设计是不是符合用户的使用习惯 能否在预期的时间内交付产品 资金是不是足够支撑产品的交付 应对未知的政策、市场等可能存在的风险 更多的挑战和未知会一点点地蹦跶出来，处理这些只能依靠团队成员的智慧和力量。
+创始人的能力和责任感是首要的，他们是团队的“发动机”，责任包括
+描绘团队的愿景 产品的初始市场判断 重要的产品和技术决策 招募优秀合适的成员和合作伙伴 引入合适、充分的外部资金支持产品研发 团队内外充分的沟通交流 克服困难的性格等等。 创始人如果不能很好的尽到自己的责任，可能出现这些问题，
+资金不足，导致产品“流产”或者核心成员流失 联合创始人、核心成员愿景不一致，将产品的内在更改，脱离了市场的需求 团队内沟通不顺畅，执行效率低下，导致产品的交付、可用性、稳定性大打折扣 在早期过多的规划产品的功能，市场判断不合理，导致产品的交付和市场反馈不及时等等 联合创始人、核心成员弥补了团队内的不足，修复“木桶的短板”，他们的责任包括，
+对创始人的不作为进行监督，并提供及时的反馈 发挥自身长处，弥补创始人在团队内外的不足 负责产品的主要功能和核心技术，在预期内交付关键组件的责任感 团队文化、架构、成长性的设计者和执行者等等 核心成员的能力缺失，可能会出现的问题有，
+产品关键功能无法交付，无法兑现对市场的承诺 创始人能力缺失时，团队陷入危机，导致产品“流产” 团队结构不稳定，成员流失严重 其他非核心成员给团队带来新的血液和基因，带来未来的可能性，他们的责任包括，
+提供团队基因外的一些想法，与团队碰撞之后形成新的随机性机会 通过学习和锻炼具备成为核心成员的能力 关注产品和团队的细节，融合不足等等 非核心成员地缺失，可能会出现的问题有，
+无法捕捉未来的机会 满足不了团队的更新迭代 产品的用户体验不到位，团队不和谐。 总结，构建产品和团队的过程，具有数不清的挑战，兴奋地探索未知的同时，也要时刻的关注他人。</description></item><item><title>Substrate 技术演进</title><link>https://kaichaosun.github.io/post/substrate_history/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/substrate_history/</guid><description>有些人可能不是很熟悉 Substrate，我们简单介绍下，
 Substrate是一个构建区块链的开发框架，可以让开发者在很短的时间开发一个高可用的区块链应用，而不需要过多的关心一些底层的技术。
 通过这个框架可以让更多的应用开发者加入进来，使用区块链技术改造自己应用场景，开发对用户更加友好、以用户为中心的应用，
 例如保护用户隐私，用户数据所有权等等，同时也是 下一代互联网（Web 3.0）的愿景。
