@@ -201,17 +201,4 @@ git clone https://github.com/kaichaosun/getsubstrate-cn cd substrate-cn cp confi
 越来越多的领域采用DApp的解决方案，例如：
 知识产权保护 金融衍生品交易 去中心化的自治组织 Solidity编程语言 所有上面那些复杂的应用场景，都是用Solidity编写的智能合约来完成的。和大多数高级编程语言类似，Solidity支持面向对象的编程范式，有完善的类型系统，是一种静态编程语言，语法和Javascript很类似。你可以通过交互式编程环境熟悉Solidity的基本用法
 基础数据类型 基于按值传递的特性，通常也叫以下类型为值类型。
-举例 解释 操作 bool true / false !, &amp;amp;&amp;amp;, ||, ==, != int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作 address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call contract contract MyContract {&amp;hellip;} 合约类，是对函数和数据的封装 new bytes(1~32) &amp;ldquo;foo&amp;rdquo; 定长字节数组 bytes &amp;ldquo;bar&amp;rdquo; 变长字节数组 string &amp;ldquo;this is a string&amp;rdquo; UTF-8字符串 枚举类型 例如：</description></item><item><title>如何部署 IOTA 的 IRI headless 全节点</title><link>https://kaichaosun.github.io/post/how-to-setup-iri/</link><pubDate>Sun, 17 Dec 2017 00:00:00 +0000</pubDate><guid>https://kaichaosun.github.io/post/how-to-setup-iri/</guid><description>什么是 IOTA IOTA 的设计初衷是面向未来的机器与机器、人与人、人与机器之间点对点互联互通的DLT（分布式账本技术）协议。
-通过利用DAG实现了无交易费、高TPS，将whisper protocol用于消息传递，有效提高消息的可达性和私密性。
-本文所关注的IRI (IOTA Reference implementation)是IOTA协议Java版本的实现，基于Rust的版本正在开发之中。
-部署 IRI headless 全节点 服务器选择 目前国内的服务器提供商包括阿里云，华为，青云等， 国外的有AWS，GCP（谷歌云服务），digital ocean等，价格不等，配置大同小异，本文将会以阿里云为例。
-运行 IRI 全节点配置至少是:
-1vCPU 4G 内存 1M 带宽 硬盘40G目前是足够的，可以按需添加数据盘 ECS 实例规格应为独享 操作系统选择适合自己的Linux发行版，建议使用每种发行版的最新版本，如Ubuntu 16.04。
-本文所使用配置，如下图： 服务器的基础环境准备 1.安装Git，在IRI搭建时并没有用到，之后tangle网络生成snapshot时需要：
-sudo apt-get update sudo apt-get install git 2.安装screen，管理服务器终端产生的session
-sudo apt-get install screen 3.安装Java， Oracle JDK，添加Oracle的包管理仓库并更新，
-sudo add-apt-repository ppa:webupd8team/java sudo apt-get update 安装JDK8，
-sudo apt-get install oracle-java8-installer 查看安装，
-java -version 下载并运行IRI 1.IRI的Github release链接：https://github.com/iotaledger/iri/releases
-下载最新Mainnet版本到本地，截止目前最新版为：v1.4.1.2。
-2.添加配置内容，保存至本地iri.config：</description></item></channel></rss>
+举例 解释 操作 bool true / false !, &amp;amp;&amp;amp;, ||, ==, != int / uint(8~256) 8 默认是256位 比较，位移，算数加减乘除、取模**，位操作 address 0x7fD0030D3D21d17Fb4056DE319faD67A853b3C20 20字节，也即160位二进制码组成，代表以太坊的地址 transfer, call contract contract MyContract {&amp;hellip;} 合约类，是对函数和数据的封装 new bytes(1~32) &amp;ldquo;foo&amp;rdquo; 定长字节数组 bytes &amp;ldquo;bar&amp;rdquo; 变长字节数组 string &amp;ldquo;this is a string&amp;rdquo; UTF-8字符串 枚举类型 例如：</description></item></channel></rss>
