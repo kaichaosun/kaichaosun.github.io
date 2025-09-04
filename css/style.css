@@ -715,8 +715,10 @@ ul > li > ul > li > ul > li {
 }
 
 .taxonomies ul li {
-	display: inline;
-	margin: 0 20px 0 20px;
+	display: inline-block;   /* instead of inline */
+  	text-align: center;      /* align text inside the li */
+	width: 120px;
+  	margin: 10px 0 0 0;
 }
 
 .taxonomies ul li a:hover {
@@ -725,7 +727,7 @@ ul > li > ul > li > ul > li {
 
 .taxonomies {
 	margin-bottom: 60px;
-	text-align: center;
+	text-align: flex-start;
 	font-size: 20px;
 }
 
