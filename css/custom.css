@@ -1,0 +1,66 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.app-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.app-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.app-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    border-radius: 12px; /* Soft rounded corners like macOS apps */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle depth */
+    background: #fff; /* White backdrop for transparent icons */
+    padding: 8px; /* Breathing room */
+}
+
+.app-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+}
+
+.app-card h3 a {
+    text-decoration: none;
+    color: #333;
+}
+
+.app-card p {
+    margin: 0 0 1rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.category {
+    font-size: 0.85rem;
+    color: #555;
+    background: #e6f4ea;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+}
