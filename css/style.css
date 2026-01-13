@@ -682,7 +682,7 @@ code {
 	font-weight: 600;
 }
 
-ul {
+ul, ol {
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 	padding-left: 1em;
@@ -691,6 +691,7 @@ ul {
 
 ol > li {
 	list-style-type: decimal;
+	list-style-position: outside;
 }
 
 li {
