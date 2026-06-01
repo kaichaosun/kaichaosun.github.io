@@ -715,21 +715,41 @@ ul > li > ul > li > ul > li {
 	padding-bottom: 5px;
 }
 
+.taxonomies ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px 14px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
 .taxonomies ul li {
-	display: inline-block;   /* instead of inline */
-  	text-align: center;      /* align text inside the li */
-	width: 120px;
-  	margin: 10px 0 0 0;
+	display: inline-block;
+	width: auto;
+	margin: 0;
+}
+
+.taxonomies ul li a {
+	display: inline-block;
+	padding: 4px 14px;
+	color: #5badf0;
+	background: #f1f5f9;
+	border-radius: 999px;
+	transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .taxonomies ul li a:hover {
-	background-color: yellow;
+	color: #2780d6;
+	background: #e2ebf3;
+	text-decoration: none;
 }
 
 .taxonomies {
 	margin-bottom: 60px;
-	text-align: flex-start;
-	font-size: 20px;
+	text-align: center;
+	font-size: 16px;
 }
 
 #TableOfContents {

@@ -1,66 +1,183 @@
 html,
 body {
-    height: 100%;
-    margin: 0;
+  height: 100%;
+  margin: 0;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The flex column above makes auto-margin children (#wrapper, nav) shrink to
+   their content width instead of filling. Force full width (still capped by
+   max-width) so every page — home, category, tag — keeps the same width. */
+#wrapper,
+nav.main-nav {
+  width: 100%;
 }
 
 .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Products page: single column on mobile, exactly 2 per row on wider screens */
+.products-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* "New" badge to draw attention to the Products nav item.
+   Kept inline (so it reserves its own space and never overlaps the
+   text or neighbours) and top-aligned so it rides the upper-right of
+   the same line as "Products". */
+.nav-badge {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: top;
+  padding: 0 6px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: #2ecc71;
+  border-radius: 8px;
+  white-space: nowrap;
+  box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6);
+  animation: nav-badge-pulse 1.8s infinite;
+}
+
+@keyframes nav-badge-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(46, 204, 113, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-badge {
+    animation: none;
+  }
 }
 
 .app-card {
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
 }
 
 .app-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .app-icon {
-    width: 64px;
-    height: 64px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-    border-radius: 12px; /* Soft rounded corners like macOS apps */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle depth */
-    background: #fff; /* White backdrop for transparent icons */
-    padding: 8px; /* Breathing room */
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  border-radius: 12px; /* Soft rounded corners like macOS apps */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle depth */
+  background: #fff; /* White backdrop for transparent icons */
+  padding: 8px; /* Breathing room */
 }
 
 .app-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.4rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
 }
 
 .app-card h3 a {
-    text-decoration: none;
-    color: #333;
+  text-decoration: none;
+  color: #333;
 }
 
 .app-card p {
-    margin: 0 0 1rem;
-    color: #666;
-    font-size: 0.95rem;
+  margin: 0 0 1rem;
+  color: #666;
+  font-size: 0.95rem;
 }
 
 .category {
-    font-size: 0.85rem;
-    color: #555;
-    background: #e6f4ea;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+  font-size: 0.85rem;
+  color: #555;
+  background: #e6f4ea;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* ---- Navbar: flex layout so items wrap cleanly instead of overlapping ---- */
+nav.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  row-gap: 8px; /* keeps wrapped rows from colliding on small screens */
+}
+
+/* Hover effect for the plain nav links */
+nav.main-nav a {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+nav.main-nav a:not(.cta):hover {
+  color: #2780d6;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  text-decoration-thickness: 2px;
+}
+
+/* Subscribe / RSS call-to-action buttons — smaller and tighter than the
+   plain links so they read as compact buttons, not oversized blocks. */
+nav.main-nav a.cta {
+  padding: 5px 12px;
+  margin-left: 8px;
+  font-size: 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(91, 173, 240, 0.35);
+}
+
+nav.main-nav a.cta:hover {
+  background: #3f97e0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(91, 173, 240, 0.45);
+}
+
+/* Mobile: center the row and tighten spacing so nothing overflows */
+@media (max-width: 540px) {
+  nav.main-nav {
+    justify-content: center;
+    column-gap: 2px;
+  }
+
+  nav.main-nav a {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+
+  nav.main-nav a.cta {
+    margin-left: 4px;
+  }
 }
